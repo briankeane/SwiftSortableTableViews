@@ -9,36 +9,27 @@
 import Foundation
 import UIKit
 
-open class SortableTableView:UITableView
+open class SortableTableView:UITableView, UITableViewDataSource
 {
     var containingView:UIView?
     var connectedSortableTableViews:Array<SortableTableView> = Array()
     var cellSnapshot:UIView?
     
-
+    private var _sortableDataSource:SortableTableViewDataSource?
     open var sortableDelegate:SortableTableViewDelegate?
-    {
-        get
-        {
-            return self.sortableDelegate
-        }
-        set
-        {
-            self.delegate = newValue
-        }
-    }
-    
     open var sortableDataSource:SortableTableViewDataSource?
     {
         get
         {
-            return self.sortableDataSource
+            return self._sortableDataSource
         }
         set
         {
-            self.dataSource = newValue
+            self._sortableDataSource = newValue
+            self.dataSource = self
         }
     }
+    
     
     open func setContainingView(view:UIView)
     {
@@ -146,5 +137,25 @@ open class SortableTableView:UITableView
     func canBePickedUp(cell:UITableViewCell) -> Bool
     {
         return true
+    }
+    
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        return (self.sortableDataSource?.tableView(self, cellForRowAt: indexPath))!
+    }
+    
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if let numberOfRows = self.sortableDataSource?.tableView(self, numberOfRowsInSection: section)
+        {
+            return numberOfRows
+        }
+        return 0
+    }
+    
+    public func numberOfSections(in tableView: UITableView) -> Int {
+        if let numberOfSections = self.sortableDataSource?.numberOfSections?(in: self)
+        {
+            return numberOfSections
+        }
+        return 0
     }
 }
