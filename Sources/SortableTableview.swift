@@ -30,43 +30,6 @@ open class SortableTableView:UITableView, UITableViewDataSource
         }
     }
     
-    
-    open func setContainingView(view:UIView)
-    {
-        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(SortableTableView.screenLongPressed(_:)))
-        longPress.minimumPressDuration = 0.3
-        view.addGestureRecognizer(longPress)
-        self.containingView = view
-    }
-    
-    @objc func screenLongPressed(_ gestureRecognizer:UILongPressGestureRecognizer)
-    {
-        let longPress = gestureRecognizer
-        let pressedLocationInParentView = longPress.location(in: self.containingView)
-        let tableViewPressed = self.sortableTableViewAtPoint(pressedLocationInParentView)
-        
-        switch longPress.state
-        {
-        case .began:
-            if let _ = tableViewPressed
-            {
-                self.pickUpCell(longPress: longPress)
-            }
-            
-        case .changed:
-            self.moveCellSnapshot(pressedLocationInParentView, disappear: false)
-            
-//            self.movePlaceholderIfNecessary(pressedLocationInParentView)
-            
-        case .ended:
-            self.cancelMove()
-//            self.handleDroppedItem(tableViewPressed, longPress:longPress)
-            print("ended")
-        default:
-            print("default")
-        }
-    }
-    
     //------------------------------------------------------------------------------
     
     func moveCellSnapshot(_ newCenter:CGPoint, disappear:Bool, onCompletion:@escaping (Bool) -> Void = {Void in })
@@ -100,15 +63,7 @@ open class SortableTableView:UITableView, UITableViewDataSource
     
     //------------------------------------------------------------------------------
     
-    func sortableTableViewAtPoint(_ pointPressed:CGPoint) -> SortableTableView?
-    {
-        self.frame.contains(pointPressed)
-        if (self.frame.contains(pointPressed))
-        {
-            return self
-        }
-        return nil
-    }
+    
     
     func pickUpCell(longPress: UILongPressGestureRecognizer)
     {
