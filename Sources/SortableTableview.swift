@@ -58,9 +58,10 @@ open class SortableTableView:UITableView, UITableViewDataSource
             
 //            self.movePlaceholderIfNecessary(pressedLocationInParentView)
             
-//        case .ended:
+        case .ended:
+            self.cancelMove()
 //            self.handleDroppedItem(tableViewPressed, longPress:longPress)
-//            print("ended")
+            print("ended")
         default:
             print("default")
         }
@@ -166,6 +167,26 @@ open class SortableTableView:UITableView, UITableViewDataSource
         return cellSnapshot
     }
     
+    //------------------------------------------------------------------------------
+    
+    func cancelMove()
+    {
+        // send it back
+        if let item = self.movingSortableItem
+        {
+            self.moveCellSnapshot(item.originalCenter, disappear: true)
+            {
+                (finished) -> Void in
+                if (finished)
+                {
+                    self.movingSortableItem = nil
+                    self.reloadData()
+                }
+            }
+        }
+    }
+
+    //------------------------------------------------------------------------------
     
     func canBePickedUp(cell:UITableViewCell) -> Bool
     {

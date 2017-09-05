@@ -61,10 +61,10 @@
 		4BD902791F5DCB9600DC2E73 /* SwiftSortableTableviewsOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftSortableTableviewsOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BD9027E1F5DCB9600DC2E73 /* SwiftSortableTableviewsOSXTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftSortableTableviewsOSXTests.swift; sourceTree = "<group>"; };
 		4BD902801F5DCB9600DC2E73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4BD902B41F5DCFD600DC2E73 /* SortableTableview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableview.swift; path = ../../Sources/SortableTableview.swift; sourceTree = "<group>"; };
-		4BD902BB1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableviewDelegateProtocol.swift; path = ../../Sources/SortableTableviewDelegateProtocol.swift; sourceTree = "<group>"; };
-		4BD902C01F5DD9D900DC2E73 /* SwiftSortableTableviewDataSourceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftSortableTableviewDataSourceProtocol.swift; path = ../../Sources/SwiftSortableTableviewDataSourceProtocol.swift; sourceTree = "<group>"; };
-		4BD902C51F5E020D00DC2E73 /* SortableTableViewItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableViewItem.swift; path = ../../Sources/SortableTableViewItem.swift; sourceTree = "<group>"; };
+		4BD902B41F5DCFD600DC2E73 /* SortableTableview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableview.swift; path = ../Sources/SortableTableview.swift; sourceTree = "<group>"; };
+		4BD902BB1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableviewDelegateProtocol.swift; path = ../Sources/SortableTableviewDelegateProtocol.swift; sourceTree = "<group>"; };
+		4BD902C01F5DD9D900DC2E73 /* SwiftSortableTableviewDataSourceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftSortableTableviewDataSourceProtocol.swift; path = ../Sources/SwiftSortableTableviewDataSourceProtocol.swift; sourceTree = "<group>"; };
+		4BD902C51F5E020D00DC2E73 /* SortableTableViewItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableViewItem.swift; path = ../Sources/SortableTableViewItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -101,9 +101,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4B34F1841F5EEC6000A0199E /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				4BD902B41F5DCFD600DC2E73 /* SortableTableview.swift */,
+				4BD902C51F5E020D00DC2E73 /* SortableTableViewItem.swift */,
+				4BD902BB1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift */,
+				4BD902C01F5DD9D900DC2E73 /* SwiftSortableTableviewDataSourceProtocol.swift */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
 		4BD9022C1F5DCAE700DC2E73 = {
 			isa = PBXGroup;
 			children = (
+				4B34F1841F5EEC6000A0199E /* Sources */,
 				4BD902561F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOS */,
 				4BD902611F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOSTests */,
 				4BD902721F5DCB9500DC2E73 /* SwiftSortableTableviewsOSX */,
@@ -128,10 +140,6 @@
 			children = (
 				4BD902571F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOS.h */,
 				4BD902581F5DCB7B00DC2E73 /* Info.plist */,
-				4BD902B41F5DCFD600DC2E73 /* SortableTableview.swift */,
-				4BD902C51F5E020D00DC2E73 /* SortableTableViewItem.swift */,
-				4BD902BB1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift */,
-				4BD902C01F5DD9D900DC2E73 /* SwiftSortableTableviewDataSourceProtocol.swift */,
 			);
 			path = SwiftSortableTableviewsIOS;
 			sourceTree = "<group>";
@@ -675,6 +683,7 @@
 				4BD902681F5DCB7B00DC2E73 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4BD902691F5DCB7B00DC2E73 /* Build configuration list for PBXNativeTarget "SwiftSortableTableviewsIOSTests" */ = {
 			isa = XCConfigurationList;
@@ -683,6 +692,7 @@
 				4BD9026B1F5DCB7B00DC2E73 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4BD902821F5DCB9600DC2E73 /* Build configuration list for PBXNativeTarget "SwiftSortableTableviewsOSX" */ = {
 			isa = XCConfigurationList;
@@ -691,6 +701,7 @@
 				4BD902841F5DCB9600DC2E73 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		4BD902851F5DCB9600DC2E73 /* Build configuration list for PBXNativeTarget "SwiftSortableTableviewsOSXTests" */ = {
 			isa = XCConfigurationList;
@@ -699,6 +710,7 @@
 				4BD902871F5DCB9600DC2E73 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
