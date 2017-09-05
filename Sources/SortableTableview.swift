@@ -13,7 +13,7 @@ open class SortableTableView:UITableView, UITableViewDataSource
 {
     var containingView:UIView?
     var connectedSortableTableViews:Array<SortableTableView> = Array()
-    var cellSnapshot:UIView?
+    var movingSortableItem:SortableTableViewItem?
     
     private var _sortableDataSource:SortableTableViewDataSource?
     open var sortableDelegate:SortableTableViewDelegate?
@@ -53,12 +53,11 @@ open class SortableTableView:UITableView, UITableViewDataSource
                 self.pickUpCell(longPress: longPress)
             }
             
-//        case .changed:
-//            if (self.itemBeingMoved != nil)
-//            {
-//                self.moveCellSnapshot(pressedLocationInParentView, disappear: false)
-//                self.movePlaceholderIfNecessary(pressedLocationInParentView)
-//            }
+        case .changed:
+            self.moveCellSnapshot(pressedLocationInParentView, disappear: false)
+            
+//            self.movePlaceholderIfNecessary(pressedLocationInParentView)
+            
 //        case .ended:
 //            self.handleDroppedItem(tableViewPressed, longPress:longPress)
 //            print("ended")
@@ -66,6 +65,39 @@ open class SortableTableView:UITableView, UITableViewDataSource
             print("default")
         }
     }
+    
+    //------------------------------------------------------------------------------
+    
+    func moveCellSnapshot(_ newCenter:CGPoint, disappear:Bool, onCompletion:@escaping (Bool) -> Void = {Void in })
+    {
+        if let cellSnapshot = self.movingSortableItem?.cellSnapshot
+        {
+            UIView.animate(withDuration: 0.25,
+                           animations:
+                {
+                    () -> Void in
+                    cellSnapshot.center = CGPoint(x: self.center.x, y: newCenter.y)
+                    
+                    if (disappear == true)
+                    {
+                        cellSnapshot.transform = CGAffineTransform.identity
+                        cellSnapshot.alpha = 0.0
+                    }
+            },
+            completion:
+            {
+                (finished) -> Void in
+                if (disappear == true)
+                {
+                    cellSnapshot.removeFromSuperview()
+                }
+                onCompletion(finished)
+            })
+        }
+        
+    }
+    
+    //------------------------------------------------------------------------------
     
     func sortableTableViewAtPoint(_ pointPressed:CGPoint) -> SortableTableView?
     {
@@ -90,27 +122,28 @@ open class SortableTableView:UITableView, UITableViewDataSource
                 if (self.canBePickedUp(cell: hoveredOverCell))
                 {
                     // display snapshot
-                    self.cellSnapshot = self.createCellSnapshot(hoveredOverCell)
-                    self.cellSnapshot!.center = (self.containingView?.convert(hoveredOverCell.center, from: self))!
-                    self.cellSnapshot!.alpha = 0.0
-                    self.containingView?.addSubview(self.cellSnapshot!)
+                    let cellSnapshot = self.createCellSnapshot(hoveredOverCell)
+                    cellSnapshot.center = (self.containingView?.convert(hoveredOverCell.center, from: self))!
+                    cellSnapshot.alpha = 0.0
+                    self.containingView?.addSubview(cellSnapshot)
                     
+                    self.movingSortableItem = SortableTableViewItem(originalTableView: self, originalIndexPath: indexPath!, cellSnapshot: cellSnapshot)
                     UIView.animate(withDuration: 0.25, animations:
-                        {
-                            () -> Void in
-                            self.cellSnapshot!.center = CGPoint(x: self.center.x, y: pickupLocationInParentView.y)
-                            self.cellSnapshot!.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
-                            self.cellSnapshot!.alpha = 0.98
-                            hoveredOverCell.alpha = 0.0
+                    {
+                        () -> Void in
+                        cellSnapshot.center = CGPoint(x: self.center.x, y: pickupLocationInParentView.y)
+                        cellSnapshot.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
+                        cellSnapshot.alpha = 0.98
+                        hoveredOverCell.alpha = 0.0
                     },
-                                   completion:
+                    completion:
+                    {
+                        (finished) -> Void in
+                        if finished
                         {
-                            (finished) -> Void in
-                            if finished
-                            {
-                                // hide the picked up cell after snapshot gets drawn
-                                hoveredOverCell.isHidden = true
-                            }
+                            // hide the picked up cell after snapshot gets drawn
+                            hoveredOverCell.isHidden = true
+                        }
                     })
                 }
             }
