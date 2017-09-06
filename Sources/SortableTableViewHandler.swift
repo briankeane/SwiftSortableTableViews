@@ -119,8 +119,9 @@ public class SortableTableViewHandler:NSObject
                 (finished) -> Void in
                 if (finished)
                 {
-                    // hide the picked up cell after snapshot gets drawn
-                    print("done")
+                    //broadcast that item pickup has been animated
+                   NotificationCenter.default.post(name: SortableTableViewEvents.pickupAnimated, object: nil, userInfo: ["originalTableView":sortableTableViewPressed,
+                        "originalIndexPath": atIndexPath])
                 }
             })
         }

@@ -11,6 +11,10 @@
 		4B34F1871F5EF39000A0199E /* SortableTableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B34F1851F5EF39000A0199E /* SortableTableViewHandler.swift */; };
 		4B34F1881F5EF39000A0199E /* SortableTableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B34F1851F5EF39000A0199E /* SortableTableViewHandler.swift */; };
 		4B34F1891F5EF39000A0199E /* SortableTableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B34F1851F5EF39000A0199E /* SortableTableViewHandler.swift */; };
+		4BC869B71F6041B7006AA57C /* SortableTableViewEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC869B61F6041B7006AA57C /* SortableTableViewEvents.swift */; };
+		4BC869B81F6041B7006AA57C /* SortableTableViewEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC869B61F6041B7006AA57C /* SortableTableViewEvents.swift */; };
+		4BC869B91F6041B7006AA57C /* SortableTableViewEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC869B61F6041B7006AA57C /* SortableTableViewEvents.swift */; };
+		4BC869BA1F6041B7006AA57C /* SortableTableViewEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC869B61F6041B7006AA57C /* SortableTableViewEvents.swift */; };
 		4BD9025E1F5DCB7B00DC2E73 /* SwiftSortableTableViewsIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BD902551F5DCB7B00DC2E73 /* SwiftSortableTableViewsIOS.framework */; };
 		4BD902631F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD902621F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOSTests.swift */; };
 		4BD902651F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 4BD902571F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -54,6 +58,7 @@
 
 /* Begin PBXFileReference section */
 		4B34F1851F5EF39000A0199E /* SortableTableViewHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableViewHandler.swift; path = ../Sources/SortableTableViewHandler.swift; sourceTree = "<group>"; };
+		4BC869B61F6041B7006AA57C /* SortableTableViewEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableViewEvents.swift; path = ../Sources/SortableTableViewEvents.swift; sourceTree = "<group>"; };
 		4BD902551F5DCB7B00DC2E73 /* SwiftSortableTableViewsIOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftSortableTableViewsIOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BD902571F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftSortableTableviewsIOS.h; sourceTree = "<group>"; };
 		4BD902581F5DCB7B00DC2E73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -114,6 +119,7 @@
 				4BD902BB1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift */,
 				4BD902C01F5DD9D900DC2E73 /* SwiftSortableTableviewDataSourceProtocol.swift */,
 				4B34F1851F5EF39000A0199E /* SortableTableViewHandler.swift */,
+				4BC869B61F6041B7006AA57C /* SortableTableViewEvents.swift */,
 			);
 			name = Sources;
 			sourceTree = "<group>";
@@ -365,6 +371,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BC869B71F6041B7006AA57C /* SortableTableViewEvents.swift in Sources */,
 				4B34F1861F5EF39000A0199E /* SortableTableViewHandler.swift in Sources */,
 				4BD902C61F5E020D00DC2E73 /* SortableTableViewItem.swift in Sources */,
 				4BD902BC1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift in Sources */,
@@ -380,6 +387,7 @@
 				4BD902BD1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift in Sources */,
 				4BD902C71F5E020D00DC2E73 /* SortableTableViewItem.swift in Sources */,
 				4BD902631F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOSTests.swift in Sources */,
+				4BC869B81F6041B7006AA57C /* SortableTableViewEvents.swift in Sources */,
 				4BD902C21F5DD9D900DC2E73 /* SwiftSortableTableviewDataSourceProtocol.swift in Sources */,
 				4B34F1871F5EF39000A0199E /* SortableTableViewHandler.swift in Sources */,
 				4BD902B61F5DCFD600DC2E73 /* SortableTableView.swift in Sources */,
@@ -390,6 +398,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4BC869B91F6041B7006AA57C /* SortableTableViewEvents.swift in Sources */,
 				4B34F1881F5EF39000A0199E /* SortableTableViewHandler.swift in Sources */,
 				4BD902C81F5E020D00DC2E73 /* SortableTableViewItem.swift in Sources */,
 				4BD902BE1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift in Sources */,
@@ -405,6 +414,7 @@
 				4BD902BF1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift in Sources */,
 				4BD902C91F5E020D00DC2E73 /* SortableTableViewItem.swift in Sources */,
 				4BD9027F1F5DCB9600DC2E73 /* SwiftSortableTableviewsOSXTests.swift in Sources */,
+				4BC869BA1F6041B7006AA57C /* SortableTableViewEvents.swift in Sources */,
 				4BD902C41F5DD9D900DC2E73 /* SwiftSortableTableviewDataSourceProtocol.swift in Sources */,
 				4B34F1891F5EF39000A0199E /* SortableTableViewHandler.swift in Sources */,
 				4BD902B81F5DCFD600DC2E73 /* SortableTableView.swift in Sources */,
