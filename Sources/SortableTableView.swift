@@ -107,7 +107,7 @@ open class SortableTableView:UITableView, UITableViewDataSource
         
         if let ignoreIndexPathRow = self.ignoreIndexPath?.row
         {
-            if (adjustedIndexPathRow > ignoreIndexPathRow)
+            if (adjustedIndexPathRow >= ignoreIndexPathRow)
             {
                 adjustedIndexPathRow -= 1
             }
@@ -115,7 +115,7 @@ open class SortableTableView:UITableView, UITableViewDataSource
         
         if let placeholderIndexPathRow = self.placeholderIndexPath?.row
         {
-            if (adjustedIndexPathRow > placeholderIndexPathRow)
+            if (adjustedIndexPathRow >= placeholderIndexPathRow)
             {
                 adjustedIndexPathRow += 1
             }
