@@ -1,6 +1,6 @@
 //
-//  SortableTableview.swift
-//  SwiftSortableTableviews
+//  SortableTableView.swift
+//  SwiftSortableTableViews
 //
 //  Created by Brian D Keane on 9/4/17.
 //  Copyright © 2017 Brian D Keane. All rights reserved.
@@ -14,6 +14,7 @@ open class SortableTableView:UITableView, UITableViewDataSource
     var containingView:UIView?
     var connectedSortableTableViews:Array<SortableTableView> = Array()
     var movingSortableItem:SortableTableViewItem?
+    var indexPathInMotion:IndexPath?
     
     private var _sortableDataSource:SortableTableViewDataSource?
     open var sortableDelegate:SortableTableViewDelegate?
@@ -63,50 +64,6 @@ open class SortableTableView:UITableView, UITableViewDataSource
     
     //------------------------------------------------------------------------------
     
-    
-    
-    func pickUpCell(longPress: UILongPressGestureRecognizer)
-    {
-        let pickupLocationInTableView = longPress.location(in: self)
-        let pickupLocationInParentView = longPress.location(in: self.containingView)
-        let indexPath = self.indexPathForRow(at: pickupLocationInTableView)
-        
-        if (indexPath != nil)
-        {
-            if let hoveredOverCell = self.cellForRow(at: indexPath!)
-            {
-                if (self.canBePickedUp(cell: hoveredOverCell))
-                {
-                    // display snapshot
-                    let cellSnapshot = self.createCellSnapshot(hoveredOverCell)
-                    cellSnapshot.center = (self.containingView?.convert(hoveredOverCell.center, from: self))!
-                    cellSnapshot.alpha = 0.0
-                    self.containingView?.addSubview(cellSnapshot)
-                    
-                    self.movingSortableItem = SortableTableViewItem(originalTableView: self, originalIndexPath: indexPath!, cellSnapshot: cellSnapshot)
-                    UIView.animate(withDuration: 0.25, animations:
-                    {
-                        () -> Void in
-                        cellSnapshot.center = CGPoint(x: self.center.x, y: pickupLocationInParentView.y)
-                        cellSnapshot.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
-                        cellSnapshot.alpha = 0.98
-                        hoveredOverCell.alpha = 0.0
-                    },
-                    completion:
-                    {
-                        (finished) -> Void in
-                        if finished
-                        {
-                            // hide the picked up cell after snapshot gets drawn
-                            hoveredOverCell.isHidden = true
-                        }
-                    })
-                }
-            }
-            
-        }
-    }
-    
     func createCellSnapshot(_ inputView: UIView) -> UIView
     {
         UIGraphicsBeginImageContextWithOptions(inputView.bounds.size, false, 0.0)
@@ -140,10 +97,17 @@ open class SortableTableView:UITableView, UITableViewDataSource
             }
         }
     }
+    
+    //------------------------------------------------------------------------------
+    
+    func setPlaceholder(indexPath:IndexPath)
+    {
+        print("setPlaceholder stub")
+    }
 
     //------------------------------------------------------------------------------
     
-    func canBePickedUp(cell:UITableViewCell) -> Bool
+    func canBePickedUp(indexPath:IndexPath) -> Bool
     {
         return true
     }

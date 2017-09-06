@@ -14,6 +14,8 @@ public class SortableTableViewHandler:NSObject
     public var sortableTableViews:Array<SortableTableView> = Array()
     public var containingView:UIView!
     
+    public var itemInMotion:SortableTableViewItem?
+    
     public init(view:UIView, sortableTableViews:Array<SortableTableView>?=nil)
     {
         super.init()
@@ -57,7 +59,12 @@ public class SortableTableViewHandler:NSObject
         switch longPress.state
         {
         case .began:
-            print(tableViewPressed)
+            print("began")
+            print("tableViewPressed \(tableViewPressed)")
+            if let tableViewPressed = tableViewPressed
+            {
+                self.handleLongPressBegan(longPress:longPress, sortableTableViewPressed:tableViewPressed)
+            }
 //            if let _ = tableViewPressed
 //            {
 //                print(tableViewPressed)
@@ -78,6 +85,60 @@ public class SortableTableViewHandler:NSObject
         }
     }
     
+    func handleLongPressBegan(longPress:UILongPressGestureRecognizer, sortableTableViewPressed:SortableTableView)
+    {
+        let pointInTableView = longPress.location(in: sortableTableViewPressed)
+        let pressedIndexPath = sortableTableViewPressed.indexPathForRow(at: pointInTableView)
+        if let pressedIndexPath = pressedIndexPath
+        {
+            if (sortableTableViewPressed.canBePickedUp(indexPath: pressedIndexPath))
+            {
+                self.pickupCell(atIndexPath: pressedIndexPath, longPress: longPress, sortableTableViewPressed: sortableTableViewPressed)
+            }
+        }
+    }
     
+    func pickupCell(atIndexPath:IndexPath, longPress:UILongPressGestureRecognizer, sortableTableViewPressed:SortableTableView)
+    {
+        if let cell = sortableTableViewPressed.cellForRow(at: atIndexPath)
+        {
+            let cellSnapshot = self.createCellSnapshot(cell)
+            self.itemInMotion = SortableTableViewItem(originalTableView: sortableTableViewPressed, originalIndexPath: atIndexPath, originalCenter: cellSnapshot.center, cellSnapshot: cellSnapshot)
+            cellSnapshot.center = self.containingView.convert(cell.center, from: sortableTableViewPressed)
+            cellSnapshot.alpha = 0.0
+            self.containingView.addSubview(cellSnapshot)
+            
+            UIView.animate(withDuration: 0.25, animations:
+            {
+                cellSnapshot.center = CGPoint(x: sortableTableViewPressed.center.x, y: longPress.location(in: self.containingView).y)
+                cellSnapshot.transform = CGAffineTransform(scaleX: 1.05, y: 1.05)
+                cellSnapshot.alpha = 0.98
+            },
+            completion:
+            {
+                (finished) -> Void in
+                if (finished)
+                {
+                    // hide the picked up cell after snapshot gets drawn
+                    print("done")
+                }
+            })
+        }
+    }
+    
+    func createCellSnapshot(_ inputView: UIView) -> UIView
+    {
+        UIGraphicsBeginImageContextWithOptions(inputView.bounds.size, false, 0.0)
+        inputView.layer.render(in: UIGraphicsGetCurrentContext()!)
+        let image = UIGraphicsGetImageFromCurrentImageContext()! as UIImage
+        UIGraphicsEndImageContext()
+        let cellSnapshot : UIView = UIImageView(image: image)
+        cellSnapshot.layer.masksToBounds = false
+        cellSnapshot.layer.cornerRadius = 0.0
+        cellSnapshot.layer.shadowOffset = CGSize(width: -5.0, height: 0.0)
+        cellSnapshot.layer.shadowRadius = 5.0
+        cellSnapshot.layer.shadowOpacity = 0.4
+        return cellSnapshot
+    }
     
 }
