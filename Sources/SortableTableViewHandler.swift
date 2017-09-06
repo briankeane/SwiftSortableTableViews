@@ -50,6 +50,8 @@ public class SortableTableViewHandler:NSObject
         self.containingView.addGestureRecognizer(longPress)
     }
     
+    //------------------------------------------------------------------------------
+    
     @objc func screenLongPressed(_ gestureRecognizer:UILongPressGestureRecognizer)
     {
         let longPress = gestureRecognizer
@@ -59,23 +61,17 @@ public class SortableTableViewHandler:NSObject
         switch longPress.state
         {
         case .began:
-            print("began")
-            print("tableViewPressed \(tableViewPressed)")
             if let tableViewPressed = tableViewPressed
             {
                 self.handleLongPressBegan(longPress:longPress, sortableTableViewPressed:tableViewPressed)
             }
-//            if let _ = tableViewPressed
-//            {
-//                print(tableViewPressed)
-//            }
             
+        case .changed:
+            if let _ = self.itemInMotion
+            {
+                self.moveCellSnapshot(pressedLocationInParentView, disappear: false)
+            }
             
-//        case .changed:
-//            self.moveCellSnapshot(pressedLocationInParentView, disappear: false)
-//            
-//            //            self.movePlaceholderIfNecessary(pressedLocationInParentView)
-//            
 //        case .ended:
 //            self.cancelMove()
 //            //            self.handleDroppedItem(tableViewPressed, longPress:longPress)
@@ -84,6 +80,8 @@ public class SortableTableViewHandler:NSObject
             print("default")
         }
     }
+    
+    //------------------------------------------------------------------------------
     
     func handleLongPressBegan(longPress:UILongPressGestureRecognizer, sortableTableViewPressed:SortableTableView)
     {
@@ -97,6 +95,8 @@ public class SortableTableViewHandler:NSObject
             }
         }
     }
+    
+    //------------------------------------------------------------------------------
     
     func pickupCell(atIndexPath:IndexPath, longPress:UILongPressGestureRecognizer, sortableTableViewPressed:SortableTableView)
     {
@@ -126,6 +126,35 @@ public class SortableTableViewHandler:NSObject
         }
     }
     
+    func moveCellSnapshot(_ newCenter:CGPoint, disappear:Bool, onCompletion:@escaping (Bool) -> Void = {Void in })
+    {
+        if let cellSnapshot = self.itemInMotion?.cellSnapshot
+        {
+            UIView.animate(withDuration: 0.25,
+                           animations:
+            {
+                cellSnapshot.center = CGPoint(x: self.containingView.center.x, y: newCenter.y)
+                    
+                if (disappear == true)
+                {
+                    cellSnapshot.transform = CGAffineTransform.identity
+                    cellSnapshot.alpha = 0.0
+                }
+            },
+            completion:
+            {
+                (finished) -> Void in
+                if (disappear == true)
+                {
+                    cellSnapshot.removeFromSuperview()
+                    self.itemInMotion = nil
+                }
+                onCompletion(finished)
+            })
+        }
+    }
+    //------------------------------------------------------------------------------
+    
     func createCellSnapshot(_ inputView: UIView) -> UIView
     {
         UIGraphicsBeginImageContextWithOptions(inputView.bounds.size, false, 0.0)
@@ -140,5 +169,4 @@ public class SortableTableViewHandler:NSObject
         cellSnapshot.layer.shadowOpacity = 0.4
         return cellSnapshot
     }
-    
 }
