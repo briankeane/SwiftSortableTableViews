@@ -159,7 +159,7 @@ open class SortableTableView:UITableView, UITableViewDataSource
         if let userInfo = userInfo
         {
             // IF it has left this tableView
-            if ((userInfo["hoveredOverTableView"] == nil) && (self.placeholderIndexPath != nil))
+            if (((userInfo["hoveredOverTableView"] as? SortableTableView) != self) && (self.placeholderIndexPath != nil))
             {
                 print("removing placeholder")
                 self.removePlaceholder()
@@ -182,13 +182,6 @@ open class SortableTableView:UITableView, UITableViewDataSource
                     self.movePlaceholder(from: self.placeholderIndexPath!, to: hoveredOverIndexPath)
                 }
             }
-            // ELSE IF it exited this tableView
-            else if ((userInfo["hoveredOverTableView"] == nil) && (self.placeholderIndexPath != nil))
-            {
-                print("exited tableView")
-                self.removePlaceholder()
-            }
-            
         }
     }
     
