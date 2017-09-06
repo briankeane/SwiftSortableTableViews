@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4BD902541F5DCB7B00DC2E73"
-               BuildableName = "SwiftSortableTableviewsIOS.framework"
-               BlueprintName = "SwiftSortableTableviewsIOS"
+               BuildableName = "SwiftSortableTableViewsIOS.framework"
+               BlueprintName = "SwiftSortableTableViewsIOS"
                ReferencedContainer = "container:SwiftSortableTableviews.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -34,8 +34,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "4BD9025C1F5DCB7B00DC2E73"
-               BuildableName = "SwiftSortableTableviewsIOSTests.xctest"
-               BlueprintName = "SwiftSortableTableviewsIOSTests"
+               BuildableName = "SwiftSortableTableViewsIOSTests.xctest"
+               BlueprintName = "SwiftSortableTableViewsIOSTests"
                ReferencedContainer = "container:SwiftSortableTableviews.xcodeproj">
             </BuildableReference>
          </TestableReference>
@@ -44,8 +44,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4BD902541F5DCB7B00DC2E73"
-            BuildableName = "SwiftSortableTableviewsIOS.framework"
-            BlueprintName = "SwiftSortableTableviewsIOS"
+            BuildableName = "SwiftSortableTableViewsIOS.framework"
+            BlueprintName = "SwiftSortableTableViewsIOS"
             ReferencedContainer = "container:SwiftSortableTableviews.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -66,8 +66,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4BD902541F5DCB7B00DC2E73"
-            BuildableName = "SwiftSortableTableviewsIOS.framework"
-            BlueprintName = "SwiftSortableTableviewsIOS"
+            BuildableName = "SwiftSortableTableViewsIOS.framework"
+            BlueprintName = "SwiftSortableTableViewsIOS"
             ReferencedContainer = "container:SwiftSortableTableviews.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -84,8 +84,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "4BD902541F5DCB7B00DC2E73"
-            BuildableName = "SwiftSortableTableviewsIOS.framework"
-            BlueprintName = "SwiftSortableTableviewsIOS"
+            BuildableName = "SwiftSortableTableViewsIOS.framework"
+            BlueprintName = "SwiftSortableTableViewsIOS"
             ReferencedContainer = "container:SwiftSortableTableviews.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

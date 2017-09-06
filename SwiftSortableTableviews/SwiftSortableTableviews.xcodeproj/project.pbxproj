@@ -11,16 +11,16 @@
 		4B34F1871F5EF39000A0199E /* SortableTableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B34F1851F5EF39000A0199E /* SortableTableViewHandler.swift */; };
 		4B34F1881F5EF39000A0199E /* SortableTableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B34F1851F5EF39000A0199E /* SortableTableViewHandler.swift */; };
 		4B34F1891F5EF39000A0199E /* SortableTableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B34F1851F5EF39000A0199E /* SortableTableViewHandler.swift */; };
-		4BD9025E1F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BD902551F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOS.framework */; };
+		4BD9025E1F5DCB7B00DC2E73 /* SwiftSortableTableViewsIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BD902551F5DCB7B00DC2E73 /* SwiftSortableTableViewsIOS.framework */; };
 		4BD902631F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD902621F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOSTests.swift */; };
 		4BD902651F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 4BD902571F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4BD9027A1F5DCB9600DC2E73 /* SwiftSortableTableviewsOSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BD902711F5DCB9500DC2E73 /* SwiftSortableTableviewsOSX.framework */; };
+		4BD9027A1F5DCB9600DC2E73 /* SwiftSortableTableViewsOSX.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BD902711F5DCB9500DC2E73 /* SwiftSortableTableViewsOSX.framework */; };
 		4BD9027F1F5DCB9600DC2E73 /* SwiftSortableTableviewsOSXTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD9027E1F5DCB9600DC2E73 /* SwiftSortableTableviewsOSXTests.swift */; };
 		4BD902811F5DCB9600DC2E73 /* SwiftSortableTableviewsOSX.h in Headers */ = {isa = PBXBuildFile; fileRef = 4BD902731F5DCB9500DC2E73 /* SwiftSortableTableviewsOSX.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		4BD902B51F5DCFD600DC2E73 /* SortableTableview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD902B41F5DCFD600DC2E73 /* SortableTableview.swift */; };
-		4BD902B61F5DCFD600DC2E73 /* SortableTableview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD902B41F5DCFD600DC2E73 /* SortableTableview.swift */; };
-		4BD902B71F5DCFD600DC2E73 /* SortableTableview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD902B41F5DCFD600DC2E73 /* SortableTableview.swift */; };
-		4BD902B81F5DCFD600DC2E73 /* SortableTableview.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD902B41F5DCFD600DC2E73 /* SortableTableview.swift */; };
+		4BD902B51F5DCFD600DC2E73 /* SortableTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD902B41F5DCFD600DC2E73 /* SortableTableView.swift */; };
+		4BD902B61F5DCFD600DC2E73 /* SortableTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD902B41F5DCFD600DC2E73 /* SortableTableView.swift */; };
+		4BD902B71F5DCFD600DC2E73 /* SortableTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD902B41F5DCFD600DC2E73 /* SortableTableView.swift */; };
+		4BD902B81F5DCFD600DC2E73 /* SortableTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD902B41F5DCFD600DC2E73 /* SortableTableView.swift */; };
 		4BD902BC1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD902BB1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift */; };
 		4BD902BD1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD902BB1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift */; };
 		4BD902BE1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD902BB1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift */; };
@@ -54,19 +54,19 @@
 
 /* Begin PBXFileReference section */
 		4B34F1851F5EF39000A0199E /* SortableTableViewHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableViewHandler.swift; path = ../Sources/SortableTableViewHandler.swift; sourceTree = "<group>"; };
-		4BD902551F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftSortableTableviewsIOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4BD902551F5DCB7B00DC2E73 /* SwiftSortableTableViewsIOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftSortableTableViewsIOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BD902571F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftSortableTableviewsIOS.h; sourceTree = "<group>"; };
 		4BD902581F5DCB7B00DC2E73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4BD9025D1F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftSortableTableviewsIOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4BD9025D1F5DCB7B00DC2E73 /* SwiftSortableTableViewsIOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftSortableTableViewsIOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BD902621F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOSTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftSortableTableviewsIOSTests.swift; sourceTree = "<group>"; };
 		4BD902641F5DCB7B00DC2E73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4BD902711F5DCB9500DC2E73 /* SwiftSortableTableviewsOSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftSortableTableviewsOSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		4BD902711F5DCB9500DC2E73 /* SwiftSortableTableViewsOSX.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftSortableTableViewsOSX.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BD902731F5DCB9500DC2E73 /* SwiftSortableTableviewsOSX.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftSortableTableviewsOSX.h; sourceTree = "<group>"; };
 		4BD902741F5DCB9500DC2E73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4BD902791F5DCB9600DC2E73 /* SwiftSortableTableviewsOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftSortableTableviewsOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		4BD902791F5DCB9600DC2E73 /* SwiftSortableTableViewsOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftSortableTableViewsOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BD9027E1F5DCB9600DC2E73 /* SwiftSortableTableviewsOSXTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftSortableTableviewsOSXTests.swift; sourceTree = "<group>"; };
 		4BD902801F5DCB9600DC2E73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4BD902B41F5DCFD600DC2E73 /* SortableTableview.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableview.swift; path = ../Sources/SortableTableview.swift; sourceTree = "<group>"; };
+		4BD902B41F5DCFD600DC2E73 /* SortableTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableView.swift; path = ../Sources/SortableTableView.swift; sourceTree = "<group>"; };
 		4BD902BB1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableviewDelegateProtocol.swift; path = ../Sources/SortableTableviewDelegateProtocol.swift; sourceTree = "<group>"; };
 		4BD902C01F5DD9D900DC2E73 /* SwiftSortableTableviewDataSourceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftSortableTableviewDataSourceProtocol.swift; path = ../Sources/SwiftSortableTableviewDataSourceProtocol.swift; sourceTree = "<group>"; };
 		4BD902C51F5E020D00DC2E73 /* SortableTableViewItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableViewItem.swift; path = ../Sources/SortableTableViewItem.swift; sourceTree = "<group>"; };
@@ -84,7 +84,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4BD9025E1F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOS.framework in Frameworks */,
+				4BD9025E1F5DCB7B00DC2E73 /* SwiftSortableTableViewsIOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,7 +99,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4BD9027A1F5DCB9600DC2E73 /* SwiftSortableTableviewsOSX.framework in Frameworks */,
+				4BD9027A1F5DCB9600DC2E73 /* SwiftSortableTableViewsOSX.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,7 +109,7 @@
 		4B34F1841F5EEC6000A0199E /* Sources */ = {
 			isa = PBXGroup;
 			children = (
-				4BD902B41F5DCFD600DC2E73 /* SortableTableview.swift */,
+				4BD902B41F5DCFD600DC2E73 /* SortableTableView.swift */,
 				4BD902C51F5E020D00DC2E73 /* SortableTableViewItem.swift */,
 				4BD902BB1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift */,
 				4BD902C01F5DD9D900DC2E73 /* SwiftSortableTableviewDataSourceProtocol.swift */,
@@ -122,10 +122,10 @@
 			isa = PBXGroup;
 			children = (
 				4B34F1841F5EEC6000A0199E /* Sources */,
-				4BD902561F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOS */,
-				4BD902611F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOSTests */,
-				4BD902721F5DCB9500DC2E73 /* SwiftSortableTableviewsOSX */,
-				4BD9027D1F5DCB9600DC2E73 /* SwiftSortableTableviewsOSXTests */,
+				4BD902561F5DCB7B00DC2E73 /* SwiftSortableTableViewsIOS */,
+				4BD902611F5DCB7B00DC2E73 /* SwiftSortableTableViewsIOSTests */,
+				4BD902721F5DCB9500DC2E73 /* SwiftSortableTableViewsOSX */,
+				4BD9027D1F5DCB9600DC2E73 /* SwiftSortableTableViewsOSXTests */,
 				4BD902371F5DCAE700DC2E73 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -133,47 +133,51 @@
 		4BD902371F5DCAE700DC2E73 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				4BD902551F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOS.framework */,
-				4BD9025D1F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOSTests.xctest */,
-				4BD902711F5DCB9500DC2E73 /* SwiftSortableTableviewsOSX.framework */,
-				4BD902791F5DCB9600DC2E73 /* SwiftSortableTableviewsOSXTests.xctest */,
+				4BD902551F5DCB7B00DC2E73 /* SwiftSortableTableViewsIOS.framework */,
+				4BD9025D1F5DCB7B00DC2E73 /* SwiftSortableTableViewsIOSTests.xctest */,
+				4BD902711F5DCB9500DC2E73 /* SwiftSortableTableViewsOSX.framework */,
+				4BD902791F5DCB9600DC2E73 /* SwiftSortableTableViewsOSXTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		4BD902561F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOS */ = {
+		4BD902561F5DCB7B00DC2E73 /* SwiftSortableTableViewsIOS */ = {
 			isa = PBXGroup;
 			children = (
 				4BD902571F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOS.h */,
 				4BD902581F5DCB7B00DC2E73 /* Info.plist */,
 			);
+			name = SwiftSortableTableViewsIOS;
 			path = SwiftSortableTableviewsIOS;
 			sourceTree = "<group>";
 		};
-		4BD902611F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOSTests */ = {
+		4BD902611F5DCB7B00DC2E73 /* SwiftSortableTableViewsIOSTests */ = {
 			isa = PBXGroup;
 			children = (
 				4BD902621F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOSTests.swift */,
 				4BD902641F5DCB7B00DC2E73 /* Info.plist */,
 			);
+			name = SwiftSortableTableViewsIOSTests;
 			path = SwiftSortableTableviewsIOSTests;
 			sourceTree = "<group>";
 		};
-		4BD902721F5DCB9500DC2E73 /* SwiftSortableTableviewsOSX */ = {
+		4BD902721F5DCB9500DC2E73 /* SwiftSortableTableViewsOSX */ = {
 			isa = PBXGroup;
 			children = (
 				4BD902731F5DCB9500DC2E73 /* SwiftSortableTableviewsOSX.h */,
 				4BD902741F5DCB9500DC2E73 /* Info.plist */,
 			);
+			name = SwiftSortableTableViewsOSX;
 			path = SwiftSortableTableviewsOSX;
 			sourceTree = "<group>";
 		};
-		4BD9027D1F5DCB9600DC2E73 /* SwiftSortableTableviewsOSXTests */ = {
+		4BD9027D1F5DCB9600DC2E73 /* SwiftSortableTableViewsOSXTests */ = {
 			isa = PBXGroup;
 			children = (
 				4BD9027E1F5DCB9600DC2E73 /* SwiftSortableTableviewsOSXTests.swift */,
 				4BD902801F5DCB9600DC2E73 /* Info.plist */,
 			);
+			name = SwiftSortableTableViewsOSXTests;
 			path = SwiftSortableTableviewsOSXTests;
 			sourceTree = "<group>";
 		};
@@ -199,9 +203,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		4BD902541F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOS */ = {
+		4BD902541F5DCB7B00DC2E73 /* SwiftSortableTableViewsIOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4BD902661F5DCB7B00DC2E73 /* Build configuration list for PBXNativeTarget "SwiftSortableTableviewsIOS" */;
+			buildConfigurationList = 4BD902661F5DCB7B00DC2E73 /* Build configuration list for PBXNativeTarget "SwiftSortableTableViewsIOS" */;
 			buildPhases = (
 				4BD902501F5DCB7B00DC2E73 /* Sources */,
 				4BD902511F5DCB7B00DC2E73 /* Frameworks */,
@@ -212,14 +216,14 @@
 			);
 			dependencies = (
 			);
-			name = SwiftSortableTableviewsIOS;
+			name = SwiftSortableTableViewsIOS;
 			productName = SwiftSortableTableviewsIOS;
-			productReference = 4BD902551F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOS.framework */;
+			productReference = 4BD902551F5DCB7B00DC2E73 /* SwiftSortableTableViewsIOS.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		4BD9025C1F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOSTests */ = {
+		4BD9025C1F5DCB7B00DC2E73 /* SwiftSortableTableViewsIOSTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4BD902691F5DCB7B00DC2E73 /* Build configuration list for PBXNativeTarget "SwiftSortableTableviewsIOSTests" */;
+			buildConfigurationList = 4BD902691F5DCB7B00DC2E73 /* Build configuration list for PBXNativeTarget "SwiftSortableTableViewsIOSTests" */;
 			buildPhases = (
 				4BD902591F5DCB7B00DC2E73 /* Sources */,
 				4BD9025A1F5DCB7B00DC2E73 /* Frameworks */,
@@ -230,14 +234,14 @@
 			dependencies = (
 				4BD902601F5DCB7B00DC2E73 /* PBXTargetDependency */,
 			);
-			name = SwiftSortableTableviewsIOSTests;
+			name = SwiftSortableTableViewsIOSTests;
 			productName = SwiftSortableTableviewsIOSTests;
-			productReference = 4BD9025D1F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOSTests.xctest */;
+			productReference = 4BD9025D1F5DCB7B00DC2E73 /* SwiftSortableTableViewsIOSTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		4BD902701F5DCB9500DC2E73 /* SwiftSortableTableviewsOSX */ = {
+		4BD902701F5DCB9500DC2E73 /* SwiftSortableTableViewsOSX */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4BD902821F5DCB9600DC2E73 /* Build configuration list for PBXNativeTarget "SwiftSortableTableviewsOSX" */;
+			buildConfigurationList = 4BD902821F5DCB9600DC2E73 /* Build configuration list for PBXNativeTarget "SwiftSortableTableViewsOSX" */;
 			buildPhases = (
 				4BD9026C1F5DCB9500DC2E73 /* Sources */,
 				4BD9026D1F5DCB9500DC2E73 /* Frameworks */,
@@ -248,14 +252,14 @@
 			);
 			dependencies = (
 			);
-			name = SwiftSortableTableviewsOSX;
+			name = SwiftSortableTableViewsOSX;
 			productName = SwiftSortableTableviewsOSX;
-			productReference = 4BD902711F5DCB9500DC2E73 /* SwiftSortableTableviewsOSX.framework */;
+			productReference = 4BD902711F5DCB9500DC2E73 /* SwiftSortableTableViewsOSX.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		4BD902781F5DCB9600DC2E73 /* SwiftSortableTableviewsOSXTests */ = {
+		4BD902781F5DCB9600DC2E73 /* SwiftSortableTableViewsOSXTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 4BD902851F5DCB9600DC2E73 /* Build configuration list for PBXNativeTarget "SwiftSortableTableviewsOSXTests" */;
+			buildConfigurationList = 4BD902851F5DCB9600DC2E73 /* Build configuration list for PBXNativeTarget "SwiftSortableTableViewsOSXTests" */;
 			buildPhases = (
 				4BD902751F5DCB9600DC2E73 /* Sources */,
 				4BD902761F5DCB9600DC2E73 /* Frameworks */,
@@ -266,9 +270,9 @@
 			dependencies = (
 				4BD9027C1F5DCB9600DC2E73 /* PBXTargetDependency */,
 			);
-			name = SwiftSortableTableviewsOSXTests;
+			name = SwiftSortableTableViewsOSXTests;
 			productName = SwiftSortableTableviewsOSXTests;
-			productReference = 4BD902791F5DCB9600DC2E73 /* SwiftSortableTableviewsOSXTests.xctest */;
+			productReference = 4BD902791F5DCB9600DC2E73 /* SwiftSortableTableViewsOSXTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
@@ -305,7 +309,7 @@
 					};
 				};
 			};
-			buildConfigurationList = 4BD902301F5DCAE700DC2E73 /* Build configuration list for PBXProject "SwiftSortableTableviews" */;
+			buildConfigurationList = 4BD902301F5DCAE700DC2E73 /* Build configuration list for PBXProject "SwiftSortableTableViews" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -317,10 +321,10 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				4BD902541F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOS */,
-				4BD9025C1F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOSTests */,
-				4BD902701F5DCB9500DC2E73 /* SwiftSortableTableviewsOSX */,
-				4BD902781F5DCB9600DC2E73 /* SwiftSortableTableviewsOSXTests */,
+				4BD902541F5DCB7B00DC2E73 /* SwiftSortableTableViewsIOS */,
+				4BD9025C1F5DCB7B00DC2E73 /* SwiftSortableTableViewsIOSTests */,
+				4BD902701F5DCB9500DC2E73 /* SwiftSortableTableViewsOSX */,
+				4BD902781F5DCB9600DC2E73 /* SwiftSortableTableViewsOSXTests */,
 			);
 		};
 /* End PBXProject section */
@@ -365,7 +369,7 @@
 				4BD902C61F5E020D00DC2E73 /* SortableTableViewItem.swift in Sources */,
 				4BD902BC1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift in Sources */,
 				4BD902C11F5DD9D900DC2E73 /* SwiftSortableTableviewDataSourceProtocol.swift in Sources */,
-				4BD902B51F5DCFD600DC2E73 /* SortableTableview.swift in Sources */,
+				4BD902B51F5DCFD600DC2E73 /* SortableTableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -378,7 +382,7 @@
 				4BD902631F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOSTests.swift in Sources */,
 				4BD902C21F5DD9D900DC2E73 /* SwiftSortableTableviewDataSourceProtocol.swift in Sources */,
 				4B34F1871F5EF39000A0199E /* SortableTableViewHandler.swift in Sources */,
-				4BD902B61F5DCFD600DC2E73 /* SortableTableview.swift in Sources */,
+				4BD902B61F5DCFD600DC2E73 /* SortableTableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -390,7 +394,7 @@
 				4BD902C81F5E020D00DC2E73 /* SortableTableViewItem.swift in Sources */,
 				4BD902BE1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift in Sources */,
 				4BD902C31F5DD9D900DC2E73 /* SwiftSortableTableviewDataSourceProtocol.swift in Sources */,
-				4BD902B71F5DCFD600DC2E73 /* SortableTableview.swift in Sources */,
+				4BD902B71F5DCFD600DC2E73 /* SortableTableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -403,7 +407,7 @@
 				4BD9027F1F5DCB9600DC2E73 /* SwiftSortableTableviewsOSXTests.swift in Sources */,
 				4BD902C41F5DD9D900DC2E73 /* SwiftSortableTableviewDataSourceProtocol.swift in Sources */,
 				4B34F1891F5EF39000A0199E /* SortableTableViewHandler.swift in Sources */,
-				4BD902B81F5DCFD600DC2E73 /* SortableTableview.swift in Sources */,
+				4BD902B81F5DCFD600DC2E73 /* SortableTableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -412,12 +416,12 @@
 /* Begin PBXTargetDependency section */
 		4BD902601F5DCB7B00DC2E73 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 4BD902541F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOS */;
+			target = 4BD902541F5DCB7B00DC2E73 /* SwiftSortableTableViewsIOS */;
 			targetProxy = 4BD9025F1F5DCB7B00DC2E73 /* PBXContainerItemProxy */;
 		};
 		4BD9027C1F5DCB9600DC2E73 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = 4BD902701F5DCB9500DC2E73 /* SwiftSortableTableviewsOSX */;
+			target = 4BD902701F5DCB9500DC2E73 /* SwiftSortableTableViewsOSX */;
 			targetProxy = 4BD9027B1F5DCB9600DC2E73 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -677,7 +681,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		4BD902301F5DCAE700DC2E73 /* Build configuration list for PBXProject "SwiftSortableTableviews" */ = {
+		4BD902301F5DCAE700DC2E73 /* Build configuration list for PBXProject "SwiftSortableTableViews" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4BD902481F5DCAE700DC2E73 /* Debug */,
@@ -686,7 +690,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4BD902661F5DCB7B00DC2E73 /* Build configuration list for PBXNativeTarget "SwiftSortableTableviewsIOS" */ = {
+		4BD902661F5DCB7B00DC2E73 /* Build configuration list for PBXNativeTarget "SwiftSortableTableViewsIOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4BD902671F5DCB7B00DC2E73 /* Debug */,
@@ -695,7 +699,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4BD902691F5DCB7B00DC2E73 /* Build configuration list for PBXNativeTarget "SwiftSortableTableviewsIOSTests" */ = {
+		4BD902691F5DCB7B00DC2E73 /* Build configuration list for PBXNativeTarget "SwiftSortableTableViewsIOSTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4BD9026A1F5DCB7B00DC2E73 /* Debug */,
@@ -704,7 +708,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4BD902821F5DCB9600DC2E73 /* Build configuration list for PBXNativeTarget "SwiftSortableTableviewsOSX" */ = {
+		4BD902821F5DCB9600DC2E73 /* Build configuration list for PBXNativeTarget "SwiftSortableTableViewsOSX" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4BD902831F5DCB9600DC2E73 /* Debug */,
@@ -713,7 +717,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		4BD902851F5DCB9600DC2E73 /* Build configuration list for PBXNativeTarget "SwiftSortableTableviewsOSXTests" */ = {
+		4BD902851F5DCB9600DC2E73 /* Build configuration list for PBXNativeTarget "SwiftSortableTableViewsOSXTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				4BD902861F5DCB9600DC2E73 /* Debug */,
