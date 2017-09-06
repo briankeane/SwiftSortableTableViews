@@ -67,9 +67,22 @@ public class SortableTableViewHandler:NSObject
             }
             
         case .changed:
-            if let _ = self.itemInMotion
+            if let itemInMotion = self.itemInMotion
             {
                 self.moveCellSnapshot(pressedLocationInParentView, disappear: false)
+                if (self.hoveringHasChanged(longPress: longPress))
+                {
+                    print("hoveringHasChanged")
+                        self.itemInMotion?.hoveredOverIndexPath = tableViewPressed?.indexPathForRow(at: (tableViewPressed!.convert(pressedLocationInParentView, from: self.containingView)))
+                    self.itemInMotion?.hoveredOverTableView = tableViewPressed
+                    
+//                    print("tableViewPressed: ")
+//                    print(tableViewPressed)
+                    NotificationCenter.default.post(name: SortableTableViewEvents.hoveredOverCellChanged, object: nil, userInfo: [
+                        "hoveredOverIndexPath": self.itemInMotion?.hoveredOverIndexPath as Any,
+                        "hoveredOverTableView": tableViewPressed as Any
+                                                    ])
+                }
             }
             
 //        case .ended:
@@ -81,6 +94,15 @@ public class SortableTableViewHandler:NSObject
         }
     }
     
+    func hoveringHasChanged(longPress:UILongPressGestureRecognizer) -> Bool
+    {
+        let pressedLocationInParentView = longPress.location(in: self.containingView)
+        let tableViewPressed = self.sortableTableViewAtPoint(pressedLocationInParentView)
+        let indexPathPressed = tableViewPressed?.indexPathForRow(at: pressedLocationInParentView)
+        
+        return ((self.itemInMotion?.hoveredOverTableView != tableViewPressed) ||
+                (self.itemInMotion?.hoveredOverIndexPath != indexPathPressed))
+    }
     //------------------------------------------------------------------------------
     
     func handleLongPressBegan(longPress:UILongPressGestureRecognizer, sortableTableViewPressed:SortableTableView)

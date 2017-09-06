@@ -56,6 +56,16 @@ open class SortableTableView:UITableView, UITableViewDataSource
                 }
             }
         )
+        self.observers.append(
+            NotificationCenter.default.addObserver(forName: SortableTableViewEvents.hoveredOverCellChanged , object: nil, queue: .main)
+            {
+                (notification) -> Void in
+                if let userInfo = notification.userInfo
+                {
+                    self.handleHoveredOverChanged(userInfo: userInfo)
+                }
+            }
+        )
     }
     
     func removeObservers()
@@ -85,6 +95,72 @@ open class SortableTableView:UITableView, UITableViewDataSource
                 }
             }
         }
+    }
+    
+    func handleHoveredOverChanged(userInfo:[AnyHashable:Any]?)
+    {
+        if let userInfo = userInfo
+        {
+            // IF it has left this tableView
+            if ((userInfo["hoveredOverTableView"] == nil) && (self.placeholderIndexPath != nil))
+            {
+                print("removing placeholder")
+                self.removePlaceholder()
+            }
+            // ELSE IF it has entered this tableView
+            else if (((userInfo["hoveredOverTableView"] as? SortableTableView) == self) && (self.placeholderIndexPath == nil))
+            {
+                print("enteredTableview")
+                if let hoveredOverIndexPath = userInfo["hoveredOverIndexPath"] as? IndexPath
+                {
+                    self.insertPlaceholder(indexPath: hoveredOverIndexPath)
+                }
+            }
+            // ELSE IF it has moved within this tableView
+            else if (((userInfo["hoveredOverTableView"] as? SortableTableView) == self) && (self.placeholderIndexPath != nil))
+            {
+                print("moved within tableView")
+                if let hoveredOverIndexPath = userInfo["hoveredOverIndexPath"] as? IndexPath
+                {
+                    self.movePlaceholder(from: self.placeholderIndexPath!, to: hoveredOverIndexPath)
+                }
+            }
+            // ELSE IF it exited this tableView
+            else if ((userInfo["hoveredOverTableView"] == nil) && (self.placeholderIndexPath != nil))
+            {
+                print("exited tableView")
+                self.removePlaceholder()
+            }
+            
+        }
+    }
+    
+    //------------------------------------------------------------------------------
+    
+    func removePlaceholder()
+    {
+        if let placeholderIndexPath = self.placeholderIndexPath
+        {
+            self.placeholderIndexPath = nil
+            self.deleteRows(at: [placeholderIndexPath], with: UITableViewRowAnimation.automatic)
+        }
+        
+    }
+    
+    //------------------------------------------------------------------------------
+    
+    func insertPlaceholder(indexPath:IndexPath)
+    {
+        self.placeholderIndexPath = indexPath
+        self.insertRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+    }
+    
+    //------------------------------------------------------------------------------
+    
+    func movePlaceholder(from:IndexPath, to:IndexPath)
+    {
+        self.removePlaceholder()
+        self.insertPlaceholder(indexPath: to)
     }
     
     func adjustedNumberOfRows(_ numberOfRows:Int) -> Int

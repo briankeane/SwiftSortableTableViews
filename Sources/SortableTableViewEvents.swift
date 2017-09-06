@@ -11,5 +11,6 @@ import Foundation
 public struct SortableTableViewEvents
 {
     /// userInfo: "originalTableView", "originalIndexPath"
-    public static let pickupAnimated       =   Notification.Name(rawValue: "STVPickupAnimated")
+    public static let pickupAnimated         =   Notification.Name(rawValue: "STVPickupAnimated")
+    public static let hoveredOverCellChanged =   Notification.Name(rawValue: "STVHoveredOverChanged")
 }

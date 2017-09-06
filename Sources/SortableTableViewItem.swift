@@ -16,8 +16,8 @@ public class SortableTableViewItem
     var originalCenter:CGPoint!
     var cellSnapshot:UIView!
     
-    var hoveringIndexPath:IndexPath?
-    var hoveringTableView:SortableTableView?
+    var hoveredOverIndexPath:IndexPath?
+    var hoveredOverTableView:SortableTableView?
     
     
     init(originalTableView:SortableTableView!, originalIndexPath:IndexPath!, originalCenter:CGPoint = CGPoint(x: 0, y: 0), cellSnapshot:UIView!)
