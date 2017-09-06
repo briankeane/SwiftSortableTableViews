@@ -66,6 +66,26 @@ open class SortableTableView:UITableView, UITableViewDataSource
                 }
             }
         )
+        self.observers.append(
+            NotificationCenter.default.addObserver(forName: SortableTableViewEvents.cancelMoveWillAnimate , object: nil, queue: .main)
+            {
+                (notification) -> Void in
+                if let userInfo = notification.userInfo
+                {
+                    self.handleCancelMoveWillAnimate(userInfo: userInfo)
+                }
+            }
+        )
+        self.observers.append(
+            NotificationCenter.default.addObserver(forName: SortableTableViewEvents.cancelMoveDidAnimate , object: nil, queue: .main)
+            {
+                (notification) -> Void in
+                if let userInfo = notification.userInfo
+                {
+                    self.handleCancelMoveDidAnimate(userInfo: userInfo)
+                }
+            }
+        )
     }
     
     func removeObservers()
@@ -79,6 +99,43 @@ open class SortableTableView:UITableView, UITableViewDataSource
     deinit
     {
         self.removeObservers()
+    }
+    
+    func handleCancelMoveWillAnimate(userInfo:[AnyHashable:Any])
+    {
+        if let originalTableView = userInfo["originalTableView"] as? SortableTableView
+        {
+            // IF it's this table, make a hole for the returning item
+            if (originalTableView == self)
+            {
+                if let originalIndexPath = userInfo["originalIndexPath"] as? IndexPath
+                {
+                    self.removePlaceholder()
+                    self.insertPlaceholder(indexPath: originalIndexPath)
+                }
+            }
+            // ELSE just smoothly reset the table to it's original state
+            else
+            {
+                self.removePlaceholder()
+            }
+        }
+    }
+    
+    func handleCancelMoveDidAnimate(userInfo:[AnyHashable:Any])
+    {
+        if let originalTableView = userInfo["originalTableView"] as? SortableTableView
+        {
+            if (originalTableView == self)
+            {
+                if let originalIndexPath = userInfo["originalIndexPath"] as? IndexPath
+                {
+                    self.placeholderIndexPath = nil
+                    self.ignoreIndexPath = nil
+                    self.reloadRows(at: [originalIndexPath], with: UITableViewRowAnimation.automatic)
+                }
+            }
+        }
     }
     
     func handleItemPickedUp(userInfo:[AnyHashable:Any]?)

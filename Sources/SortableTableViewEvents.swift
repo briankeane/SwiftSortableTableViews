@@ -13,4 +13,6 @@ public struct SortableTableViewEvents
     /// userInfo: "originalTableView", "originalIndexPath"
     public static let pickupAnimated         =   Notification.Name(rawValue: "STVPickupAnimated")
     public static let hoveredOverCellChanged =   Notification.Name(rawValue: "STVHoveredOverChanged")
+    public static let cancelMoveWillAnimate  =   Notification.Name(rawValue: "STVCancelMoveWillAnimate")
+    public static let cancelMoveDidAnimate   =   Notification.Name(rawValue: "STVCancelMoveDidAnimate")
 }

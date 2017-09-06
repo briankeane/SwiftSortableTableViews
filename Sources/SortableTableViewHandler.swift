@@ -67,17 +67,14 @@ public class SortableTableViewHandler:NSObject
             }
             
         case .changed:
-            if let itemInMotion = self.itemInMotion
+            if let _ = self.itemInMotion
             {
                 self.moveCellSnapshot(pressedLocationInParentView, disappear: false)
                 if (self.hoveringHasChanged(longPress: longPress))
                 {
-                    print("hoveringHasChanged")
                         self.itemInMotion?.hoveredOverIndexPath = tableViewPressed?.indexPathForRow(at: (tableViewPressed!.convert(pressedLocationInParentView, from: self.containingView)))
                     self.itemInMotion?.hoveredOverTableView = tableViewPressed
-                    
-//                    print("tableViewPressed: ")
-//                    print(tableViewPressed)
+            
                     NotificationCenter.default.post(name: SortableTableViewEvents.hoveredOverCellChanged, object: nil, userInfo: [
                         "hoveredOverIndexPath": self.itemInMotion?.hoveredOverIndexPath as Any,
                         "hoveredOverTableView": tableViewPressed as Any
@@ -85,12 +82,33 @@ public class SortableTableViewHandler:NSObject
                 }
             }
             
-//        case .ended:
-//            self.cancelMove()
-//            //            self.handleDroppedItem(tableViewPressed, longPress:longPress)
-//            print("ended")
+        case .ended:
+            self.cancelMove()
+            print("ended")
         default:
             print("default")
+        }
+    }
+    
+    func cancelMove()
+    {
+        if let itemInMotion = self.itemInMotion
+        {
+            // Notify so that tables can adjust
+            NotificationCenter.default.post(name: SortableTableViewEvents.cancelMoveWillAnimate, object: nil, userInfo: ["originalTableView": itemInMotion.originalTableView,
+                 "originalIndexPath": itemInMotion.originalIndexPath,
+                ])
+            
+            self.moveCellSnapshot(itemInMotion.originalCenter, disappear: true, onCompletion:
+            {
+                (finished) -> Void in
+                if (finished)
+                {
+                    NotificationCenter.default.post(name: SortableTableViewEvents.cancelMoveDidAnimate, object: nil, userInfo: ["originalTableView": itemInMotion.originalTableView,
+                                                                                                                                "originalIndexPath": itemInMotion.originalIndexPath
+                                                                                                                                ])
+                }
+            })
         }
     }
     
@@ -125,7 +143,7 @@ public class SortableTableViewHandler:NSObject
         if let cell = sortableTableViewPressed.cellForRow(at: atIndexPath)
         {
             let cellSnapshot = self.createCellSnapshot(cell)
-            self.itemInMotion = SortableTableViewItem(originalTableView: sortableTableViewPressed, originalIndexPath: atIndexPath, originalCenter: cellSnapshot.center, cellSnapshot: cellSnapshot)
+            self.itemInMotion = SortableTableViewItem(originalTableView: sortableTableViewPressed, originalIndexPath: atIndexPath, originalCenter: self.containingView.convert(cell.center, from: sortableTableViewPressed), cellSnapshot: cellSnapshot)
             cellSnapshot.center = self.containingView.convert(cell.center, from: sortableTableViewPressed)
             cellSnapshot.alpha = 0.0
             self.containingView.addSubview(cellSnapshot)
