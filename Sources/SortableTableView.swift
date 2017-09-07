@@ -87,7 +87,7 @@ open class SortableTableView:UITableView, UITableViewDataSource
             }
         )
         self.observers.append(
-            NotificationCenter.default.addObserver(forName: SortableTableViewEvents.dropItemDidAnimate, object: nil, queue: .main)
+            NotificationCenter.default.addObserver(forName: SortableTableViewEvents.dropItemWillAnimate, object: nil, queue: .main)
             {
                 (notification) -> Void in
                 if let userInfo = notification.userInfo
@@ -119,11 +119,11 @@ open class SortableTableView:UITableView, UITableViewDataSource
     {
         if let newTableView = userInfo["newTableView"] as? SortableTableView
         {
+            self.ignoreIndexPath = nil
+            self.placeholderIndexPath = nil
+            
             if (newTableView == self)
             {
-                self.ignoreIndexPath = nil
-                self.placeholderIndexPath = nil
-                
                 if let newIndexPath = userInfo["newIndexPath"] as? IndexPath
                 {
                     self.reloadRows(at: [newIndexPath], with: .automatic)

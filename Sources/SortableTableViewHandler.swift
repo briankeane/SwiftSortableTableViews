@@ -141,11 +141,30 @@ public class SortableTableViewHandler:NSObject
                                                                                                                                   "newIndexPath": pressedIndexPath!])
                     })
                 }
+                // ELSE dropping from one table to another
                 else
                 {
                     // call delegate functions
                     tableViewPressed?.sortableDataSource?.sortableTableView?(itemInMotion.originalTableView, willReleaseItem: itemInMotion.originalIndexPath, newIndexPath: pressedIndexPath!, receivingTableView: tableViewPressed!)
-                    itemInMotion.originalTableView.sortableDataSource?.sortableTableView?(itemInMotion.originalTableView, willReleaseItem: itemInMotion.originalIndexPath, newIndexPath: pressedIndexPath!, receivingTableView: tableViewPressed!)
+                    itemInMotion.originalTableView.sortableDataSource?.sortableTableView?(itemInMotion.originalTableView, willReceiveItem: itemInMotion.originalIndexPath, newIndexPath: pressedIndexPath!, receivingTableView: tableViewPressed!)
+                    
+                    let newCell = tableViewPressed!.cellForRow(at: pressedIndexPath!)
+                    let newCenter = newCell!.center
+                    let newCenterInContainerView = self.containingView.convert(newCenter, from: tableViewPressed!)
+
+                    // animate drop
+                    NotificationCenter.default.post(name: SortableTableViewEvents.dropItemWillAnimate, object: nil, userInfo: ["originalTableView": itemInMotion.originalTableView,
+                                                                                                                               "originalIndexPath": itemInMotion.originalIndexPath,
+                                                                                                                               "newTableView": tableViewPressed!,
+                                                                                                                               "newIndexPath": pressedIndexPath!])
+                    self.moveCellSnapshot(newCenterInContainerView, disappear: true, onCompletion:
+                    {
+                        (finished) in
+                        NotificationCenter.default.post(name: SortableTableViewEvents.dropItemDidAnimate, object: nil, userInfo: ["originalTableView": itemInMotion.originalTableView,
+                                                                                                                                   "originalIndexPath": itemInMotion.originalIndexPath,
+                                                                                                                                   "newTableView": tableViewPressed!,
+                                                                                                                                   "newIndexPath": pressedIndexPath!])
+                    })
                 }
             }
         }
