@@ -88,6 +88,8 @@ open class SortableTableView:UITableView, UITableViewDataSource
         )
     }
     
+    //------------------------------------------------------------------------------
+    
     func removeObservers()
     {
         for observer in self.observers
@@ -95,6 +97,8 @@ open class SortableTableView:UITableView, UITableViewDataSource
             NotificationCenter.default.removeObserver(observer)
         }
     }
+    
+    //------------------------------------------------------------------------------
     
     deinit
     {
@@ -248,6 +252,27 @@ open class SortableTableView:UITableView, UITableViewDataSource
         }
         return IndexPath(row: adjustedIndexPathRow, section: indexPath.section)
     }
+    
+    func deAdjustedIndexPath(_ indexPath:IndexPath) -> IndexPath
+    {
+        var deAdjustedIndexPathRow = indexPath.row
+        if let ignoreIndexPathRow = self.ignoreIndexPath?.row
+        {
+            if (deAdjustedIndexPathRow >= ignoreIndexPathRow)
+            {
+                deAdjustedIndexPathRow += 1
+            }
+        }
+        
+        if let placeholderIndexPathRow = self.placeholderIndexPath?.row
+        {
+            if (deAdjustedIndexPathRow >= placeholderIndexPathRow)
+            {
+                deAdjustedIndexPathRow -= 1
+            }
+        }
+        return IndexPath(row: adjustedIndexPathRow, section: indexPath.section)
+    }
 
     //------------------------------------------------------------------------------
     
@@ -267,8 +292,20 @@ open class SortableTableView:UITableView, UITableViewDataSource
     
     func canBePickedUp(indexPath:IndexPath) -> Bool
     {
+        // IF the delegate has impleneted canBePickedUp, use that
+        if let sortableDelegate = sortableDelegate
+        {
+            let result = sortableDelegate.sortableTableView?(self, canBePickedUp: indexPath)
+            if let result = result
+            {
+                return result
+            }
+        }
+        // default to true
         return true
     }
+    
+    //------------------------------------------------------------------------------
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if (indexPath == self.placeholderIndexPath)
@@ -287,7 +324,8 @@ open class SortableTableView:UITableView, UITableViewDataSource
         return 0
     }
     
-    public func numberOfSections(in tableView: UITableView) -> Int {
+    public func numberOfSections(in tableView: UITableView) -> Int
+    {
         if let numberOfSections = self.sortableDataSource?.numberOfSections?(in: self)
         {
             return numberOfSections
