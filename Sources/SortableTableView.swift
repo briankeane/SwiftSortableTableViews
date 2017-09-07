@@ -86,6 +86,16 @@ open class SortableTableView:UITableView, UITableViewDataSource
                 }
             }
         )
+        self.observers.append(
+            NotificationCenter.default.addObserver(forName: SortableTableViewEvents.dropItemDidAnimate, object: nil, queue: .main)
+            {
+                (notification) -> Void in
+                if let userInfo = notification.userInfo
+                {
+                    self.handleDropItemDidAnimate(userInfo: userInfo)
+                }
+            }
+        )
     }
     
     //------------------------------------------------------------------------------
@@ -103,6 +113,23 @@ open class SortableTableView:UITableView, UITableViewDataSource
     deinit
     {
         self.removeObservers()
+    }
+    
+    func handleDropItemDidAnimate(userInfo:[AnyHashable:Any])
+    {
+        if let newTableView = userInfo["newTableView"] as? SortableTableView
+        {
+            if (newTableView == self)
+            {
+                self.ignoreIndexPath = nil
+                self.placeholderIndexPath = nil
+                
+                if let newIndexPath = userInfo["newIndexPath"] as? IndexPath
+                {
+                    self.reloadRows(at: [newIndexPath], with: .automatic)
+                }
+            }
+        }
     }
     
     func handleCancelMoveWillAnimate(userInfo:[AnyHashable:Any])
@@ -198,7 +225,6 @@ open class SortableTableView:UITableView, UITableViewDataSource
             self.placeholderIndexPath = nil
             self.deleteRows(at: [placeholderIndexPath], with: UITableViewRowAnimation.automatic)
         }
-        
     }
     
     //------------------------------------------------------------------------------
@@ -217,6 +243,8 @@ open class SortableTableView:UITableView, UITableViewDataSource
         self.insertPlaceholder(indexPath: to)
     }
     
+    //------------------------------------------------------------------------------
+    
     func adjustedNumberOfRows(_ numberOfRows:Int) -> Int
     {
         var adjustedNumberOfRows = numberOfRows
@@ -230,6 +258,8 @@ open class SortableTableView:UITableView, UITableViewDataSource
         }
         return adjustedNumberOfRows
     }
+    
+    //------------------------------------------------------------------------------
     
     func adjustedIndexPath(_ indexPath:IndexPath) -> IndexPath
     {
@@ -253,6 +283,8 @@ open class SortableTableView:UITableView, UITableViewDataSource
         return IndexPath(row: adjustedIndexPathRow, section: indexPath.section)
     }
     
+    //------------------------------------------------------------------------------
+    
     func deAdjustedIndexPath(_ indexPath:IndexPath) -> IndexPath
     {
         var deAdjustedIndexPathRow = indexPath.row
@@ -271,7 +303,7 @@ open class SortableTableView:UITableView, UITableViewDataSource
                 deAdjustedIndexPathRow -= 1
             }
         }
-        return IndexPath(row: adjustedIndexPathRow, section: indexPath.section)
+        return IndexPath(row: deAdjustedIndexPathRow, section: indexPath.section)
     }
 
     //------------------------------------------------------------------------------
@@ -280,6 +312,8 @@ open class SortableTableView:UITableView, UITableViewDataSource
     {
         print("setPlaceholder stub")
     }
+    
+    //------------------------------------------------------------------------------
     
     func placeholderCell() -> UITableViewCell
     {
@@ -293,9 +327,9 @@ open class SortableTableView:UITableView, UITableViewDataSource
     func canBePickedUp(indexPath:IndexPath) -> Bool
     {
         // IF the delegate has impleneted canBePickedUp, use that
-        if let sortableDelegate = sortableDelegate
+        if let sortableDataSource = sortableDataSource
         {
-            let result = sortableDelegate.sortableTableView?(self, canBePickedUp: indexPath)
+            let result = sortableDataSource.sortableTableView?(self, canBePickedUp: indexPath)
             if let result = result
             {
                 return result
@@ -316,6 +350,8 @@ open class SortableTableView:UITableView, UITableViewDataSource
         return (self.sortableDataSource?.tableView(self, cellForRowAt: self.adjustedIndexPath(indexPath)))!
     }
     
+    //------------------------------------------------------------------------------
+    
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if let numberOfRows = self.sortableDataSource?.tableView(self, numberOfRowsInSection: section)
         {
@@ -323,6 +359,8 @@ open class SortableTableView:UITableView, UITableViewDataSource
         }
         return 0
     }
+    
+    //------------------------------------------------------------------------------
     
     public func numberOfSections(in tableView: UITableView) -> Int
     {

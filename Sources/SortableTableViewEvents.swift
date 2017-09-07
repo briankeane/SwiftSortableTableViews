@@ -15,4 +15,6 @@ public struct SortableTableViewEvents
     public static let hoveredOverCellChanged =   Notification.Name(rawValue: "STVHoveredOverChanged")
     public static let cancelMoveWillAnimate  =   Notification.Name(rawValue: "STVCancelMoveWillAnimate")
     public static let cancelMoveDidAnimate   =   Notification.Name(rawValue: "STVCancelMoveDidAnimate")
+    public static let dropItemDidAnimate     =   Notification.Name(rawValue: "STVDropItemDidAnimate")
+    public static let dropItemWillAnimate    =   Notification.Name(rawValue: "STVDropItemWillAnimate")
 }

@@ -9,7 +9,17 @@
 import Foundation
 import UIKit
 
-public protocol SortableTableViewDataSource:UITableViewDataSource
+@objc public protocol SortableTableViewDataSource:UITableViewDataSource
 {
+    @objc optional func sortableTableView(_ releasingTableView: SortableTableView, shouldReceiveItem originalIndexPath: IndexPath, desiredIndexPath:IndexPath, receivingTableView:UITableView) -> Bool
     
+    @objc optional func sortableTableView(_ releasingTableView: SortableTableView, shouldReleaseItem originalIndexPath: IndexPath, desiredIndexPath:IndexPath, receivingTableView:SortableTableView) -> Bool
+    
+    @objc optional func sortableTableView(_ tableView:SortableTableView, canBePickedUp indexPath:IndexPath) -> Bool
+    
+    @objc optional func sortableTableView(_ releasingTableView: SortableTableView, willReceiveItem originalIndexPath: IndexPath, newIndexPath:IndexPath, receivingTableView:UITableView)
+    
+    @objc optional func sortableTableView(_ releasingTableView: SortableTableView, willReleaseItem originalIndexPath: IndexPath, newIndexPath:IndexPath, receivingTableView:SortableTableView)
+
+    @objc func sortableTableView(_ tableView:SortableTableView, willDropItem originalIndexPath:IndexPath, newIndexPath:IndexPath)
 }
