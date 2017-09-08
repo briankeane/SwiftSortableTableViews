@@ -24,6 +24,8 @@ public class SortableTableViewItem
     {
         self.originalTableView = originalTableView
         self.originalIndexPath = originalIndexPath
+        self.hoveredOverIndexPath = originalIndexPath
+        self.hoveredOverTableView = originalTableView
         self.originalCenter = originalCenter
         self.cellSnapshot = cellSnapshot
     }

@@ -17,10 +17,29 @@ open class SortableTableView:UITableView, UITableViewDataSource
     var ignoreIndexPath:IndexPath?
     var placeholderIndexPath:IndexPath?
     
+    
+    // StoredDataSourceFunctions
+    
+    
+    var canEditRowAtIndexPath:((_ tableView: UITableView, _ indexPath: IndexPath) -> Bool)?
+    
+    
     var observers:Array<NSObjectProtocol> = Array()
     
     private var _sortableDataSource:SortableTableViewDataSource?
+    private var _sortableDelegate:SortableTableViewDelegate?
     open var sortableDelegate:SortableTableViewDelegate?
+    {
+        get
+        {
+            return self._sortableDelegate
+        }
+        set
+        {
+            self._sortableDelegate = newValue
+            self.delegate = self._sortableDelegate
+        }
+    }
     open var sortableDataSource:SortableTableViewDataSource?
     {
         get
@@ -47,26 +66,6 @@ open class SortableTableView:UITableView, UITableViewDataSource
     func setupListeners()
     {
         self.observers.append(
-            NotificationCenter.default.addObserver(forName: SortableTableViewEvents.pickupAnimated , object: nil, queue: .main)
-            {
-                (notification) -> Void in
-                if let userInfo = notification.userInfo
-                {
-                    self.handleItemPickedUp(userInfo: userInfo)
-                }
-            }
-        )
-        self.observers.append(
-            NotificationCenter.default.addObserver(forName: SortableTableViewEvents.hoveredOverCellChanged , object: nil, queue: .main)
-            {
-                (notification) -> Void in
-                if let userInfo = notification.userInfo
-                {
-                    self.handleHoveredOverChanged(userInfo: userInfo)
-                }
-            }
-        )
-        self.observers.append(
             NotificationCenter.default.addObserver(forName: SortableTableViewEvents.cancelMoveWillAnimate , object: nil, queue: .main)
             {
                 (notification) -> Void in
@@ -83,16 +82,6 @@ open class SortableTableView:UITableView, UITableViewDataSource
                 if let userInfo = notification.userInfo
                 {
                     self.handleCancelMoveDidAnimate(userInfo: userInfo)
-                }
-            }
-        )
-        self.observers.append(
-            NotificationCenter.default.addObserver(forName: SortableTableViewEvents.dropItemWillAnimate, object: nil, queue: .main)
-            {
-                (notification) -> Void in
-                if let userInfo = notification.userInfo
-                {
-                    self.handleDropItemDidAnimate(userInfo: userInfo)
                 }
             }
         )
@@ -115,22 +104,7 @@ open class SortableTableView:UITableView, UITableViewDataSource
         self.removeObservers()
     }
     
-    func handleDropItemDidAnimate(userInfo:[AnyHashable:Any])
-    {
-        if let newTableView = userInfo["newTableView"] as? SortableTableView
-        {
-            self.ignoreIndexPath = nil
-            self.placeholderIndexPath = nil
-            
-            if (newTableView == self)
-            {
-                if let newIndexPath = userInfo["newIndexPath"] as? IndexPath
-                {
-                    self.reloadRows(at: [newIndexPath], with: .automatic)
-                }
-            }
-        }
-    }
+    
     
     func handleCancelMoveWillAnimate(userInfo:[AnyHashable:Any])
     {
@@ -169,51 +143,58 @@ open class SortableTableView:UITableView, UITableViewDataSource
         }
     }
     
-    func handleItemPickedUp(userInfo:[AnyHashable:Any]?)
+    func onItemPickedUp(fromIndexPath:IndexPath)
     {
-        if let originalTableView = userInfo?["originalTableView"] as? SortableTableView
-        {
-            if (originalTableView == self)
-            {
-                if let originalIndexPath = userInfo?["originalIndexPath"] as? IndexPath
-                {
-                    self.ignoreIndexPath = originalIndexPath
-                    self.placeholderIndexPath = originalIndexPath
-                    self.reloadData()
-                }
-            }
-        }
+        print("onItemPickedUp")
+        self.ignoreIndexPath = fromIndexPath
+        self.placeholderIndexPath = fromIndexPath
+        self.reloadRows(at: [fromIndexPath], with: .automatic)
+    
     }
     
-    func handleHoveredOverChanged(userInfo:[AnyHashable:Any]?)
+    func onItemExited()
     {
-        if let userInfo = userInfo
-        {
-            // IF it has left this tableView
-            if (((userInfo["hoveredOverTableView"] as? SortableTableView) != self) && (self.placeholderIndexPath != nil))
-            {
-                print("removing placeholder")
-                self.removePlaceholder()
-            }
-            // ELSE IF it has entered this tableView
-            else if (((userInfo["hoveredOverTableView"] as? SortableTableView) == self) && (self.placeholderIndexPath == nil))
-            {
-                print("enteredTableview")
-                if let hoveredOverIndexPath = userInfo["hoveredOverIndexPath"] as? IndexPath
-                {
-                    self.insertPlaceholder(indexPath: hoveredOverIndexPath)
-                }
-            }
-            // ELSE IF it has moved within this tableView
-            else if (((userInfo["hoveredOverTableView"] as? SortableTableView) == self) && (self.placeholderIndexPath != nil))
-            {
-                print("moved within tableView")
-                if let hoveredOverIndexPath = userInfo["hoveredOverIndexPath"] as? IndexPath
-                {
-                    self.movePlaceholder(from: self.placeholderIndexPath!, to: hoveredOverIndexPath)
-                }
-            }
-        }
+        print("onItemExited")
+        print("before exit: \(self.tableView(self, numberOfRowsInSection: 0))")
+        self.beginUpdates()
+        self.removePlaceholder()
+        print("after exit: \(self.tableView(self, numberOfRowsInSection: 0))")
+        self.endUpdates()
+    }
+    
+    func onItemEntered(atIndexPath:IndexPath)
+    {
+        print("onItemEntered")
+        self.beginUpdates()
+        self.insertPlaceholder(indexPath: atIndexPath)
+        self.endUpdates()
+    }
+    
+    func onItemMovedWithin(newIndexPath: IndexPath)
+    {
+        
+        print("onItemMovedWithin")
+        self.beginUpdates()
+        self.removePlaceholder()
+        self.insertPlaceholder(indexPath: newIndexPath)
+        self.endUpdates()
+    }
+    
+    //------------------------------------------------------------------------------
+    
+    func onDropItemIntoTableView(atIndexPath:IndexPath)
+    {
+        print("onDropItemIntoTableView at indexPath: \(atIndexPath.row)")
+        self.ignoreIndexPath = nil
+        self.placeholderIndexPath = nil
+        
+        self.reloadRows(at: [atIndexPath], with: .automatic)
+    }
+    
+    func onReleaseItemFromTableView()
+    {
+        print("onReleaseItemFromTableView")
+        self.ignoreIndexPath = nil
     }
     
     //------------------------------------------------------------------------------
@@ -222,6 +203,7 @@ open class SortableTableView:UITableView, UITableViewDataSource
     {
         if let placeholderIndexPath = self.placeholderIndexPath
         {
+            print("remove placeholder")
             self.placeholderIndexPath = nil
             self.deleteRows(at: [placeholderIndexPath], with: UITableViewRowAnimation.automatic)
         }
@@ -231,6 +213,11 @@ open class SortableTableView:UITableView, UITableViewDataSource
     
     func insertPlaceholder(indexPath:IndexPath)
     {
+        print("insertPlaceholder at \(indexPath.row)")
+        if (indexPath.row == 0)
+        {
+            print("here")
+        }
         self.placeholderIndexPath = indexPath
         self.insertRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
     }
@@ -339,6 +326,7 @@ open class SortableTableView:UITableView, UITableViewDataSource
         return true
     }
     
+    
     //------------------------------------------------------------------------------
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -346,15 +334,17 @@ open class SortableTableView:UITableView, UITableViewDataSource
         {
             return self.placeholderCell()
         }
-        
-        return (self.sortableDataSource?.tableView(self, cellForRowAt: self.adjustedIndexPath(indexPath)))!
+        print("cellForRowAt: \(self.deAdjustedIndexPath(indexPath).row)")
+        return (self.sortableDataSource?.tableView(self, cellForRowAt: self.deAdjustedIndexPath(indexPath)))!
     }
     
     //------------------------------------------------------------------------------
     
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
         if let numberOfRows = self.sortableDataSource?.tableView(self, numberOfRowsInSection: section)
         {
+            print("gettingNumberOfRows adjusted: \(self.adjustedNumberOfRows(numberOfRows)), regular: \(numberOfRows)")
             return self.adjustedNumberOfRows(numberOfRows)
         }
         return 0

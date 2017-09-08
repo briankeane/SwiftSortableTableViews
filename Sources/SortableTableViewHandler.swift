@@ -70,15 +70,40 @@ public class SortableTableViewHandler:NSObject
             if let _ = self.itemInMotion
             {
                 self.moveCellSnapshot(pressedLocationInParentView, disappear: false)
+                
+                // IF hovering has changed at all
                 if (self.hoveringHasChanged(longPress: longPress))
                 {
-                        self.itemInMotion?.hoveredOverIndexPath = tableViewPressed?.indexPathForRow(at: (tableViewPressed!.convert(pressedLocationInParentView, from: self.containingView)))
+                    let oldHoveredOverTableView = self.itemInMotion?.hoveredOverTableView
+                    let oldHoveredOverIndexPath = self.itemInMotion?.hoveredOverIndexPath
+                    
+                    self.itemInMotion?.hoveredOverIndexPath = tableViewPressed?.indexPathForRow(at: (tableViewPressed!.convert(pressedLocationInParentView, from: self.containingView)))
                     self.itemInMotion?.hoveredOverTableView = tableViewPressed
-            
-                    NotificationCenter.default.post(name: SortableTableViewEvents.hoveredOverCellChanged, object: nil, userInfo: [
-                        "hoveredOverIndexPath": self.itemInMotion?.hoveredOverIndexPath as Any,
-                        "hoveredOverTableView": tableViewPressed as Any
-                                                    ])
+                    
+                    // IF a tableView was exited:
+                    if let exitedTableView = self.itemExitedTableView(oldTableView: oldHoveredOverTableView, newTableView: tableViewPressed)
+                    {
+                        exitedTableView.onItemExited()
+                    }
+                    
+                    // IF a tableView was entered:
+                    if let enteredTableView = self.itemEnteredTableView(oldTableView: oldHoveredOverTableView, newTableView: tableViewPressed)
+                    {
+                        if let hoveredOverIndexPath = self.itemInMotion?.hoveredOverIndexPath
+                        {
+                            enteredTableView.onItemEntered(atIndexPath: hoveredOverIndexPath)
+                        }
+                        
+                    }
+                    
+                    // IF the hoveredOver cell changed within the tableView
+                    if let activeTableView = self.indexPathChangedWithinTableView(oldTableView: oldHoveredOverTableView, newTableView: tableViewPressed)
+                    {
+                        if let hoveredOverIndexPath = self.itemInMotion?.hoveredOverIndexPath
+                        {
+                            activeTableView.onItemMovedWithin(newIndexPath: hoveredOverIndexPath)
+                        }
+                    }
                 }
             }
         case .ended:
@@ -88,6 +113,35 @@ public class SortableTableViewHandler:NSObject
             print("default")
         }
     }
+    
+    func itemExitedTableView(oldTableView:SortableTableView?, newTableView:SortableTableView?) -> SortableTableView?
+    {
+        if (oldTableView != newTableView)
+        {
+            return oldTableView
+        }
+        return nil
+    }
+    
+    func itemEnteredTableView(oldTableView:SortableTableView?, newTableView:SortableTableView?) -> SortableTableView?
+    {
+        if (oldTableView != newTableView)
+        {
+            return newTableView
+        }
+        return nil
+    }
+    
+    func indexPathChangedWithinTableView(oldTableView:SortableTableView?, newTableView:SortableTableView?) -> SortableTableView?
+    {
+        if ((oldTableView == newTableView))
+        {
+            return oldTableView
+        }
+        return nil
+    }
+    
+    
     
     //------------------------------------------------------------------------------
     
@@ -128,6 +182,8 @@ public class SortableTableViewHandler:NSObject
                     let newCell = tableViewPressed!.cellForRow(at: pressedIndexPath!)
                     let newCenter = newCell!.center
                     let newCenterInContainerView = self.containingView.convert(newCenter, from: tableViewPressed!)
+                    
+                    tableViewPressed!.onDropItemIntoTableView(atIndexPath: pressedIndexPath!)
                     NotificationCenter.default.post(name: SortableTableViewEvents.dropItemWillAnimate, object: nil, userInfo: ["originalTableView": itemInMotion.originalTableView,
                                                                                                                               "originalIndexPath": itemInMotion.originalIndexPath,
                                                                                                                               "newTableView": tableViewPressed!,
@@ -148,15 +204,14 @@ public class SortableTableViewHandler:NSObject
                     tableViewPressed?.sortableDataSource?.sortableTableView?(itemInMotion.originalTableView, willReleaseItem: itemInMotion.originalIndexPath, newIndexPath: pressedIndexPath!, receivingTableView: tableViewPressed!)
                     itemInMotion.originalTableView.sortableDataSource?.sortableTableView?(itemInMotion.originalTableView, willReceiveItem: itemInMotion.originalIndexPath, newIndexPath: pressedIndexPath!, receivingTableView: tableViewPressed!)
                     
+                    
                     let newCell = tableViewPressed!.cellForRow(at: pressedIndexPath!)
                     let newCenter = newCell!.center
                     let newCenterInContainerView = self.containingView.convert(newCenter, from: tableViewPressed!)
-
-                    // animate drop
-                    NotificationCenter.default.post(name: SortableTableViewEvents.dropItemWillAnimate, object: nil, userInfo: ["originalTableView": itemInMotion.originalTableView,
-                                                                                                                               "originalIndexPath": itemInMotion.originalIndexPath,
-                                                                                                                               "newTableView": tableViewPressed!,
-                                                                                                                               "newIndexPath": pressedIndexPath!])
+                    
+                    tableViewPressed!.onDropItemIntoTableView(atIndexPath: pressedIndexPath!)
+                    itemInMotion.originalTableView.onReleaseItemFromTableView()
+                    
                     self.moveCellSnapshot(newCenterInContainerView, disappear: true, onCompletion:
                     {
                         (finished) in
@@ -221,10 +276,15 @@ public class SortableTableViewHandler:NSObject
     {
         let pressedLocationInParentView = longPress.location(in: self.containingView)
         let tableViewPressed = self.sortableTableViewAtPoint(pressedLocationInParentView)
-        let indexPathPressed = tableViewPressed?.indexPathForRow(at: pressedLocationInParentView)
+        var pressedIndexPath:IndexPath?
+        if let tableViewPressed = tableViewPressed
+        {
+            let pointInTableView = longPress.location(in: tableViewPressed)
+            pressedIndexPath = tableViewPressed.indexPathForRow(at: pointInTableView)
+        }
         
         return ((self.itemInMotion?.hoveredOverTableView != tableViewPressed) ||
-                (self.itemInMotion?.hoveredOverIndexPath != indexPathPressed))
+                (self.itemInMotion?.hoveredOverIndexPath != pressedIndexPath))
     }
     
     //------------------------------------------------------------------------------
@@ -254,6 +314,8 @@ public class SortableTableViewHandler:NSObject
             cellSnapshot.alpha = 0.0
             self.containingView.addSubview(cellSnapshot)
             
+            sortableTableViewPressed.onItemPickedUp(fromIndexPath: atIndexPath)
+
             UIView.animate(withDuration: 0.25, animations:
             {
                 cellSnapshot.center = CGPoint(x: sortableTableViewPressed.center.x, y: longPress.location(in: self.containingView).y)
