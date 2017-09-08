@@ -75,7 +75,6 @@ public class SortableTableViewHandler:NSObject
                 if (self.hoveringHasChanged(longPress: longPress))
                 {
                     let oldHoveredOverTableView = self.itemInMotion?.hoveredOverTableView
-                    let oldHoveredOverIndexPath = self.itemInMotion?.hoveredOverIndexPath
                     
                     self.itemInMotion?.hoveredOverIndexPath = tableViewPressed?.indexPathForRow(at: (tableViewPressed!.convert(pressedLocationInParentView, from: self.containingView)))
                     self.itemInMotion?.hoveredOverTableView = tableViewPressed

@@ -10,21 +10,6 @@ import Foundation
 import UIKit
 
 @objc public protocol SortableTableViewDelegate:UITableViewDelegate {
+    @objc optional func sortableTableView(_ tableView:SortableTableView, draggedItemDidEnterTableViewAtIndexPath indexPath:IndexPath)
+    @objc optional func sortableTableView(_ tableView:SortableTableView, draggedItemDidExitTableViewFromIndexPath indexPath:IndexPath)
 }
-//
-//extension SortableTableViewDelegate
-//{
-//    func sortableTableView(_ releasingTableView: SortableTableView, shouldReceiveItem originalIndexPath: IndexPath, desiredIndexPath:IndexPath, receivingTableView:SortableTableView) -> Bool
-//    {
-//        return true
-//    }
-//    
-//    func sortableTableView(_ releasingTableView: SortableTableView, shouldReleaseItem originalIndexPath: IndexPath, desiredIndexPath:IndexPath, receivingTableView:SortableTableView) -> Bool
-//    {
-//        return true
-//    }
-//    func sortableTableView(_ tableView:SortableTableView, canBePickedUp indexPath:IndexPath) -> Bool
-//    {
-//        return true
-//    }
-//}
