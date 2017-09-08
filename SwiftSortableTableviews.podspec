@@ -8,13 +8,13 @@
 
 Pod::Spec.new do |s|
     s.name         = "SwiftSortableTableViews"
-    s.version      = "0.0.1"
+    s.version      = "0.0.2"
     s.summary      = "Easy to use, Drag and Drop Tableviews"
     s.homepage     = "https://github.com/briankeane/SwiftSortableTableViews.git"
     s.license      = { :type => 'MIT' }
     s.author       = { "Brian Keane" => "brian@playola.fm" }
     s.ios.deployment_target = '10.3'
-    s.osx.deployment_target = '10.12'
+    # s.osx.deployment_target = '10.12'
     s.source       = { :git => "https://github.com/briankeane/SwiftSortableTableViews.git", :tag => s.version }
     s.exclude_files = []
     # s.ios.frameworks = 'AudioToolbox','AVFoundation','GLKit', 'Accelerate'
