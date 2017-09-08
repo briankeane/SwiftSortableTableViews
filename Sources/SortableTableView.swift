@@ -326,7 +326,6 @@ open class SortableTableView:UITableView, UITableViewDataSource
         return true
     }
     
-    
     //------------------------------------------------------------------------------
     
     public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -359,5 +358,14 @@ open class SortableTableView:UITableView, UITableViewDataSource
             return numberOfSections
         }
         return 0
+    }
+    
+    public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return (self._sortableDataSource!).tableView!(self, canEditRowAt: indexPath)
+    }
+    
+    public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
+        print("indexPath.row: \(indexPath.row),   adjusted indexPath.row\(self.deAdjustedIndexPath(indexPath).row)")
+        self._sortableDataSource?.tableView?(self, commit: editingStyle, forRowAt: self.deAdjustedIndexPath(indexPath))
     }
 }
