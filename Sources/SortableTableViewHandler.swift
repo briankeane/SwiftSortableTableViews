@@ -251,11 +251,9 @@ public class SortableTableViewHandler:NSObject
     {
         if let itemInMotion = self.itemInMotion
         {
-            // Notify so that tables can adjust
             NotificationCenter.default.post(name: SortableTableViewEvents.cancelMoveWillAnimate, object: nil, userInfo: ["originalTableView": itemInMotion.originalTableView,
                  "originalIndexPath": itemInMotion.originalIndexPath,
                 ])
-            
             self.moveCellSnapshot(itemInMotion.originalCenter, disappear: true, onCompletion:
             {
                 (finished) -> Void in

@@ -17,13 +17,6 @@ open class SortableTableView:UITableView, UITableViewDataSource
     var ignoreIndexPath:IndexPath?
     var placeholderIndexPath:IndexPath?
     
-    
-    // StoredDataSourceFunctions
-    
-    
-    var canEditRowAtIndexPath:((_ tableView: UITableView, _ indexPath: IndexPath) -> Bool)?
-    
-    
     var observers:Array<NSObjectProtocol> = Array()
     
     private var _sortableDataSource:SortableTableViewDataSource?
@@ -53,15 +46,21 @@ open class SortableTableView:UITableView, UITableViewDataSource
         }
     }
     
+    //------------------------------------------------------------------------------
+    
     override public init(frame: CGRect, style: UITableViewStyle) {
         super.init(frame: frame, style: style)
         self.setupListeners()
     }
     
+    //------------------------------------------------------------------------------
+    
     required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         self.setupListeners()
     }
+    
+    //------------------------------------------------------------------------------
     
     func setupListeners()
     {
@@ -104,7 +103,7 @@ open class SortableTableView:UITableView, UITableViewDataSource
         self.removeObservers()
     }
     
-    
+    //------------------------------------------------------------------------------
     
     func handleCancelMoveWillAnimate(userInfo:[AnyHashable:Any])
     {
@@ -127,6 +126,8 @@ open class SortableTableView:UITableView, UITableViewDataSource
         }
     }
     
+    //------------------------------------------------------------------------------
+    
     func handleCancelMoveDidAnimate(userInfo:[AnyHashable:Any])
     {
         if let originalTableView = userInfo["originalTableView"] as? SortableTableView
@@ -138,10 +139,13 @@ open class SortableTableView:UITableView, UITableViewDataSource
                     self.placeholderIndexPath = nil
                     self.ignoreIndexPath = nil
                     self.reloadRows(at: [originalIndexPath], with: UITableViewRowAnimation.automatic)
+                    self._sortableDataSource?.sortableTableView?(self, itemMoveDidCancel: originalIndexPath)
                 }
             }
         }
     }
+    
+    //------------------------------------------------------------------------------
     
     func onItemPickedUp(fromIndexPath:IndexPath)
     {
@@ -151,6 +155,8 @@ open class SortableTableView:UITableView, UITableViewDataSource
         self.reloadRows(at: [fromIndexPath], with: .automatic)
     
     }
+    
+    //------------------------------------------------------------------------------
     
     func onItemExited()
     {
@@ -168,6 +174,8 @@ open class SortableTableView:UITableView, UITableViewDataSource
         }
     }
     
+    //------------------------------------------------------------------------------
+    
     func onItemEntered(atIndexPath:IndexPath)
     {
         print("onItemEntered")
@@ -176,6 +184,8 @@ open class SortableTableView:UITableView, UITableViewDataSource
         self.endUpdates()
         self._sortableDelegate?.sortableTableView?(self, draggedItemDidEnterTableViewAtIndexPath: atIndexPath)
     }
+    
+    //------------------------------------------------------------------------------
     
     func onItemMovedWithin(newIndexPath: IndexPath)
     {
@@ -368,7 +378,10 @@ open class SortableTableView:UITableView, UITableViewDataSource
         return 0
     }
     
+    //------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------
     // Pass-Through DataSource methods
+    //------------------------------------------------------------------------------
     
     public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         if let response = self._sortableDataSource?.tableView?(self, canEditRowAt: indexPath)
@@ -378,13 +391,19 @@ open class SortableTableView:UITableView, UITableViewDataSource
         return false
     }
     
+    //------------------------------------------------------------------------------
+    
     public func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return self._sortableDataSource?.tableView?(self, titleForHeaderInSection: section)
     }
     
+    //------------------------------------------------------------------------------
+    
     public func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
         return self._sortableDataSource?.tableView?(self, titleForFooterInSection: section)
     }
+    
+    //------------------------------------------------------------------------------
     
     public func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         if let response = self._sortableDataSource?.tableView?(self, canMoveRowAt: indexPath)
@@ -394,9 +413,13 @@ open class SortableTableView:UITableView, UITableViewDataSource
         return false
     }
     
+    //------------------------------------------------------------------------------
+    
     public func sectionIndexTitles(for tableView: UITableView) -> [String]? {
         return self._sortableDataSource?.sectionIndexTitles?(for: self)
     }
+    
+    //------------------------------------------------------------------------------
     
     public func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
         if let response = self._sortableDataSource?.tableView?(self, sectionForSectionIndexTitle: title, at: index)
@@ -406,9 +429,13 @@ open class SortableTableView:UITableView, UITableViewDataSource
         return 0
     }
     
+    //------------------------------------------------------------------------------
+    
     public func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
         self._sortableDataSource?.tableView?(self, moveRowAt: sourceIndexPath, to: destinationIndexPath)
     }
+    
+    //------------------------------------------------------------------------------
     
     public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
         self._sortableDataSource?.tableView?(self, commit: editingStyle, forRowAt: self.deAdjustedIndexPath(indexPath))

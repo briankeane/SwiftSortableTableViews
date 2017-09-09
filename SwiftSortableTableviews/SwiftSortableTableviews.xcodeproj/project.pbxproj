@@ -58,6 +58,7 @@
 
 /* Begin PBXFileReference section */
 		4B34F1851F5EF39000A0199E /* SortableTableViewHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableViewHandler.swift; path = ../Sources/SortableTableViewHandler.swift; sourceTree = "<group>"; };
+		4B82C64C1F642FFD00BD074F /* SwiftSortableTableViews.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = SwiftSortableTableViews.podspec; path = ../SwiftSortableTableViews.podspec; sourceTree = "<group>"; };
 		4BC869B61F6041B7006AA57C /* SortableTableViewEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableViewEvents.swift; path = ../Sources/SortableTableViewEvents.swift; sourceTree = "<group>"; };
 		4BD902551F5DCB7B00DC2E73 /* SwiftSortableTableViewsIOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftSortableTableViewsIOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BD902571F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftSortableTableviewsIOS.h; sourceTree = "<group>"; };
@@ -127,6 +128,7 @@
 		4BD9022C1F5DCAE700DC2E73 = {
 			isa = PBXGroup;
 			children = (
+				4B82C64C1F642FFD00BD074F /* SwiftSortableTableViews.podspec */,
 				4B34F1841F5EEC6000A0199E /* Sources */,
 				4BD902561F5DCB7B00DC2E73 /* SwiftSortableTableViewsIOS */,
 				4BD902611F5DCB7B00DC2E73 /* SwiftSortableTableViewsIOSTests */,
