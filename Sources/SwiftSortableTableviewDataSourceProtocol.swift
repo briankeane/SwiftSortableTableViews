@@ -23,5 +23,7 @@ import UIKit
 
     @objc optional func sortableTableView(_ originalTableView:SortableTableView, itemMoveDidCancel originalIndexPath:IndexPath)
     
+    @objc optional func sortableTableView(_ originalTableView:SortableTableView, itemWasPickedUp originalIndexPath:IndexPath)
+    
     @objc func sortableTableView(_ tableView:SortableTableView, willDropItem originalIndexPath:IndexPath, newIndexPath:IndexPath)
 }

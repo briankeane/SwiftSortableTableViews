@@ -10,7 +10,7 @@ SwiftSortableTableViews are extensions of UITableViews that provide the ability 
 ### Installation
 add this to your cocoapods target:
 ```
-pod 'SwiftSortableTableViews', '~>0.0.2'
+pod 'SwiftSortableTableViews', '~>0.0.4'
 ```
 
 ### Setup
@@ -71,6 +71,15 @@ If an object is moved to a new indexPath within the same table, then modify the 
 `func sortableTableView(_ canBePickedUp ) -> Bool`
 
 * return `false` and the item cannot be picked up.
+
+`func sortableTableView(_ itemWasPickedUp ) -> Bool`
+
+* called on the item's original table just after pickup is completed
+
+`func sortableTableView(_ itemMoveDidCancel ) -> Bool`
+
+* called on the original table just after the move was cancelled.
+
 
 ### SortableTableViewDelegate
 

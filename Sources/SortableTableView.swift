@@ -153,7 +153,7 @@ open class SortableTableView:UITableView, UITableViewDataSource
         self.ignoreIndexPath = fromIndexPath
         self.placeholderIndexPath = fromIndexPath
         self.reloadRows(at: [fromIndexPath], with: .automatic)
-    
+        self._sortableDataSource?.sortableTableView?(self, itemWasPickedUp: fromIndexPath)
     }
     
     //------------------------------------------------------------------------------
