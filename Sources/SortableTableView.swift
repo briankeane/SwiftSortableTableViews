@@ -584,7 +584,7 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
     {
         if let result = self._sortableDelegate?.tableView?(self, willSelectRowAt: self.convertToDelegateIndexPath(indexPath))
         {
-            return self.convertFromDelegateIndexPath(indexPath)
+            return self.convertFromDelegateIndexPath(result)
         }
         return nil
     }
