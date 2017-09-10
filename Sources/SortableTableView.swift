@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-open class SortableTableView:UITableView, UITableViewDataSource
+open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDelegate
 {
     var containingView:UIView?
     var connectedSortableTableViews:Array<SortableTableView> = Array()
@@ -30,7 +30,7 @@ open class SortableTableView:UITableView, UITableViewDataSource
         set
         {
             self._sortableDelegate = newValue
-            self.delegate = self._sortableDelegate
+            self.delegate = self
         }
     }
     open var sortableDataSource:SortableTableViewDataSource?
@@ -266,7 +266,7 @@ open class SortableTableView:UITableView, UITableViewDataSource
     
     //------------------------------------------------------------------------------
     
-    func adjustedIndexPath(_ indexPath:IndexPath) -> IndexPath
+    func convertFromDelegateIndexPath(_ indexPath:IndexPath) -> IndexPath
     {
         var adjustedIndexPathRow = indexPath.row
         
@@ -290,7 +290,7 @@ open class SortableTableView:UITableView, UITableViewDataSource
     
     //------------------------------------------------------------------------------
     
-    func deAdjustedIndexPath(_ indexPath:IndexPath) -> IndexPath
+    func convertToDelegateIndexPath(_ indexPath:IndexPath) -> IndexPath
     {
         var deAdjustedIndexPathRow = indexPath.row
         if let ignoreIndexPathRow = self.ignoreIndexPath?.row
@@ -346,22 +346,22 @@ open class SortableTableView:UITableView, UITableViewDataSource
     
     //------------------------------------------------------------------------------
     
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
+    {
         if (indexPath == self.placeholderIndexPath)
         {
             return self.placeholderCell()
         }
-        print("cellForRowAt: \(self.deAdjustedIndexPath(indexPath).row)")
-        return (self.sortableDataSource?.tableView(self, cellForRowAt: self.deAdjustedIndexPath(indexPath)))!
+        print("cellForRowAt: \(self.convertToDelegateIndexPath(indexPath).row)")
+        return (self.sortableDataSource?.tableView(self, cellForRowAt: self.convertToDelegateIndexPath(indexPath)))!
     }
     
     //------------------------------------------------------------------------------
     
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
+    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
+    {
         if let numberOfRows = self.sortableDataSource?.tableView(self, numberOfRowsInSection: section)
         {
-            print("gettingNumberOfRows adjusted: \(self.adjustedNumberOfRows(numberOfRows)), regular: \(numberOfRows)")
             return self.adjustedNumberOfRows(numberOfRows)
         }
         return 0
@@ -383,7 +383,8 @@ open class SortableTableView:UITableView, UITableViewDataSource
     // Pass-Through DataSource methods
     //------------------------------------------------------------------------------
     
-    public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+    public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool
+    {
         if let response = self._sortableDataSource?.tableView?(self, canEditRowAt: indexPath)
         {
             return response
@@ -405,7 +406,8 @@ open class SortableTableView:UITableView, UITableViewDataSource
     
     //------------------------------------------------------------------------------
     
-    public func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+    public func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool
+    {
         if let response = self._sortableDataSource?.tableView?(self, canMoveRowAt: indexPath)
         {
             return response
@@ -415,7 +417,8 @@ open class SortableTableView:UITableView, UITableViewDataSource
     
     //------------------------------------------------------------------------------
     
-    public func sectionIndexTitles(for tableView: UITableView) -> [String]? {
+    public func sectionIndexTitles(for tableView: UITableView) -> [String]?
+    {
         return self._sortableDataSource?.sectionIndexTitles?(for: self)
     }
     
@@ -431,13 +434,341 @@ open class SortableTableView:UITableView, UITableViewDataSource
     
     //------------------------------------------------------------------------------
     
-    public func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+    public func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath)
+    {
         self._sortableDataSource?.tableView?(self, moveRowAt: sourceIndexPath, to: destinationIndexPath)
     }
     
     //------------------------------------------------------------------------------
     
-    public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) {
-        self._sortableDataSource?.tableView?(self, commit: editingStyle, forRowAt: self.deAdjustedIndexPath(indexPath))
+    public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath)
+    {
+        self._sortableDataSource?.tableView?(self, commit: editingStyle, forRowAt: self.convertToDelegateIndexPath(indexPath))
+    }
+    
+    //------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------
+    // delegate
+    //------------------------------------------------------------------------------
+    
+    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
+    {
+        print("heightForRowAt:  plainIndexPath: \(indexPath.row)   adjustedIndexPath: \(self.convertToDelegateIndexPath(indexPath).row)")
+        if let height = self._sortableDelegate?.tableView?(self, heightForRowAt: self.convertToDelegateIndexPath(indexPath))
+        {
+            print("height: \(height)")
+            return height
+            
+        }
+        print("returning default height")
+        return tableView.rowHeight
+    }
+    
+    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath)
+    {
+        self._sortableDelegate?.tableView?(self, willDisplay: cell, forRowAt: self.convertToDelegateIndexPath(indexPath))
+    }
+    
+    public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int)
+    {
+        self._sortableDelegate?.tableView?(self, willDisplayHeaderView: view, forSection: section)
+    }
+    
+    public func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int)
+    {
+        self._sortableDelegate?.tableView?(self, willDisplayFooterView: view, forSection: section)
+    }
+    
+    public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath)
+    {
+        self._sortableDelegate?.tableView?(self, didEndDisplaying: cell, forRowAt: self.convertToDelegateIndexPath(indexPath))
+    }
+    
+    public func tableView(_ tableView: UITableView, didEndDisplayingHeaderView view: UIView, forSection section: Int)
+    {
+        self._sortableDelegate?.tableView?(self, didEndDisplayingHeaderView: view, forSection: section)
+    }
+    
+    public func tableView(_ tableView: UITableView, didEndDisplayingFooterView view: UIView, forSection section: Int)
+    {
+        self._sortableDelegate?.tableView?(self, didEndDisplayingFooterView: view, forSection: section)
+    }
+    
+    // Variable height support
+    
+    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
+    {
+        if let result = self._sortableDelegate?.tableView?(self, heightForHeaderInSection: section)
+        {
+            return result
+        }
+        return UITableViewAutomaticDimension
+    }
+   
+    public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
+    {
+        if let result = self._sortableDelegate?.tableView?(self, heightForFooterInSection: section)
+        {
+            return result
+        }
+        return UITableViewAutomaticDimension
+    }
+
+    public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat
+    {
+        if let result = self._sortableDelegate?.tableView?(self, estimatedHeightForRowAt: self.convertToDelegateIndexPath(indexPath))
+        {
+            return result
+        }
+        return UITableViewAutomaticDimension
+    }
+
+    public func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat
+    {
+        if let result = self._sortableDelegate?.tableView?(self, estimatedHeightForHeaderInSection: section)
+        {
+            return result
+        }
+        return UITableViewAutomaticDimension
+    }
+    
+    public func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat
+    {
+        if let result = self._sortableDelegate?.tableView?(self, estimatedHeightForFooterInSection: section)
+        {
+            return result
+        }
+        return UITableViewAutomaticDimension
+    }
+    
+    public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? // custom view for header. will be adjusted to default or specified header height
+    {
+        return self._sortableDelegate?.tableView?(self, viewForHeaderInSection: section)
+    }
+    
+    public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? // custom view for footer. will be adjusted to default or specified footer height
+    {
+        return self._sortableDelegate?.tableView?(self, viewForFooterInSection: section)
+    }
+    
+    public func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath)
+    {
+        self._sortableDelegate?.tableView?(self, accessoryButtonTappedForRowWith: self.convertToDelegateIndexPath(indexPath))
+    }
+    
+
+    public func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool
+    {
+        if let result = self._sortableDelegate?.tableView?(self, shouldHighlightRowAt: self.convertToDelegateIndexPath(indexPath))
+        {
+            return result
+        }
+        return false
+    }
+    
+    public func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath)
+    {
+        self._sortableDelegate?.tableView?(self, didHighlightRowAt: self.convertToDelegateIndexPath(indexPath))
+    }
+    
+    //------------------------------------------------------------------------------
+    
+    public func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath)
+    {
+        self._sortableDelegate?.tableView?(self, didUnhighlightRowAt: self.convertToDelegateIndexPath(indexPath))
+    }
+    
+    //------------------------------------------------------------------------------
+    
+    public func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath?
+    {
+        if let result = self._sortableDelegate?.tableView?(self, willSelectRowAt: self.convertToDelegateIndexPath(indexPath))
+        {
+            return self.convertFromDelegateIndexPath(indexPath)
+        }
+        return nil
+    }
+    
+    //------------------------------------------------------------------------------
+    
+    public func tableView(_ tableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath?
+    {
+        if let result =  self._sortableDelegate?.tableView?(self, willDeselectRowAt: self.convertToDelegateIndexPath(indexPath))
+        {
+            return self.convertFromDelegateIndexPath(result)
+        }
+        return nil
+    }
+    
+    //------------------------------------------------------------------------------
+    
+    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
+    {
+        self._sortableDelegate?.tableView?(self, didSelectRowAt: self.convertToDelegateIndexPath(indexPath))
+    }
+    
+    //------------------------------------------------------------------------------
+    
+    public func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath)
+    {
+        self._sortableDelegate?.tableView?(self, didDeselectRowAt: self.convertToDelegateIndexPath(indexPath))
+    }
+    
+    //------------------------------------------------------------------------------
+    // Editing
+    //------------------------------------------------------------------------------
+    
+    public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle
+    {
+        if let result = self._sortableDelegate?.tableView?(self, editingStyleForRowAt: self.convertToDelegateIndexPath(indexPath))
+        {
+            return result
+        }
+        return .delete
+    }
+    
+    //------------------------------------------------------------------------------
+    
+    public func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String?
+    {
+        return self._sortableDelegate?.tableView?(self, titleForDeleteConfirmationButtonForRowAt: self.convertToDelegateIndexPath(indexPath))
+    }
+    
+    //------------------------------------------------------------------------------
+    
+    public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? // supercedes -tableView:titleForDeleteConfirmationButtonForRowAtIndexPath: if return value is non-nil
+    {
+        return self._sortableDelegate?.tableView?(self, editActionsForRowAt: self.convertToDelegateIndexPath(indexPath))
+    }
+    
+    //------------------------------------------------------------------------------
+    
+    // Controls whether the background is indented while editing.  If not implemented, the default is YES.  This is unrelated to the indentation level below.  This method only applies to grouped style table views.
+    public func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool
+    {
+        if let result = self._sortableDelegate?.tableView?(self, shouldIndentWhileEditingRowAt: self.convertToDelegateIndexPath(indexPath))
+        {
+            return result
+        }
+        return true
+    }
+    
+    //------------------------------------------------------------------------------
+    
+    // The willBegin/didEnd methods are called whenever the 'editing' property is automatically changed by the table (allowing insert/delete/move). This is done by a swipe activating a single row
+    public func tableView(_ tableView: UITableView, willBeginEditingRowAt indexPath: IndexPath)
+    {
+        self._sortableDelegate?.tableView?(self, willBeginEditingRowAt: self.convertToDelegateIndexPath(indexPath))
+    }
+    
+    //------------------------------------------------------------------------------
+    
+    public func tableView(_ tableView: UITableView, didEndEditingRowAt indexPath: IndexPath?)
+    {
+        var convertedIndexPath:IndexPath?
+        if let indexPath = indexPath
+        {
+            convertedIndexPath = self.convertToDelegateIndexPath(indexPath)
+        }
+        self._sortableDelegate?.tableView?(self, didEndEditingRowAt: convertedIndexPath)
+    }
+    
+    //------------------------------------------------------------------------------
+    
+    
+    // Moving/reordering
+    
+    // Allows customization of the target row for a particular row as it is being moved/reordered
+    public func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath
+    {
+        if let result = self._sortableDelegate?.tableView?(self, targetIndexPathForMoveFromRowAt: self.convertToDelegateIndexPath(sourceIndexPath), toProposedIndexPath: self.convertToDelegateIndexPath(proposedDestinationIndexPath))
+        {
+            return self.convertFromDelegateIndexPath(result)
+        }
+        return proposedDestinationIndexPath
+    }
+    
+    // Indentation
+    
+    public func tableView(_ tableView: UITableView, indentationLevelForRowAt indexPath: IndexPath) -> Int // return 'depth' of row for hierarchies
+    {
+        if let result = self._sortableDelegate?.tableView?(self, indentationLevelForRowAt: self.convertToDelegateIndexPath(indexPath))
+        {
+            return result
+        }
+        return 0
+    }
+    
+    // Copy/Paste.  All three methods must be implemented by the delegate.
+    
+    public func tableView(_ tableView: UITableView, shouldShowMenuForRowAt indexPath: IndexPath) -> Bool
+    {
+        if let result = self._sortableDelegate?.tableView?(self, shouldShowMenuForRowAt: self.convertToDelegateIndexPath(indexPath))
+        {
+            return result
+        }
+        return false
+    }
+    
+    //------------------------------------------------------------------------------
+    
+    
+    public func tableView(_ tableView: UITableView, canPerformAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) -> Bool
+    {
+        if let result = self._sortableDelegate?.tableView?(self, canPerformAction: action, forRowAt: self.convertToDelegateIndexPath(indexPath), withSender: sender)
+        {
+            return result
+        }
+        return false
+    }
+    
+    //------------------------------------------------------------------------------
+    
+    public func tableView(_ tableView: UITableView, performAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?)
+    {
+        self._sortableDelegate?.tableView?(self, performAction: action, forRowAt: self.convertToDelegateIndexPath(indexPath), withSender: sender)
+    }
+    
+    //------------------------------------------------------------------------------
+    
+    // Focus
+    
+    public func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool
+    {
+        if let result = self._sortableDelegate?.tableView?(self, canFocusRowAt: self.convertToDelegateIndexPath(indexPath))
+        {
+            return result
+        }
+        return false
+    }
+    
+    //------------------------------------------------------------------------------
+    
+    public func tableView(_ tableView: UITableView, shouldUpdateFocusIn context: UITableViewFocusUpdateContext) -> Bool
+    {
+        if let result = self._sortableDelegate?.tableView?(self, shouldUpdateFocusIn: context)
+        {
+            return result
+        }
+        return false
+    }
+    
+    //------------------------------------------------------------------------------
+    
+    
+    public func tableView(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator)
+    {
+        self._sortableDelegate?.tableView?(self, didUpdateFocusIn: context, with: coordinator)
+    }
+
+    //------------------------------------------------------------------------------
+    
+    public func indexPathForPreferredFocusedView(in tableView: UITableView) -> IndexPath?
+    {
+        if let result = self._sortableDelegate?.indexPathForPreferredFocusedView?(in: self)
+        {
+            return self.convertFromDelegateIndexPath(result)
+        }
+        return nil
     }
 }
