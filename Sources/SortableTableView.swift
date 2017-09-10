@@ -149,7 +149,6 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
     
     func onItemPickedUp(fromIndexPath:IndexPath)
     {
-        print("onItemPickedUp")
         self.ignoreIndexPath = fromIndexPath
         self.placeholderIndexPath = fromIndexPath
         self.reloadRows(at: [fromIndexPath], with: .automatic)
@@ -160,12 +159,9 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
     
     func onItemExited()
     {
-        print("onItemExited")
-        print("before exit: \(self.tableView(self, numberOfRowsInSection: 0))")
         let oldIndexPath = self.placeholderIndexPath
         self.beginUpdates()
         self.removePlaceholder()
-        print("after exit: \(self.tableView(self, numberOfRowsInSection: 0))")
         self.endUpdates()
         if let oldIndexPath = oldIndexPath
         {
@@ -178,7 +174,6 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
     
     func onItemEntered(atIndexPath:IndexPath)
     {
-        print("onItemEntered")
         self.beginUpdates()
         self.insertPlaceholder(indexPath: atIndexPath)
         self.endUpdates()
@@ -189,7 +184,6 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
     
     func onItemMovedWithin(newIndexPath: IndexPath)
     {
-        print("onItemMovedWithin")
         self.beginUpdates()
         self.removePlaceholder()
         self.insertPlaceholder(indexPath: newIndexPath)
@@ -200,7 +194,6 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
     
     func onDropItemIntoTableView(atIndexPath:IndexPath)
     {
-        print("onDropItemIntoTableView at indexPath: \(atIndexPath.row)")
         self.ignoreIndexPath = nil
         self.placeholderIndexPath = nil
         
@@ -211,7 +204,6 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
     
     func onReleaseItemFromTableView()
     {
-        print("onReleaseItemFromTableView")
         self.ignoreIndexPath = nil
     }
     
@@ -221,7 +213,6 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
     {
         if let placeholderIndexPath = self.placeholderIndexPath
         {
-            print("remove placeholder")
             self.placeholderIndexPath = nil
             self.deleteRows(at: [placeholderIndexPath], with: UITableViewRowAnimation.automatic)
         }
@@ -231,11 +222,6 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
     
     func insertPlaceholder(indexPath:IndexPath)
     {
-        print("insertPlaceholder at \(indexPath.row)")
-        if (indexPath.row == 0)
-        {
-            print("here")
-        }
         self.placeholderIndexPath = indexPath
         self.insertRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
     }
@@ -352,7 +338,6 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
         {
             return self.placeholderCell()
         }
-        print("cellForRowAt: \(self.convertToDelegateIndexPath(indexPath).row)")
         return (self.sortableDataSource?.tableView(self, cellForRowAt: self.convertToDelegateIndexPath(indexPath)))!
     }
     
@@ -453,14 +438,11 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
     
     public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
     {
-        print("heightForRowAt:  plainIndexPath: \(indexPath.row)   adjustedIndexPath: \(self.convertToDelegateIndexPath(indexPath).row)")
         if let height = self._sortableDelegate?.tableView?(self, heightForRowAt: self.convertToDelegateIndexPath(indexPath))
         {
-            print("height: \(height)")
             return height
             
         }
-        print("returning default height")
         return tableView.rowHeight
     }
     
