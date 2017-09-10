@@ -464,35 +464,49 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
         return tableView.rowHeight
     }
     
+    //------------------------------------------------------------------------------
+    
     public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath)
     {
         self._sortableDelegate?.tableView?(self, willDisplay: cell, forRowAt: self.convertToDelegateIndexPath(indexPath))
     }
+    
+    //------------------------------------------------------------------------------
     
     public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int)
     {
         self._sortableDelegate?.tableView?(self, willDisplayHeaderView: view, forSection: section)
     }
     
+    //------------------------------------------------------------------------------
+    
     public func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int)
     {
         self._sortableDelegate?.tableView?(self, willDisplayFooterView: view, forSection: section)
     }
+    
+    //------------------------------------------------------------------------------
     
     public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath)
     {
         self._sortableDelegate?.tableView?(self, didEndDisplaying: cell, forRowAt: self.convertToDelegateIndexPath(indexPath))
     }
     
+    //------------------------------------------------------------------------------
+    
     public func tableView(_ tableView: UITableView, didEndDisplayingHeaderView view: UIView, forSection section: Int)
     {
         self._sortableDelegate?.tableView?(self, didEndDisplayingHeaderView: view, forSection: section)
     }
     
+    //------------------------------------------------------------------------------
+    
     public func tableView(_ tableView: UITableView, didEndDisplayingFooterView view: UIView, forSection section: Int)
     {
         self._sortableDelegate?.tableView?(self, didEndDisplayingFooterView: view, forSection: section)
     }
+    
+    //------------------------------------------------------------------------------
     
     // Variable height support
     
@@ -505,6 +519,8 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
         return UITableViewAutomaticDimension
     }
    
+    //------------------------------------------------------------------------------
+    
     public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
     {
         if let result = self._sortableDelegate?.tableView?(self, heightForFooterInSection: section)
@@ -514,6 +530,8 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
         return UITableViewAutomaticDimension
     }
 
+    //------------------------------------------------------------------------------
+    
     public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat
     {
         if let result = self._sortableDelegate?.tableView?(self, estimatedHeightForRowAt: self.convertToDelegateIndexPath(indexPath))
@@ -523,6 +541,8 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
         return UITableViewAutomaticDimension
     }
 
+    //------------------------------------------------------------------------------
+    
     public func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat
     {
         if let result = self._sortableDelegate?.tableView?(self, estimatedHeightForHeaderInSection: section)
@@ -531,6 +551,8 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
         }
         return UITableViewAutomaticDimension
     }
+    
+    //------------------------------------------------------------------------------
     
     public func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat
     {
@@ -541,22 +563,29 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
         return UITableViewAutomaticDimension
     }
     
+    //------------------------------------------------------------------------------
+    
     public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? // custom view for header. will be adjusted to default or specified header height
     {
         return self._sortableDelegate?.tableView?(self, viewForHeaderInSection: section)
     }
+    
+    //------------------------------------------------------------------------------
     
     public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? // custom view for footer. will be adjusted to default or specified footer height
     {
         return self._sortableDelegate?.tableView?(self, viewForFooterInSection: section)
     }
     
+    //------------------------------------------------------------------------------
+    
     public func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath)
     {
         self._sortableDelegate?.tableView?(self, accessoryButtonTappedForRowWith: self.convertToDelegateIndexPath(indexPath))
     }
     
-
+    //------------------------------------------------------------------------------
+    
     public func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool
     {
         if let result = self._sortableDelegate?.tableView?(self, shouldHighlightRowAt: self.convertToDelegateIndexPath(indexPath))
@@ -565,6 +594,8 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
         }
         return false
     }
+    
+    //------------------------------------------------------------------------------
     
     public func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath)
     {
