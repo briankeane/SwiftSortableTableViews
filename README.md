@@ -10,11 +10,11 @@ SwiftSortableTableViews are extensions of UITableViews that provide the ability 
 ### Installation
 add this to your cocoapods target:
 ```
-pod 'SwiftSortableTableViews', '~>0.0.4'
+pod 'SwiftSortableTableViews', '~>0.1.1'
 ```
 
 ### Setup
-Set the Class of your UITableView in storyboard to `SortableTableView`.  Then in your `viewDidLoad` method, create your SortableTableViews, assign them each a SortableTableViewDataSource and SortableTableViewDelegate, and create a SortableTableViewHandler, passing it your ViewController's view and an array of the SortableTableViews you'd like to use.
+Set the Class of your UITableView in storyboard to `SortableTableView`.  Then in your `viewDidLoad` method assign them each a SortableTableViewDataSource and SortableTableViewDelegate, and create a SortableTableViewHandler, passing it your ViewController's view and an array of the SortableTableViews you'd like to use.
 
 ```
 import SwiftSortableTableViews
@@ -44,7 +44,9 @@ class ViewController: UIViewController,SortableTableViewDelegate, SortableTableV
 
 ### SortableTableViewDataSource
 
-You must handle the transfer of a data source when an item is moved from one list two another.  SortableTableViewDataSource allows you to handle this in either the receiving table or the releasing table by providing one of two SortableTableViewDataSource functions:
+***You must handle the transfer of the underlying data when an item is moved from one list to another***.  
+
+SortableTableViewDataSource allows you to handle this in either the receiving table or the releasing table by providing one of two SortableTableViewDataSource functions:
 
 1. `func sortableTableView(_ willReleaseItem )`
 
@@ -94,6 +96,6 @@ These functions are provided in addition to the usual UITableViewDelegate functi
 
 * called when an item is dragged over the TableView
 
-### Limitations
-1. When providing a cell in cellForRowAt, do not use the dequeueReusableCell(withIdentifier:) that specifies a "forIndexPath:" in it -- the cells will move around and providing a specified IndexPath will break internal consistency.
+### Notes:
+1. ***DO NOT USE SPECIFY forIndexPath: when calling dequeueReusableCell(withIdentifier:)*** -- the cells will move around and providing a specified IndexPath will break internal consistency.
 2. Only supports one Section per table for now.
