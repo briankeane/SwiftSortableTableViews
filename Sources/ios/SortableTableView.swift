@@ -48,7 +48,8 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
     
     //------------------------------------------------------------------------------
     
-    override public init(frame: CGRect, style: UITableViewStyle) {
+    override public init(frame: CGRect, style: UITableViewStyle)
+    {
         super.init(frame: frame, style: style)
         self.setupListeners()
     }

@@ -9,12 +9,22 @@
 /* Begin PBXBuildFile section */
 		4B34F1861F5EF39000A0199E /* SortableTableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B34F1851F5EF39000A0199E /* SortableTableViewHandler.swift */; };
 		4B34F1871F5EF39000A0199E /* SortableTableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B34F1851F5EF39000A0199E /* SortableTableViewHandler.swift */; };
-		4B34F1881F5EF39000A0199E /* SortableTableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B34F1851F5EF39000A0199E /* SortableTableViewHandler.swift */; };
-		4B34F1891F5EF39000A0199E /* SortableTableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B34F1851F5EF39000A0199E /* SortableTableViewHandler.swift */; };
+		4B4CEED91F89480600D29E1A /* SortableTableViewHandlerOSX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4CEED81F89480600D29E1A /* SortableTableViewHandlerOSX.swift */; };
+		4B4CEEDA1F89480600D29E1A /* SortableTableViewHandlerOSX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4CEED81F89480600D29E1A /* SortableTableViewHandlerOSX.swift */; };
+		4B4CEEDC1F8A930600D29E1A /* NSViewExtention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4CEEDB1F8A930600D29E1A /* NSViewExtention.swift */; };
+		4B4CEEDD1F8A930600D29E1A /* NSViewExtention.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B4CEEDB1F8A930600D29E1A /* NSViewExtention.swift */; };
+		4BA175D51F79A4010073AFFB /* SortableTableViewOSX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA175D41F79A4010073AFFB /* SortableTableViewOSX.swift */; };
+		4BA175D61F79A4010073AFFB /* SortableTableViewOSX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA175D41F79A4010073AFFB /* SortableTableViewOSX.swift */; };
+		4BA7295F1F882A94003480CC /* SortableTableViewItemOSX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA7295D1F882A4B003480CC /* SortableTableViewItemOSX.swift */; };
+		4BA729601F882A94003480CC /* SortableTableViewItemOSX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA7295D1F882A4B003480CC /* SortableTableViewItemOSX.swift */; };
+		4BA729621F882F6A003480CC /* SortableTableViewDataSourceOSX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA729611F882F6A003480CC /* SortableTableViewDataSourceOSX.swift */; };
+		4BA729631F882F6A003480CC /* SortableTableViewDataSourceOSX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA729611F882F6A003480CC /* SortableTableViewDataSourceOSX.swift */; };
+		4BA729651F882F88003480CC /* SortableTableViewDelegateOSX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA729641F882F88003480CC /* SortableTableViewDelegateOSX.swift */; };
+		4BA729661F882F88003480CC /* SortableTableViewDelegateOSX.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BA729641F882F88003480CC /* SortableTableViewDelegateOSX.swift */; };
+		4BA729681F883041003480CC /* SortableTableViewEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC869B61F6041B7006AA57C /* SortableTableViewEvents.swift */; };
+		4BA729691F883041003480CC /* SortableTableViewEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC869B61F6041B7006AA57C /* SortableTableViewEvents.swift */; };
 		4BC869B71F6041B7006AA57C /* SortableTableViewEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC869B61F6041B7006AA57C /* SortableTableViewEvents.swift */; };
 		4BC869B81F6041B7006AA57C /* SortableTableViewEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC869B61F6041B7006AA57C /* SortableTableViewEvents.swift */; };
-		4BC869B91F6041B7006AA57C /* SortableTableViewEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC869B61F6041B7006AA57C /* SortableTableViewEvents.swift */; };
-		4BC869BA1F6041B7006AA57C /* SortableTableViewEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC869B61F6041B7006AA57C /* SortableTableViewEvents.swift */; };
 		4BD9025E1F5DCB7B00DC2E73 /* SwiftSortableTableViewsIOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4BD902551F5DCB7B00DC2E73 /* SwiftSortableTableViewsIOS.framework */; };
 		4BD902631F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOSTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD902621F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOSTests.swift */; };
 		4BD902651F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOS.h in Headers */ = {isa = PBXBuildFile; fileRef = 4BD902571F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -23,20 +33,12 @@
 		4BD902811F5DCB9600DC2E73 /* SwiftSortableTableviewsOSX.h in Headers */ = {isa = PBXBuildFile; fileRef = 4BD902731F5DCB9500DC2E73 /* SwiftSortableTableviewsOSX.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		4BD902B51F5DCFD600DC2E73 /* SortableTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD902B41F5DCFD600DC2E73 /* SortableTableView.swift */; };
 		4BD902B61F5DCFD600DC2E73 /* SortableTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD902B41F5DCFD600DC2E73 /* SortableTableView.swift */; };
-		4BD902B71F5DCFD600DC2E73 /* SortableTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD902B41F5DCFD600DC2E73 /* SortableTableView.swift */; };
-		4BD902B81F5DCFD600DC2E73 /* SortableTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD902B41F5DCFD600DC2E73 /* SortableTableView.swift */; };
 		4BD902BC1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD902BB1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift */; };
 		4BD902BD1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD902BB1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift */; };
-		4BD902BE1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD902BB1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift */; };
-		4BD902BF1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD902BB1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift */; };
 		4BD902C11F5DD9D900DC2E73 /* SwiftSortableTableviewDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD902C01F5DD9D900DC2E73 /* SwiftSortableTableviewDataSourceProtocol.swift */; };
 		4BD902C21F5DD9D900DC2E73 /* SwiftSortableTableviewDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD902C01F5DD9D900DC2E73 /* SwiftSortableTableviewDataSourceProtocol.swift */; };
-		4BD902C31F5DD9D900DC2E73 /* SwiftSortableTableviewDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD902C01F5DD9D900DC2E73 /* SwiftSortableTableviewDataSourceProtocol.swift */; };
-		4BD902C41F5DD9D900DC2E73 /* SwiftSortableTableviewDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD902C01F5DD9D900DC2E73 /* SwiftSortableTableviewDataSourceProtocol.swift */; };
 		4BD902C61F5E020D00DC2E73 /* SortableTableViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD902C51F5E020D00DC2E73 /* SortableTableViewItem.swift */; };
 		4BD902C71F5E020D00DC2E73 /* SortableTableViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD902C51F5E020D00DC2E73 /* SortableTableViewItem.swift */; };
-		4BD902C81F5E020D00DC2E73 /* SortableTableViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD902C51F5E020D00DC2E73 /* SortableTableViewItem.swift */; };
-		4BD902C91F5E020D00DC2E73 /* SortableTableViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BD902C51F5E020D00DC2E73 /* SortableTableViewItem.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,9 +59,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		4B34F1851F5EF39000A0199E /* SortableTableViewHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableViewHandler.swift; path = ../Sources/SortableTableViewHandler.swift; sourceTree = "<group>"; };
+		4B34F1851F5EF39000A0199E /* SortableTableViewHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableViewHandler.swift; path = ../Sources/ios/SortableTableViewHandler.swift; sourceTree = "<group>"; };
+		4B4CEED81F89480600D29E1A /* SortableTableViewHandlerOSX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableViewHandlerOSX.swift; path = ../Sources/osx/SortableTableViewHandlerOSX.swift; sourceTree = "<group>"; };
+		4B4CEEDB1F8A930600D29E1A /* NSViewExtention.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = NSViewExtention.swift; path = ../Sources/osx/NSViewExtention.swift; sourceTree = "<group>"; };
 		4B82C64C1F642FFD00BD074F /* SwiftSortableTableViews.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = SwiftSortableTableViews.podspec; path = ../SwiftSortableTableViews.podspec; sourceTree = "<group>"; };
-		4BC869B61F6041B7006AA57C /* SortableTableViewEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableViewEvents.swift; path = ../Sources/SortableTableViewEvents.swift; sourceTree = "<group>"; };
+		4BA175D41F79A4010073AFFB /* SortableTableViewOSX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableViewOSX.swift; path = ../Sources/osx/SortableTableViewOSX.swift; sourceTree = "<group>"; };
+		4BA7295D1F882A4B003480CC /* SortableTableViewItemOSX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableViewItemOSX.swift; path = ../Sources/osx/SortableTableViewItemOSX.swift; sourceTree = "<group>"; };
+		4BA729611F882F6A003480CC /* SortableTableViewDataSourceOSX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableViewDataSourceOSX.swift; path = ../Sources/osx/SortableTableViewDataSourceOSX.swift; sourceTree = "<group>"; };
+		4BA729641F882F88003480CC /* SortableTableViewDelegateOSX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableViewDelegateOSX.swift; path = ../Sources/osx/SortableTableViewDelegateOSX.swift; sourceTree = "<group>"; };
+		4BC869B61F6041B7006AA57C /* SortableTableViewEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableViewEvents.swift; path = ../Sources/shared/SortableTableViewEvents.swift; sourceTree = "<group>"; };
 		4BD902551F5DCB7B00DC2E73 /* SwiftSortableTableViewsIOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftSortableTableViewsIOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BD902571F5DCB7B00DC2E73 /* SwiftSortableTableviewsIOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SwiftSortableTableviewsIOS.h; sourceTree = "<group>"; };
 		4BD902581F5DCB7B00DC2E73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -72,10 +80,10 @@
 		4BD902791F5DCB9600DC2E73 /* SwiftSortableTableViewsOSXTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SwiftSortableTableViewsOSXTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BD9027E1F5DCB9600DC2E73 /* SwiftSortableTableviewsOSXTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftSortableTableviewsOSXTests.swift; sourceTree = "<group>"; };
 		4BD902801F5DCB9600DC2E73 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		4BD902B41F5DCFD600DC2E73 /* SortableTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableView.swift; path = ../Sources/SortableTableView.swift; sourceTree = "<group>"; };
-		4BD902BB1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableviewDelegateProtocol.swift; path = ../Sources/SortableTableviewDelegateProtocol.swift; sourceTree = "<group>"; };
-		4BD902C01F5DD9D900DC2E73 /* SwiftSortableTableviewDataSourceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftSortableTableviewDataSourceProtocol.swift; path = ../Sources/SwiftSortableTableviewDataSourceProtocol.swift; sourceTree = "<group>"; };
-		4BD902C51F5E020D00DC2E73 /* SortableTableViewItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableViewItem.swift; path = ../Sources/SortableTableViewItem.swift; sourceTree = "<group>"; };
+		4BD902B41F5DCFD600DC2E73 /* SortableTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableView.swift; path = ../Sources/ios/SortableTableView.swift; sourceTree = "<group>"; };
+		4BD902BB1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableviewDelegateProtocol.swift; path = ../Sources/ios/SortableTableviewDelegateProtocol.swift; sourceTree = "<group>"; };
+		4BD902C01F5DD9D900DC2E73 /* SwiftSortableTableviewDataSourceProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftSortableTableviewDataSourceProtocol.swift; path = ../Sources/ios/SwiftSortableTableviewDataSourceProtocol.swift; sourceTree = "<group>"; };
+		4BD902C51F5E020D00DC2E73 /* SortableTableViewItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableViewItem.swift; path = ../Sources/ios/SortableTableViewItem.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,14 +123,44 @@
 		4B34F1841F5EEC6000A0199E /* Sources */ = {
 			isa = PBXGroup;
 			children = (
+				4BA729671F88302B003480CC /* shared */,
+				4BA175D31F79A39C0073AFFB /* osx */,
+				4BA175D21F79A3180073AFFB /* ios */,
+			);
+			name = Sources;
+			sourceTree = "<group>";
+		};
+		4BA175D21F79A3180073AFFB /* ios */ = {
+			isa = PBXGroup;
+			children = (
 				4BD902B41F5DCFD600DC2E73 /* SortableTableView.swift */,
 				4BD902C51F5E020D00DC2E73 /* SortableTableViewItem.swift */,
 				4BD902BB1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift */,
 				4BD902C01F5DD9D900DC2E73 /* SwiftSortableTableviewDataSourceProtocol.swift */,
 				4B34F1851F5EF39000A0199E /* SortableTableViewHandler.swift */,
+			);
+			name = ios;
+			sourceTree = "<group>";
+		};
+		4BA175D31F79A39C0073AFFB /* osx */ = {
+			isa = PBXGroup;
+			children = (
+				4B4CEED81F89480600D29E1A /* SortableTableViewHandlerOSX.swift */,
+				4BA175D41F79A4010073AFFB /* SortableTableViewOSX.swift */,
+				4BA7295D1F882A4B003480CC /* SortableTableViewItemOSX.swift */,
+				4BA729611F882F6A003480CC /* SortableTableViewDataSourceOSX.swift */,
+				4BA729641F882F88003480CC /* SortableTableViewDelegateOSX.swift */,
+				4B4CEEDB1F8A930600D29E1A /* NSViewExtention.swift */,
+			);
+			name = osx;
+			sourceTree = "<group>";
+		};
+		4BA729671F88302B003480CC /* shared */ = {
+			isa = PBXGroup;
+			children = (
 				4BC869B61F6041B7006AA57C /* SortableTableViewEvents.swift */,
 			);
-			name = Sources;
+			name = shared;
 			sourceTree = "<group>";
 		};
 		4BD9022C1F5DCAE700DC2E73 = {
@@ -400,12 +438,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4BC869B91F6041B7006AA57C /* SortableTableViewEvents.swift in Sources */,
-				4B34F1881F5EF39000A0199E /* SortableTableViewHandler.swift in Sources */,
-				4BD902C81F5E020D00DC2E73 /* SortableTableViewItem.swift in Sources */,
-				4BD902BE1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift in Sources */,
-				4BD902C31F5DD9D900DC2E73 /* SwiftSortableTableviewDataSourceProtocol.swift in Sources */,
-				4BD902B71F5DCFD600DC2E73 /* SortableTableView.swift in Sources */,
+				4BA175D51F79A4010073AFFB /* SortableTableViewOSX.swift in Sources */,
+				4B4CEED91F89480600D29E1A /* SortableTableViewHandlerOSX.swift in Sources */,
+				4BA729681F883041003480CC /* SortableTableViewEvents.swift in Sources */,
+				4B4CEEDC1F8A930600D29E1A /* NSViewExtention.swift in Sources */,
+				4BA729651F882F88003480CC /* SortableTableViewDelegateOSX.swift in Sources */,
+				4BA729621F882F6A003480CC /* SortableTableViewDataSourceOSX.swift in Sources */,
+				4BA7295F1F882A94003480CC /* SortableTableViewItemOSX.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -413,13 +452,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				4BD902BF1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift in Sources */,
-				4BD902C91F5E020D00DC2E73 /* SortableTableViewItem.swift in Sources */,
+				4BA729691F883041003480CC /* SortableTableViewEvents.swift in Sources */,
 				4BD9027F1F5DCB9600DC2E73 /* SwiftSortableTableviewsOSXTests.swift in Sources */,
-				4BC869BA1F6041B7006AA57C /* SortableTableViewEvents.swift in Sources */,
-				4BD902C41F5DD9D900DC2E73 /* SwiftSortableTableviewDataSourceProtocol.swift in Sources */,
-				4B34F1891F5EF39000A0199E /* SortableTableViewHandler.swift in Sources */,
-				4BD902B81F5DCFD600DC2E73 /* SortableTableView.swift in Sources */,
+				4B4CEEDD1F8A930600D29E1A /* NSViewExtention.swift in Sources */,
+				4BA729601F882A94003480CC /* SortableTableViewItemOSX.swift in Sources */,
+				4BA175D61F79A4010073AFFB /* SortableTableViewOSX.swift in Sources */,
+				4BA729631F882F6A003480CC /* SortableTableViewDataSourceOSX.swift in Sources */,
+				4B4CEEDA1F89480600D29E1A /* SortableTableViewHandlerOSX.swift in Sources */,
+				4BA729661F882F88003480CC /* SortableTableViewDelegateOSX.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
