@@ -9,8 +9,6 @@
 /* Begin PBXBuildFile section */
 		4B34F1861F5EF39000A0199E /* SortableTableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B34F1851F5EF39000A0199E /* SortableTableViewHandler.swift */; };
 		4B34F1871F5EF39000A0199E /* SortableTableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B34F1851F5EF39000A0199E /* SortableTableViewHandler.swift */; };
-		4B34F1881F5EF39000A0199E /* SortableTableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B34F1851F5EF39000A0199E /* SortableTableViewHandler.swift */; };
-		4B34F1891F5EF39000A0199E /* SortableTableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B34F1851F5EF39000A0199E /* SortableTableViewHandler.swift */; };
 		4BC869B71F6041B7006AA57C /* SortableTableViewEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC869B61F6041B7006AA57C /* SortableTableViewEvents.swift */; };
 		4BC869B81F6041B7006AA57C /* SortableTableViewEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC869B61F6041B7006AA57C /* SortableTableViewEvents.swift */; };
 		4BC869B91F6041B7006AA57C /* SortableTableViewEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC869B61F6041B7006AA57C /* SortableTableViewEvents.swift */; };
@@ -401,7 +399,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				4BC869B91F6041B7006AA57C /* SortableTableViewEvents.swift in Sources */,
-				4B34F1881F5EF39000A0199E /* SortableTableViewHandler.swift in Sources */,
 				4BD902C81F5E020D00DC2E73 /* SortableTableViewItem.swift in Sources */,
 				4BD902BE1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift in Sources */,
 				4BD902C31F5DD9D900DC2E73 /* SwiftSortableTableviewDataSourceProtocol.swift in Sources */,
@@ -418,7 +415,6 @@
 				4BD9027F1F5DCB9600DC2E73 /* SwiftSortableTableviewsOSXTests.swift in Sources */,
 				4BC869BA1F6041B7006AA57C /* SortableTableViewEvents.swift in Sources */,
 				4BD902C41F5DD9D900DC2E73 /* SwiftSortableTableviewDataSourceProtocol.swift in Sources */,
-				4B34F1891F5EF39000A0199E /* SortableTableViewHandler.swift in Sources */,
 				4BD902B81F5DCFD600DC2E73 /* SortableTableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
