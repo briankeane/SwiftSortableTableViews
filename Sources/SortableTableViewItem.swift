@@ -11,20 +11,20 @@ import UIKit
 
 public class SortableTableViewItem
 {
-    var originalIndexPath:IndexPath!
+    var originalRow:Int!
     var originalTableView:SortableTableView!
     var originalCenter:CGPoint!
     var cellSnapshot:UIView!
     
-    var hoveredOverIndexPath:IndexPath?
+    var hoveredOverRow:Int?
     var hoveredOverTableView:SortableTableView?
     
     
-    init(originalTableView:SortableTableView!, originalIndexPath:IndexPath!, originalCenter:CGPoint = CGPoint(x: 0, y: 0), cellSnapshot:UIView!)
+    init(originalTableView:SortableTableView!, originalRow:Int!, originalCenter:CGPoint = CGPoint(x: 0, y: 0), cellSnapshot:UIView!)
     {
         self.originalTableView = originalTableView
-        self.originalIndexPath = originalIndexPath
-        self.hoveredOverIndexPath = originalIndexPath
+        self.originalRow = originalRow
+        self.hoveredOverRow = originalRow
         self.hoveredOverTableView = originalTableView
         self.originalCenter = originalCenter
         self.cellSnapshot = cellSnapshot

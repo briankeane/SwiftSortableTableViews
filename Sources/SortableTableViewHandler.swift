@@ -140,8 +140,6 @@ public class SortableTableViewHandler:NSObject
         return nil
     }
     
-    
-    
     //------------------------------------------------------------------------------
     
     func handleLongPressEnded(longPress:UILongPressGestureRecognizer)

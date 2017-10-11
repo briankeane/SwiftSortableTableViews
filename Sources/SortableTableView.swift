@@ -11,11 +11,9 @@ import UIKit
 
 open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDelegate
 {
-    var containingView:UIView?
-    var connectedSortableTableViews:Array<SortableTableView> = Array()
     var movingSortableItem:SortableTableViewItem?
-    var ignoreIndexPath:IndexPath?
-    var placeholderIndexPath:IndexPath?
+    var ignoreRow:Int?
+    var placeholderRow:Int?
     
     var observers:Array<NSObjectProtocol> = Array()
     
@@ -30,7 +28,7 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
         set
         {
             self._sortableDelegate = newValue
-            self.delegate = self
+            self.delegate = SortableTableViewDelegateAdapter(tableView: self, delegate: newValue)
         }
     }
     open var sortableDataSource:SortableTableViewDataSource?
@@ -112,10 +110,10 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
             // IF it's this table, make a hole for the returning item
             if (originalTableView == self)
             {
-                if let originalIndexPath = userInfo["originalIndexPath"] as? IndexPath
+                if let originalRow = userInfo["originalRow"] as? Int
                 {
                     self.removePlaceholder()
-                    self.insertPlaceholder(indexPath: originalIndexPath)
+                    self.insertPlaceholder(row: originalRow)
                 }
             }
             // ELSE just smoothly reset the table to it's original state
@@ -134,12 +132,12 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
         {
             if (originalTableView == self)
             {
-                if let originalIndexPath = userInfo["originalIndexPath"] as? IndexPath
+                if let originalRow = userInfo["originalRow"] as? Int
                 {
-                    self.placeholderIndexPath = nil
-                    self.ignoreIndexPath = nil
-                    self.reloadRows(at: [originalIndexPath], with: UITableViewRowAnimation.automatic)
-                    self._sortableDataSource?.sortableTableView?(self, itemMoveDidCancel: originalIndexPath)
+                    self.placeholderRow = nil
+                    self.ignoreRow = nil
+                    self.reloadRows(at: [IndexPath(row: originalRow, section: 0)], with: UITableViewRowAnimation.automatic)
+                    self._sortableDataSource?.sortableTableView?(self, itemMoveDidCancel: originalRow)
                 }
             }
         }
@@ -147,91 +145,90 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
     
     //------------------------------------------------------------------------------
     
-    func onItemPickedUp(fromIndexPath:IndexPath)
+    func onItemPickedUp(fromRow:Int)
     {
-        self.ignoreIndexPath = fromIndexPath
-        self.placeholderIndexPath = fromIndexPath
-        self.reloadRows(at: [fromIndexPath], with: .automatic)
-        self._sortableDataSource?.sortableTableView?(self, itemWasPickedUp: fromIndexPath)
+        self.ignoreRow = fromRow
+        self.placeholderRow = fromRow
+        self.reloadRows(at: [IndexPath(row: fromRow, section: 0)], with: .automatic)
+        self._sortableDataSource?.sortableTableView?(self, itemWasPickedUp: fromRow)
     }
     
     //------------------------------------------------------------------------------
     
     func onItemExited()
     {
-        let oldIndexPath = self.placeholderIndexPath
+        let oldRow = self.placeholderRow
         self.beginUpdates()
         self.removePlaceholder()
         self.endUpdates()
-        if let oldIndexPath = oldIndexPath
+        if let oldRow = oldRow
         {
-            
-            self._sortableDelegate?.sortableTableView?(self, draggedItemDidExitTableViewFromIndexPath: oldIndexPath)
+            self._sortableDelegate?.sortableTableView?(self, draggedItemDidExitTableViewFromRow: oldRow)
         }
     }
     
     //------------------------------------------------------------------------------
     
-    func onItemEntered(atIndexPath:IndexPath)
+    func onItemEntered(atRow:Int)
     {
         self.beginUpdates()
-        self.insertPlaceholder(indexPath: atIndexPath)
+        self.insertPlaceholder(atRow: atRow)
         self.endUpdates()
-        self._sortableDelegate?.sortableTableView?(self, draggedItemDidEnterTableViewAtIndexPath: atIndexPath)
+        self._sortableDelegate?.sortableTableView?(self, draggedItemDidEnterTableViewAtRow: atRow)
     }
     
     //------------------------------------------------------------------------------
     
-    func onItemMovedWithin(newIndexPath: IndexPath)
+    func onItemMovedWithin(newRow: Int)
     {
         self.beginUpdates()
         self.removePlaceholder()
-        self.insertPlaceholder(indexPath: newIndexPath)
+        self.insertPlaceholder(atRow: newRow)
         self.endUpdates()
     }
     
     //------------------------------------------------------------------------------
     
-    func onDropItemIntoTableView(atIndexPath:IndexPath)
+    func onDropItemIntoTableView(atRow:Int)
     {
-        self.ignoreIndexPath = nil
-        self.placeholderIndexPath = nil
+        self.ignoreRow = nil
+        self.placeholderRow = nil
         
-        self.reloadRows(at: [atIndexPath], with: .automatic)
+        self.reloadRows(at: [IndexPath(row: atRow, section: 0)], with: .automatic)
     }
     
     //------------------------------------------------------------------------------
     
     func onReleaseItemFromTableView()
     {
-        self.ignoreIndexPath = nil
+        self.ignoreRow = nil
     }
     
     //------------------------------------------------------------------------------
     
     func removePlaceholder()
     {
-        if let placeholderIndexPath = self.placeholderIndexPath
+        if let placeholderRow = self.placeholderRow
         {
-            self.placeholderIndexPath = nil
-            self.deleteRows(at: [placeholderIndexPath], with: UITableViewRowAnimation.automatic)
+            self.placeholderRow = nil
+            self.deleteRows(at: [IndexPath(row: placeholderRow, section: 0)], with: .automatic)
         }
     }
     
     //------------------------------------------------------------------------------
     
-    func insertPlaceholder(indexPath:IndexPath)
+    func insertPlaceholder(atRow:Int)
     {
-        self.placeholderIndexPath = indexPath
-        self.insertRows(at: [indexPath], with: UITableViewRowAnimation.automatic)
+        self.placeholderRow = atRow
+        self.insertRows(at: [IndexPath(row: atRow, section: 0)], with: .automatic)
     }
     
     //------------------------------------------------------------------------------
     
-    func movePlaceholder(from:IndexPath, to:IndexPath)
+    func movePlaceholder(toRow:Int)
     {
         self.removePlaceholder()
-        self.insertPlaceholder(indexPath: to)
+        self.insertPlaceholder(atRow: toRow)
     }
     
     //------------------------------------------------------------------------------
@@ -239,11 +236,11 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
     func adjustedNumberOfRows(_ numberOfRows:Int) -> Int
     {
         var adjustedNumberOfRows = numberOfRows
-        if let _ = self.placeholderIndexPath
+        if let _ = self.placeholderRow
         {
             adjustedNumberOfRows += 1
         }
-        if let _ = self.ignoreIndexPath
+        if let _ = self.ignoreRow
         {
             adjustedNumberOfRows -= 1
         }
@@ -252,58 +249,52 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
     
     //------------------------------------------------------------------------------
     
-    func convertFromDelegateIndexPath(_ indexPath:IndexPath) -> IndexPath
+    func convertFromDelegateRow(_ row:Int) -> Int
     {
-        var adjustedIndexPathRow = indexPath.row
+        var adjustedRow = row
         
-        if let ignoreIndexPathRow = self.ignoreIndexPath?.row
+        if let ignoreRow = self.ignoreRow
         {
-            if (adjustedIndexPathRow >= ignoreIndexPathRow)
+            if (adjustedRow >= ignoreRow)
             {
-                adjustedIndexPathRow -= 1
+                adjustedRow -= 1
             }
         }
         
-        if let placeholderIndexPathRow = self.placeholderIndexPath?.row
+        if let placeholderRow = self.placeholderRow
         {
-            if (adjustedIndexPathRow >= placeholderIndexPathRow)
+            if (adjustedRow >= placeholderRow)
             {
-                adjustedIndexPathRow += 1
+                adjustedRow += 1
             }
         }
-        return IndexPath(row: adjustedIndexPathRow, section: indexPath.section)
+        return adjustedRow
     }
     
     //------------------------------------------------------------------------------
     
-    func convertToDelegateIndexPath(_ indexPath:IndexPath) -> IndexPath
+    func convertToDelegateRow(_ row:Int) -> Int
     {
-        var deAdjustedIndexPathRow = indexPath.row
-        if let ignoreIndexPathRow = self.ignoreIndexPath?.row
+        var deAdjustedRow = row
+        
+        if let ignoreRow = self.ignoreRow
         {
-            if (deAdjustedIndexPathRow >= ignoreIndexPathRow)
+            if (deAdjustedRow >= ignoreRow)
             {
-                deAdjustedIndexPathRow += 1
+                deAdjustedRow += 1
             }
         }
         
-        if let placeholderIndexPathRow = self.placeholderIndexPath?.row
+        if let placeholderRow = self.placeholderRow
         {
-            if (deAdjustedIndexPathRow >= placeholderIndexPathRow)
+            if (deAdjustedRow >= placeholderRow)
             {
-                deAdjustedIndexPathRow -= 1
+                deAdjustedRow -= 1
             }
         }
-        return IndexPath(row: deAdjustedIndexPathRow, section: indexPath.section)
+        return  deAdjustedRow
     }
 
-    //------------------------------------------------------------------------------
-    
-    func setPlaceholder(_ indexPath:IndexPath)
-    {
-        print("setPlaceholder stub")
-    }
-    
     //------------------------------------------------------------------------------
     
     func placeholderCell() -> UITableViewCell
@@ -312,6 +303,8 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
         cell.isHidden = true
         return cell
     }
+    
+    // DELEGATES
 
     //------------------------------------------------------------------------------
     
@@ -429,359 +422,5 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
     public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath)
     {
         self._sortableDataSource?.tableView?(self, commit: editingStyle, forRowAt: self.convertToDelegateIndexPath(indexPath))
-    }
-    
-    //------------------------------------------------------------------------------
-    //------------------------------------------------------------------------------
-    // delegate
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
-    {
-        if let height = self._sortableDelegate?.tableView?(self, heightForRowAt: self.convertToDelegateIndexPath(indexPath))
-        {
-            return height
-            
-        }
-        return tableView.rowHeight
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath)
-    {
-        self._sortableDelegate?.tableView?(self, willDisplay: cell, forRowAt: self.convertToDelegateIndexPath(indexPath))
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int)
-    {
-        self._sortableDelegate?.tableView?(self, willDisplayHeaderView: view, forSection: section)
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, willDisplayFooterView view: UIView, forSection section: Int)
-    {
-        self._sortableDelegate?.tableView?(self, willDisplayFooterView: view, forSection: section)
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, didEndDisplaying cell: UITableViewCell, forRowAt indexPath: IndexPath)
-    {
-        self._sortableDelegate?.tableView?(self, didEndDisplaying: cell, forRowAt: self.convertToDelegateIndexPath(indexPath))
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, didEndDisplayingHeaderView view: UIView, forSection section: Int)
-    {
-        self._sortableDelegate?.tableView?(self, didEndDisplayingHeaderView: view, forSection: section)
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, didEndDisplayingFooterView view: UIView, forSection section: Int)
-    {
-        self._sortableDelegate?.tableView?(self, didEndDisplayingFooterView: view, forSection: section)
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    // Variable height support
-    
-    public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
-    {
-        if let result = self._sortableDelegate?.tableView?(self, heightForHeaderInSection: section)
-        {
-            return result
-        }
-        return UITableViewAutomaticDimension
-    }
-   
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat
-    {
-        if let result = self._sortableDelegate?.tableView?(self, heightForFooterInSection: section)
-        {
-            return result
-        }
-        return UITableViewAutomaticDimension
-    }
-
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat
-    {
-        if let result = self._sortableDelegate?.tableView?(self, estimatedHeightForRowAt: self.convertToDelegateIndexPath(indexPath))
-        {
-            return result
-        }
-        return UITableViewAutomaticDimension
-    }
-
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat
-    {
-        if let result = self._sortableDelegate?.tableView?(self, estimatedHeightForHeaderInSection: section)
-        {
-            return result
-        }
-        return UITableViewAutomaticDimension
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, estimatedHeightForFooterInSection section: Int) -> CGFloat
-    {
-        if let result = self._sortableDelegate?.tableView?(self, estimatedHeightForFooterInSection: section)
-        {
-            return result
-        }
-        return UITableViewAutomaticDimension
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? // custom view for header. will be adjusted to default or specified header height
-    {
-        return self._sortableDelegate?.tableView?(self, viewForHeaderInSection: section)
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? // custom view for footer. will be adjusted to default or specified footer height
-    {
-        return self._sortableDelegate?.tableView?(self, viewForFooterInSection: section)
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, accessoryButtonTappedForRowWith indexPath: IndexPath)
-    {
-        self._sortableDelegate?.tableView?(self, accessoryButtonTappedForRowWith: self.convertToDelegateIndexPath(indexPath))
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, shouldHighlightRowAt indexPath: IndexPath) -> Bool
-    {
-        if let result = self._sortableDelegate?.tableView?(self, shouldHighlightRowAt: self.convertToDelegateIndexPath(indexPath))
-        {
-            return result
-        }
-        return false
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, didHighlightRowAt indexPath: IndexPath)
-    {
-        self._sortableDelegate?.tableView?(self, didHighlightRowAt: self.convertToDelegateIndexPath(indexPath))
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, didUnhighlightRowAt indexPath: IndexPath)
-    {
-        self._sortableDelegate?.tableView?(self, didUnhighlightRowAt: self.convertToDelegateIndexPath(indexPath))
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath?
-    {
-        if let result = self._sortableDelegate?.tableView?(self, willSelectRowAt: self.convertToDelegateIndexPath(indexPath))
-        {
-            return self.convertFromDelegateIndexPath(result)
-        }
-        return nil
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath?
-    {
-        if let result =  self._sortableDelegate?.tableView?(self, willDeselectRowAt: self.convertToDelegateIndexPath(indexPath))
-        {
-            return self.convertFromDelegateIndexPath(result)
-        }
-        return nil
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath)
-    {
-        self._sortableDelegate?.tableView?(self, didSelectRowAt: self.convertToDelegateIndexPath(indexPath))
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath)
-    {
-        self._sortableDelegate?.tableView?(self, didDeselectRowAt: self.convertToDelegateIndexPath(indexPath))
-    }
-    
-    //------------------------------------------------------------------------------
-    // Editing
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle
-    {
-        if let result = self._sortableDelegate?.tableView?(self, editingStyleForRowAt: self.convertToDelegateIndexPath(indexPath))
-        {
-            return result
-        }
-        return .delete
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, titleForDeleteConfirmationButtonForRowAt indexPath: IndexPath) -> String?
-    {
-        return self._sortableDelegate?.tableView?(self, titleForDeleteConfirmationButtonForRowAt: self.convertToDelegateIndexPath(indexPath))
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? // supercedes -tableView:titleForDeleteConfirmationButtonForRowAtIndexPath: if return value is non-nil
-    {
-        return self._sortableDelegate?.tableView?(self, editActionsForRowAt: self.convertToDelegateIndexPath(indexPath))
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    // Controls whether the background is indented while editing.  If not implemented, the default is YES.  This is unrelated to the indentation level below.  This method only applies to grouped style table views.
-    public func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool
-    {
-        if let result = self._sortableDelegate?.tableView?(self, shouldIndentWhileEditingRowAt: self.convertToDelegateIndexPath(indexPath))
-        {
-            return result
-        }
-        return true
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    // The willBegin/didEnd methods are called whenever the 'editing' property is automatically changed by the table (allowing insert/delete/move). This is done by a swipe activating a single row
-    public func tableView(_ tableView: UITableView, willBeginEditingRowAt indexPath: IndexPath)
-    {
-        self._sortableDelegate?.tableView?(self, willBeginEditingRowAt: self.convertToDelegateIndexPath(indexPath))
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, didEndEditingRowAt indexPath: IndexPath?)
-    {
-        var convertedIndexPath:IndexPath?
-        if let indexPath = indexPath
-        {
-            convertedIndexPath = self.convertToDelegateIndexPath(indexPath)
-        }
-        self._sortableDelegate?.tableView?(self, didEndEditingRowAt: convertedIndexPath)
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    
-    // Moving/reordering
-    
-    // Allows customization of the target row for a particular row as it is being moved/reordered
-    public func tableView(_ tableView: UITableView, targetIndexPathForMoveFromRowAt sourceIndexPath: IndexPath, toProposedIndexPath proposedDestinationIndexPath: IndexPath) -> IndexPath
-    {
-        if let result = self._sortableDelegate?.tableView?(self, targetIndexPathForMoveFromRowAt: self.convertToDelegateIndexPath(sourceIndexPath), toProposedIndexPath: self.convertToDelegateIndexPath(proposedDestinationIndexPath))
-        {
-            return self.convertFromDelegateIndexPath(result)
-        }
-        return proposedDestinationIndexPath
-    }
-    
-    // Indentation
-    
-    public func tableView(_ tableView: UITableView, indentationLevelForRowAt indexPath: IndexPath) -> Int // return 'depth' of row for hierarchies
-    {
-        if let result = self._sortableDelegate?.tableView?(self, indentationLevelForRowAt: self.convertToDelegateIndexPath(indexPath))
-        {
-            return result
-        }
-        return 0
-    }
-    
-    // Copy/Paste.  All three methods must be implemented by the delegate.
-    
-    public func tableView(_ tableView: UITableView, shouldShowMenuForRowAt indexPath: IndexPath) -> Bool
-    {
-        if let result = self._sortableDelegate?.tableView?(self, shouldShowMenuForRowAt: self.convertToDelegateIndexPath(indexPath))
-        {
-            return result
-        }
-        return false
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    
-    public func tableView(_ tableView: UITableView, canPerformAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?) -> Bool
-    {
-        if let result = self._sortableDelegate?.tableView?(self, canPerformAction: action, forRowAt: self.convertToDelegateIndexPath(indexPath), withSender: sender)
-        {
-            return result
-        }
-        return false
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, performAction action: Selector, forRowAt indexPath: IndexPath, withSender sender: Any?)
-    {
-        self._sortableDelegate?.tableView?(self, performAction: action, forRowAt: self.convertToDelegateIndexPath(indexPath), withSender: sender)
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    // Focus
-    
-    public func tableView(_ tableView: UITableView, canFocusRowAt indexPath: IndexPath) -> Bool
-    {
-        if let result = self._sortableDelegate?.tableView?(self, canFocusRowAt: self.convertToDelegateIndexPath(indexPath))
-        {
-            return result
-        }
-        return false
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, shouldUpdateFocusIn context: UITableViewFocusUpdateContext) -> Bool
-    {
-        if let result = self._sortableDelegate?.tableView?(self, shouldUpdateFocusIn: context)
-        {
-            return result
-        }
-        return false
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    
-    public func tableView(_ tableView: UITableView, didUpdateFocusIn context: UITableViewFocusUpdateContext, with coordinator: UIFocusAnimationCoordinator)
-    {
-        self._sortableDelegate?.tableView?(self, didUpdateFocusIn: context, with: coordinator)
-    }
-
-    //------------------------------------------------------------------------------
-    
-    public func indexPathForPreferredFocusedView(in tableView: UITableView) -> IndexPath?
-    {
-        if let result = self._sortableDelegate?.indexPathForPreferredFocusedView?(in: self)
-        {
-            return self.convertFromDelegateIndexPath(result)
-        }
-        return nil
     }
 }
