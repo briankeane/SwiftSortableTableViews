@@ -76,7 +76,7 @@ public class SortableTableViewHandler:NSObject
                 {
                     let oldHoveredOverTableView = self.itemInMotion?.hoveredOverTableView
                     
-                    self.itemInMotion?.hoveredOverIndexPath = tableViewPressed?.indexPathForRow(at: (tableViewPressed!.convert(pressedLocationInParentView, from: self.containingView)))
+                    self.itemInMotion?.hoveredOverRow = tableViewPressed?.indexPathForRow(at: (tableViewPressed!.convert(pressedLocationInParentView, from: self.containingView)))?.row
                     self.itemInMotion?.hoveredOverTableView = tableViewPressed
                     
                     // IF a tableView was exited:
@@ -88,9 +88,9 @@ public class SortableTableViewHandler:NSObject
                     // IF a tableView was entered:
                     if let enteredTableView = self.itemEnteredTableView(oldTableView: oldHoveredOverTableView, newTableView: tableViewPressed)
                     {
-                        if let hoveredOverIndexPath = self.itemInMotion?.hoveredOverIndexPath
+                        if let hoveredOverRow = self.itemInMotion?.hoveredOverRow
                         {
-                            enteredTableView.onItemEntered(atIndexPath: hoveredOverIndexPath)
+                            enteredTableView.onItemEntered(atRow: hoveredOverRow)
                         }
                         
                     }
@@ -98,9 +98,9 @@ public class SortableTableViewHandler:NSObject
                     // IF the hoveredOver cell changed within the tableView
                     if let activeTableView = self.indexPathChangedWithinTableView(oldTableView: oldHoveredOverTableView, newTableView: tableViewPressed)
                     {
-                        if let hoveredOverIndexPath = self.itemInMotion?.hoveredOverIndexPath
+                        if let hoveredOverRow = self.itemInMotion?.hoveredOverRow
                         {
-                            activeTableView.onItemMovedWithin(newIndexPath: hoveredOverIndexPath)
+                            activeTableView.onItemMovedWithin(newRow: hoveredOverRow)
                         }
                     }
                 }
@@ -146,22 +146,22 @@ public class SortableTableViewHandler:NSObject
     {
         let pressedLocationInParentView = longPress.location(in: self.containingView)
         let tableViewPressed = self.sortableTableViewAtPoint(pressedLocationInParentView)
-        var pressedIndexPath:IndexPath?
+        var pressedRow:Int?
         if let tableViewPressed = tableViewPressed
         {
             let pointInTableView = longPress.location(in: tableViewPressed)
-            pressedIndexPath = tableViewPressed.indexPathForRow(at: pointInTableView)
+            pressedRow = tableViewPressed.indexPathForRow(at: pointInTableView)?.row
         }
         
         if let itemInMotion = self.itemInMotion
         {
             // IF released over nothing
-            if ((tableViewPressed == nil) || (pressedIndexPath == nil))
+            if ((tableViewPressed == nil) || (pressedRow == nil))
             {
                 self.cancelMove()
             }
             // ELSE IF denied by either SortableTable delegate
-            else if (!self.canBeReleased(itemInMotion.originalTableView, originalIndexPath: itemInMotion.originalIndexPath, desiredIndexPath: pressedIndexPath!, receivingTableView: tableViewPressed!))
+            else if (!self.canBeReleased(itemInMotion.originalTableView, originalRow: itemInMotion.originalRow, desiredRow: pressedRow!, receivingTableView: tableViewPressed!))
             {
                 self.cancelMove()
             }
@@ -172,50 +172,50 @@ public class SortableTableViewHandler:NSObject
                 if (tableViewPressed! == itemInMotion.originalTableView)
                 {
                     // call move delegate
-                    tableViewPressed!.sortableDataSource?.sortableTableView(tableViewPressed!, willDropItem: itemInMotion.originalIndexPath, newIndexPath: pressedIndexPath!)
+                    tableViewPressed!.sortableDataSource?.sortableTableView(tableViewPressed!, willDropItem: itemInMotion.originalRow, newRow: pressedRow!)
                     
                     
                     // animate drop
-                    let newCell = tableViewPressed!.cellForRow(at: pressedIndexPath!)
+                    let newCell = tableViewPressed!.cellForRow(at: IndexPath(row: pressedRow!, section: 0))
                     let newCenter = newCell!.center
                     let newCenterInContainerView = self.containingView.convert(newCenter, from: tableViewPressed!)
                     
-                    tableViewPressed!.onDropItemIntoTableView(atIndexPath: pressedIndexPath!)
+                    tableViewPressed!.onDropItemIntoTableView(atRow: pressedRow!)
                     NotificationCenter.default.post(name: SortableTableViewEvents.dropItemWillAnimate, object: nil, userInfo: ["originalTableView": itemInMotion.originalTableView,
-                                                                                                                              "originalIndexPath": itemInMotion.originalIndexPath,
+                                                                                                                              "originalRow": itemInMotion.originalRow,
                                                                                                                               "newTableView": tableViewPressed!,
-                                                                                                                              "newIndexPath": pressedIndexPath!])
+                                                                                                                              "newRow": pressedRow!])
                     self.moveCellSnapshot(newCenterInContainerView, disappear: true, onCompletion:
                     {
                         (finished) in
                         NotificationCenter.default.post(name: SortableTableViewEvents.dropItemDidAnimate, object: nil, userInfo: ["originalTableView": itemInMotion.originalTableView,
-                                                                                                                                  "originalIndexPath": itemInMotion.originalIndexPath,
+                                                                                                                                  "originalRow": itemInMotion.originalRow,
                                                                                                                                   "newTableView": tableViewPressed!,
-                                                                                                                                  "newIndexPath": pressedIndexPath!])
+                                                                                                                                  "newRow": pressedRow!])
                     })
                 }
                 // ELSE dropping from one table to another
                 else
                 {
                     // call delegate functions
-                    tableViewPressed?.sortableDataSource?.sortableTableView?(itemInMotion.originalTableView, willReleaseItem: itemInMotion.originalIndexPath, newIndexPath: pressedIndexPath!, receivingTableView: tableViewPressed!)
-                    itemInMotion.originalTableView.sortableDataSource?.sortableTableView?(itemInMotion.originalTableView, willReceiveItem: itemInMotion.originalIndexPath, newIndexPath: pressedIndexPath!, receivingTableView: tableViewPressed!)
+                    tableViewPressed?.sortableDataSource?.sortableTableView?(itemInMotion.originalTableView, willReleaseItem: itemInMotion.originalRow, newRow: pressedRow!, receivingTableView: tableViewPressed!)
+                    itemInMotion.originalTableView.sortableDataSource?.sortableTableView?(itemInMotion.originalTableView, willReceiveItem: itemInMotion.originalRow, newRow: pressedRow!, receivingTableView: tableViewPressed!)
                     
                     
-                    let newCell = tableViewPressed!.cellForRow(at: pressedIndexPath!)
+                    let newCell = tableViewPressed!.cellForRow(at: IndexPath(row: pressedRow!, section: 0))
                     let newCenter = newCell!.center
                     let newCenterInContainerView = self.containingView.convert(newCenter, from: tableViewPressed!)
                     
-                    tableViewPressed!.onDropItemIntoTableView(atIndexPath: pressedIndexPath!)
+                    tableViewPressed!.onDropItemIntoTableView(atRow: pressedRow!)
                     itemInMotion.originalTableView.onReleaseItemFromTableView()
                     
                     self.moveCellSnapshot(newCenterInContainerView, disappear: true, onCompletion:
                     {
                         (finished) in
                         NotificationCenter.default.post(name: SortableTableViewEvents.dropItemDidAnimate, object: nil, userInfo: ["originalTableView": itemInMotion.originalTableView,
-                                                                                                                                   "originalIndexPath": itemInMotion.originalIndexPath,
+                                                                                                                                   "originalRow": itemInMotion.originalRow,
                                                                                                                                    "newTableView": tableViewPressed!,
-                                                                                                                                   "newIndexPath": pressedIndexPath!])
+                                                                                                                                   "newRow": pressedRow!])
                     })
                 }
             }
@@ -224,16 +224,16 @@ public class SortableTableViewHandler:NSObject
     
     //------------------------------------------------------------------------------
     
-    func canBeReleased(_ releasingTableView: SortableTableView, originalIndexPath: IndexPath, desiredIndexPath:IndexPath, receivingTableView:SortableTableView) -> Bool
+    func canBeReleased(_ releasingTableView: SortableTableView, originalRow: Int, desiredRow:Int, receivingTableView:SortableTableView) -> Bool
     {
-        if let canBeReleased = releasingTableView.sortableDataSource?.sortableTableView?(releasingTableView, shouldReleaseItem: originalIndexPath, desiredIndexPath: desiredIndexPath, receivingTableView: receivingTableView)
+        if let canBeReleased = releasingTableView.sortableDataSource?.sortableTableView?(releasingTableView, shouldReleaseItem: originalRow, desiredRow: desiredRow, receivingTableView: receivingTableView)
         {
             if (canBeReleased == false)
             {
                 return false
             }
         }
-        if let canBeReceived = receivingTableView.sortableDataSource?.sortableTableView?(releasingTableView, shouldReceiveItem: originalIndexPath, desiredIndexPath: desiredIndexPath, receivingTableView: receivingTableView)
+        if let canBeReceived = receivingTableView.sortableDataSource?.sortableTableView?(releasingTableView, shouldReceiveItem: originalRow, desiredRow: desiredRow, receivingTableView: receivingTableView)
         {
             if (canBeReceived == false)
             {
@@ -250,7 +250,7 @@ public class SortableTableViewHandler:NSObject
         if let itemInMotion = self.itemInMotion
         {
             NotificationCenter.default.post(name: SortableTableViewEvents.cancelMoveWillAnimate, object: nil, userInfo: ["originalTableView": itemInMotion.originalTableView,
-                 "originalIndexPath": itemInMotion.originalIndexPath,
+                 "originalRow": itemInMotion.originalRow,
                 ])
             self.moveCellSnapshot(itemInMotion.originalCenter, disappear: true, onCompletion:
             {
@@ -258,7 +258,7 @@ public class SortableTableViewHandler:NSObject
                 if (finished)
                 {
                     NotificationCenter.default.post(name: SortableTableViewEvents.cancelMoveDidAnimate, object: nil, userInfo: ["originalTableView": itemInMotion.originalTableView,
-                                                                                                                                "originalIndexPath": itemInMotion.originalIndexPath
+                                                                                                                                "originalRow": itemInMotion.originalRow
                                                                                                                                 ])
                 }
             })
@@ -271,15 +271,15 @@ public class SortableTableViewHandler:NSObject
     {
         let pressedLocationInParentView = longPress.location(in: self.containingView)
         let tableViewPressed = self.sortableTableViewAtPoint(pressedLocationInParentView)
-        var pressedIndexPath:IndexPath?
+        var pressedRow:Int?
         if let tableViewPressed = tableViewPressed
         {
             let pointInTableView = longPress.location(in: tableViewPressed)
-            pressedIndexPath = tableViewPressed.indexPathForRow(at: pointInTableView)
+            pressedRow = tableViewPressed.indexPathForRow(at: pointInTableView)?.row
         }
         
         return ((self.itemInMotion?.hoveredOverTableView != tableViewPressed) ||
-                (self.itemInMotion?.hoveredOverIndexPath != pressedIndexPath))
+                (self.itemInMotion?.hoveredOverRow != pressedRow))
     }
     
     //------------------------------------------------------------------------------
@@ -287,29 +287,30 @@ public class SortableTableViewHandler:NSObject
     func handleLongPressBegan(longPress:UILongPressGestureRecognizer, sortableTableViewPressed:SortableTableView)
     {
         let pointInTableView = longPress.location(in: sortableTableViewPressed)
-        let pressedIndexPath = sortableTableViewPressed.indexPathForRow(at: pointInTableView)
-        if let pressedIndexPath = pressedIndexPath
+        let pressedRow = sortableTableViewPressed.indexPathForRow(at: pointInTableView)?.row
+        if let pressedRow = pressedRow
         {
-            if (sortableTableViewPressed.canBePickedUp(indexPath: pressedIndexPath))
+            if (sortableTableViewPressed.canBePickedUp(fromRow: pressedRow))
             {
-                self.pickupCell(atIndexPath: pressedIndexPath, longPress: longPress, sortableTableViewPressed: sortableTableViewPressed)
+                self.pickupCell(atRow: pressedRow, longPress: longPress, sortableTableViewPressed: sortableTableViewPressed)
             }
         }
     }
     
     //------------------------------------------------------------------------------
     
-    func pickupCell(atIndexPath:IndexPath, longPress:UILongPressGestureRecognizer, sortableTableViewPressed:SortableTableView)
+    func pickupCell(atRow:Int, longPress:UILongPressGestureRecognizer, sortableTableViewPressed:SortableTableView)
     {
+        let atIndexPath = IndexPath(row: atRow, section: 0)
         if let cell = sortableTableViewPressed.cellForRow(at: atIndexPath)
         {
             let cellSnapshot = self.createCellSnapshot(cell)
-            self.itemInMotion = SortableTableViewItem(originalTableView: sortableTableViewPressed, originalIndexPath: atIndexPath, originalCenter: self.containingView.convert(cell.center, from: sortableTableViewPressed), cellSnapshot: cellSnapshot)
+            self.itemInMotion = SortableTableViewItem(originalTableView: sortableTableViewPressed, originalRow: atRow, originalCenter: self.containingView.convert(cell.center, from: sortableTableViewPressed), cellSnapshot: cellSnapshot)
             cellSnapshot.center = self.containingView.convert(cell.center, from: sortableTableViewPressed)
             cellSnapshot.alpha = 0.0
             self.containingView.addSubview(cellSnapshot)
             
-            sortableTableViewPressed.onItemPickedUp(fromIndexPath: atIndexPath)
+            sortableTableViewPressed.onItemPickedUp(fromRow: atRow)
 
             UIView.animate(withDuration: 0.25, animations:
             {
@@ -324,7 +325,7 @@ public class SortableTableViewHandler:NSObject
                 {
                     //broadcast that item pickup has been animated
                    NotificationCenter.default.post(name: SortableTableViewEvents.pickupAnimated, object: nil, userInfo: ["originalTableView":sortableTableViewPressed,
-                        "originalIndexPath": atIndexPath])
+                        "originalRow": atRow])
                 }
             })
         }

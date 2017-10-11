@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDelegate
+open class SortableTableView:UITableView
 {
     var movingSortableItem:SortableTableViewItem?
     var ignoreRow:Int?
@@ -28,7 +28,10 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
         set
         {
             self._sortableDelegate = newValue
-            self.delegate = SortableTableViewDelegateAdapter(tableView: self, delegate: newValue)
+            if let newValue = newValue
+            {
+                self.delegate = SortableTableViewDelegateAdapter(tableView: self, delegate: newValue)
+            }
         }
     }
     open var sortableDataSource:SortableTableViewDataSource?
@@ -40,7 +43,10 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
         set
         {
             self._sortableDataSource = newValue
-            self.dataSource = self
+            if let newValue = newValue
+            {
+                self.dataSource = SortableTableViewDataSourceAdapter(tableView: self, dataSource: newValue)
+            }
         }
     }
     
@@ -113,7 +119,7 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
                 if let originalRow = userInfo["originalRow"] as? Int
                 {
                     self.removePlaceholder()
-                    self.insertPlaceholder(row: originalRow)
+                    self.insertPlaceholder(atRow: originalRow)
                 }
             }
             // ELSE just smoothly reset the table to it's original state
@@ -233,22 +239,6 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
     
     //------------------------------------------------------------------------------
     
-    func adjustedNumberOfRows(_ numberOfRows:Int) -> Int
-    {
-        var adjustedNumberOfRows = numberOfRows
-        if let _ = self.placeholderRow
-        {
-            adjustedNumberOfRows += 1
-        }
-        if let _ = self.ignoreRow
-        {
-            adjustedNumberOfRows -= 1
-        }
-        return adjustedNumberOfRows
-    }
-    
-    //------------------------------------------------------------------------------
-    
     func convertFromDelegateRow(_ row:Int) -> Int
     {
         var adjustedRow = row
@@ -308,12 +298,12 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
 
     //------------------------------------------------------------------------------
     
-    func canBePickedUp(indexPath:IndexPath) -> Bool
+    func canBePickedUp(fromRow:Int) -> Bool
     {
         // IF the delegate has impleneted canBePickedUp, use that
         if let sortableDataSource = sortableDataSource
         {
-            let result = sortableDataSource.sortableTableView?(self, canBePickedUp: indexPath)
+            let result = sortableDataSource.sortableTableView?(self, canBePickedUp: fromRow)
             if let result = result
             {
                 return result
@@ -321,106 +311,5 @@ open class SortableTableView:UITableView, UITableViewDataSource, UITableViewDele
         }
         // default to true
         return true
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
-    {
-        if (indexPath == self.placeholderIndexPath)
-        {
-            return self.placeholderCell()
-        }
-        return (self.sortableDataSource?.tableView(self, cellForRowAt: self.convertToDelegateIndexPath(indexPath)))!
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int
-    {
-        if let numberOfRows = self.sortableDataSource?.tableView(self, numberOfRowsInSection: section)
-        {
-            return self.adjustedNumberOfRows(numberOfRows)
-        }
-        return 0
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func numberOfSections(in tableView: UITableView) -> Int
-    {
-        if let numberOfSections = self.sortableDataSource?.numberOfSections?(in: self)
-        {
-            return numberOfSections
-        }
-        return 0
-    }
-    
-    //------------------------------------------------------------------------------
-    //------------------------------------------------------------------------------
-    // Pass-Through DataSource methods
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool
-    {
-        if let response = self._sortableDataSource?.tableView?(self, canEditRowAt: indexPath)
-        {
-            return response
-        }
-        return false
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return self._sortableDataSource?.tableView?(self, titleForHeaderInSection: section)
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
-        return self._sortableDataSource?.tableView?(self, titleForFooterInSection: section)
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool
-    {
-        if let response = self._sortableDataSource?.tableView?(self, canMoveRowAt: indexPath)
-        {
-            return response
-        }
-        return false
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func sectionIndexTitles(for tableView: UITableView) -> [String]?
-    {
-        return self._sortableDataSource?.sectionIndexTitles?(for: self)
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, sectionForSectionIndexTitle title: String, at index: Int) -> Int {
-        if let response = self._sortableDataSource?.tableView?(self, sectionForSectionIndexTitle: title, at: index)
-        {
-            return response
-        }
-        return 0
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath)
-    {
-        self._sortableDataSource?.tableView?(self, moveRowAt: sourceIndexPath, to: destinationIndexPath)
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath)
-    {
-        self._sortableDataSource?.tableView?(self, commit: editingStyle, forRowAt: self.convertToDelegateIndexPath(indexPath))
     }
 }

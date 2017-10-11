@@ -11,6 +11,8 @@
 		4B34F1871F5EF39000A0199E /* SortableTableViewHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B34F1851F5EF39000A0199E /* SortableTableViewHandler.swift */; };
 		4B8171841F8D72E3003C51EE /* SortableTableViewDelegateAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8171831F8D72E3003C51EE /* SortableTableViewDelegateAdapter.swift */; };
 		4B8171851F8D72E3003C51EE /* SortableTableViewDelegateAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8171831F8D72E3003C51EE /* SortableTableViewDelegateAdapter.swift */; };
+		4B8171871F8E5F28003C51EE /* SortableTableViewDataSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8171861F8E5F28003C51EE /* SortableTableViewDataSourceAdapter.swift */; };
+		4B8171881F8E5F28003C51EE /* SortableTableViewDataSourceAdapter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B8171861F8E5F28003C51EE /* SortableTableViewDataSourceAdapter.swift */; };
 		4BC869B71F6041B7006AA57C /* SortableTableViewEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC869B61F6041B7006AA57C /* SortableTableViewEvents.swift */; };
 		4BC869B81F6041B7006AA57C /* SortableTableViewEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC869B61F6041B7006AA57C /* SortableTableViewEvents.swift */; };
 		4BC869B91F6041B7006AA57C /* SortableTableViewEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BC869B61F6041B7006AA57C /* SortableTableViewEvents.swift */; };
@@ -59,6 +61,7 @@
 /* Begin PBXFileReference section */
 		4B34F1851F5EF39000A0199E /* SortableTableViewHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableViewHandler.swift; path = ../Sources/SortableTableViewHandler.swift; sourceTree = "<group>"; };
 		4B8171831F8D72E3003C51EE /* SortableTableViewDelegateAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableViewDelegateAdapter.swift; path = ../Sources/ios/SortableTableViewDelegateAdapter.swift; sourceTree = "<group>"; };
+		4B8171861F8E5F28003C51EE /* SortableTableViewDataSourceAdapter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableViewDataSourceAdapter.swift; path = ../Sources/SortableTableViewDataSourceAdapter.swift; sourceTree = "<group>"; };
 		4B82C64C1F642FFD00BD074F /* SwiftSortableTableViews.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = SwiftSortableTableViews.podspec; path = ../SwiftSortableTableViews.podspec; sourceTree = "<group>"; };
 		4BC869B61F6041B7006AA57C /* SortableTableViewEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableViewEvents.swift; path = ../Sources/SortableTableViewEvents.swift; sourceTree = "<group>"; };
 		4BD902551F5DCB7B00DC2E73 /* SwiftSortableTableViewsIOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = SwiftSortableTableViewsIOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -117,6 +120,7 @@
 			isa = PBXGroup;
 			children = (
 				4BD902B41F5DCFD600DC2E73 /* SortableTableView.swift */,
+				4B8171861F8E5F28003C51EE /* SortableTableViewDataSourceAdapter.swift */,
 				4B8171831F8D72E3003C51EE /* SortableTableViewDelegateAdapter.swift */,
 				4BD902C51F5E020D00DC2E73 /* SortableTableViewItem.swift */,
 				4BD902BB1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift */,
@@ -381,6 +385,7 @@
 				4BD902BC1F5DD46A00DC2E73 /* SortableTableviewDelegateProtocol.swift in Sources */,
 				4B8171841F8D72E3003C51EE /* SortableTableViewDelegateAdapter.swift in Sources */,
 				4BD902C11F5DD9D900DC2E73 /* SwiftSortableTableviewDataSourceProtocol.swift in Sources */,
+				4B8171871F8E5F28003C51EE /* SortableTableViewDataSourceAdapter.swift in Sources */,
 				4BD902B51F5DCFD600DC2E73 /* SortableTableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -396,6 +401,7 @@
 				4B8171851F8D72E3003C51EE /* SortableTableViewDelegateAdapter.swift in Sources */,
 				4BD902C21F5DD9D900DC2E73 /* SwiftSortableTableviewDataSourceProtocol.swift in Sources */,
 				4B34F1871F5EF39000A0199E /* SortableTableViewHandler.swift in Sources */,
+				4B8171881F8E5F28003C51EE /* SortableTableViewDataSourceAdapter.swift in Sources */,
 				4BD902B61F5DCFD600DC2E73 /* SortableTableView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
