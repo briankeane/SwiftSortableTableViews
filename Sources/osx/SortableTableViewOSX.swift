@@ -8,30 +8,6 @@
 
 import Cocoa
 
-extension NSView
-{
-    func imageRepresentation() -> NSImage
-    {
-//        let wasHidden = self.isHidden
-//        let wantedLayer = self.wantsLayer
-//        
-//        self.isHidden = false
-//        self.wantsLayer = true
-//        
-//        let image = NSImage(size: self.bounds.size)
-//        image.lockFocus()
-//        
-//        let context = NSGraphicsContext.current()!.cgContext
-//        self.layer?.render(in: context)
-//        image.unlockFocus()
-//        
-//        self.wantsLayer = wantedLayer
-//        self.isHidden = wasHidden
-        return NSImage(data: self.dataWithPDF(inside: self.bounds))!
-//        return image
-    }
-}
-
 public class SortableTableView: NSTableView
 {
     var movingSortableItem:SortableTableViewItem?
@@ -105,53 +81,10 @@ public class SortableTableView: NSTableView
                 {
                     session.enumerateDraggingItems(options: .concurrent, for: self, classes: [NSPasteboardItem.self], searchOptions: [:]) { (item, index, stop) in
                         
-        
+                        let image = self.createCellSnaphot(view)
                         
-                        // prepare context
-                        let context = NSGraphicsContext.current()
-                        context?.saveGraphicsState()
+                        item.draggingFrame = NSMakeRect(item.draggingFrame.origin.x, item.draggingFrame.origin.y, image.size.width, image.size.height)
                         
-                        // offset to account for shadow
-                        let imageOffset:CGFloat = 5
-                        
-                        // supply a background image
-                        let contentSize = item.draggingFrame.size
-                        let imageSize = NSMakeSize(contentSize.width, contentSize.height + imageOffset)
-                        let image = NSImage(size: imageSize)
-                        image.lockFocus()
-                        
-                        // define a shadow
-                        let shadow = NSShadow()
-                        shadow.shadowColor = NSColor.lightGray.withAlphaComponent(0.2)
-                        shadow.shadowOffset = NSMakeSize(imageOffset, -imageOffset)
-                        shadow.shadowBlurRadius = 3
-                        shadow.set()
-                        
-                        // define content frame
-                        let contentFrame = NSMakeRect(0, imageOffset, contentSize.width, contentSize.height)
-                        var contentPath = NSBezierPath(rect: contentFrame)
-                        
-                        // draw content border and shadow
-                        NSColor.lightGray.withAlphaComponent(1.0).set()
-                        contentPath.stroke()
-                        context?.restoreGraphicsState()
-                        
-                        // fill content
-                        NSColor.white.set()
-                        contentPath = NSBezierPath(rect: NSInsetRect(contentFrame, 1, 1))
-                        contentPath.fill()
-                        
-                        view.layer?.render(in: NSGraphicsContext.current()!.cgContext)
-                        
-                        image.unlockFocus()
-                        
-                        // update the dragging item frame to accomodate larger image
-                        item.draggingFrame = NSMakeRect(item.draggingFrame.origin.x , item.draggingFrame.origin.y, imageSize.width, imageSize.height)
-                        
-                        // define additional image component for drag
-                        
-                        
-
                         let backgroundImageComponent = NSDraggingImageComponent(key: "background")
                         backgroundImageComponent.contents = image
                         backgroundImageComponent.frame = NSMakeRect(0, 0, image.size.width, image.size.height)
@@ -162,6 +95,7 @@ public class SortableTableView: NSTableView
                         }
                         
                     }
+                    self.onItemPickedUp(fromRow: row)
                 }
             }
         }
@@ -173,10 +107,27 @@ public class SortableTableView: NSTableView
         let image = NSImage(size: inputView.bounds.size)
         
         image.lockFocus()
-//        let ctx:CGContext = NSGraphicsContext.current()!.graphicsPort
+
         inputView.layer?.render(in: NSGraphicsContext.current()!.cgContext)
         image.unlockFocus()
-        return image
+        
+        // create a new view for shadows
+        let snapshotView:NSView = NSImageView(image: image)
+        (snapshotView as! NSImageView).sizeToFit()
+        snapshotView.wantsLayer = true
+        snapshotView.layer?.masksToBounds = false
+        snapshotView.layer?.cornerRadius = 0.0
+        snapshotView.layer?.shadowOffset = CGSize(width: -5.0, height: 0.0)
+        snapshotView.layer?.shadowRadius = 5.0
+        snapshotView.layer?.shadowOpacity = 0.4
+        snapshotView.layer?.bounds.size = snapshotView.fittingSize
+        
+        let newImage = NSImage(size: snapshotView.layer!.preferredFrameSize())
+        newImage.lockFocus()
+        snapshotView.layer?.render(in: NSGraphicsContext.current()!.cgContext)
+        newImage.unlockFocus()
+        
+        return newImage
     }
 
     //------------------------------------------------------------------------------
@@ -201,6 +152,7 @@ public class SortableTableView: NSTableView
     
     func setupListeners()
     {
+        self.register(forDraggedTypes: [kUTTypeText as String])
         self.observers.append(
             NotificationCenter.default.addObserver(forName: SortableTableViewEvents.cancelMoveWillAnimate , object: nil, queue: .main)
             {
@@ -357,6 +309,18 @@ public class SortableTableView: NSTableView
         self.placeholderRow = atRow
         self.insertRows(at: IndexSet(integer: atRow), withAnimation: .slideDown)
     }
+    
+    func onItemPickedUp(fromRow:Int)
+    {
+        puts("onItemPickedUp")
+        self.ignoreRow = fromRow
+        self.placeholderRow = fromRow
+        
+        // TODO: Make this work for the single row
+        self.reloadData()
+//        self.reloadData(forRowIndexes: IndexSet(integer: fromRow), columnIndexes: IndexSet(integer: 0))
+        self._sortableDataSource?.sortableTableView?(self, itemWasPickedUp: fromRow)
+    }
 
     //------------------------------------------------------------------------------
     
@@ -364,6 +328,14 @@ public class SortableTableView: NSTableView
     {
         self.removePlaceholder()
         self.insertPlaceholder(atRow: toRow)
+    }
+    
+    func onItemMovedWithin(newRow: Int)
+    {
+        self.beginUpdates()
+        self.removePlaceholder()
+        self.insertPlaceholder(atRow: newRow)
+        self.endUpdates()
     }
     
     func onItemExited()
@@ -400,5 +372,13 @@ public class SortableTableView: NSTableView
         }
         // default to true
         return true
+    }
+    
+    func placeholderCell() -> NSTableCellView
+    {
+        puts("placeholderCell()")
+        let cell = NSTableCellView()
+        cell.isHidden = true
+        return cell
     }
 }

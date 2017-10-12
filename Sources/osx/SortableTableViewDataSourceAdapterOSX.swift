@@ -47,19 +47,14 @@ class SortableTableViewDataSourceAdapter: NSObject, NSTableViewDataSource
         puts("pasteboardWriterForRow")
         if (self.dataSource.sortableTableView?(self.tableView, canBePickedUp: self.tableView.convertToDelegateRow(row)) == true)
         {
-            puts("can be picked up")
+            puts("canBePickedUp")
+            let item = NSPasteboardItem()
+            item.setString("test", forType: kUTTypeText as String)
+            return item
         }
-        else
-        {
-            puts("nope")
-        }
-        
-        let item = NSPasteboardItem()
-        item.setString("test", forType: "test.text")
-        return item
-    
+        return nil
     }
-//////
+
     func tableView(_ tableView: NSTableView, writeRowsWith rowIndexes: IndexSet, to pboard: NSPasteboard) -> Bool
     {
         puts("writeRowsWith")
@@ -113,7 +108,12 @@ class SortableTableViewDataSourceAdapter: NSObject, NSTableViewDataSource
 //        <#code#>
 //    }
 //    
-//    func tableView(_ tableView: NSTableView, validateDrop info: NSDraggingInfo, proposedRow row: Int, proposedDropOperation dropOperation: NSTableViewDropOperation) -> NSDragOperation {
-//        <#code#>
-//    }
+    
+
+    
+    func tableView(_ tableView: NSTableView, validateDrop info: NSDraggingInfo, proposedRow row: Int, proposedDropOperation dropOperation: NSTableViewDropOperation) -> NSDragOperation
+    {
+        (tableView as? SortableTableView)?.onItemMovedWithin(newRow: row)
+        return .every
+    }
 }

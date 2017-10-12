@@ -136,6 +136,10 @@ class SortableTableViewDelegateAdapter: NSObject, NSTableViewDelegate
     }
     
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
+        if (row == self.tableView.placeholderRow)
+        {
+            return self.tableView.placeholderCell()
+        }
         return self.delegate.tableView?(self.tableView, viewFor: tableColumn, row: self.tableView.convertToDelegateRow(row))
     }
     
