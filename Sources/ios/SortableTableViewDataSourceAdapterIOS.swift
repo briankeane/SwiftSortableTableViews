@@ -1,5 +1,5 @@
 //
-//  SortableTableViewDataSourceAdapter.swift
+//  SortableTableViewDataSourceAdapterIOS.swift
 //  SwiftSortableTableViews
 //
 //  Created by Brian D Keane on 10/11/17.

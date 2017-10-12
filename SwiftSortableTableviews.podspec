@@ -14,15 +14,17 @@ Pod::Spec.new do |s|
     s.license      = { :type => 'MIT' }
     s.author       = { "Brian Keane" => "brian@playola.fm" }
     s.ios.deployment_target = '10.3'
-    # s.osx.deployment_target = '10.12'
+    s.osx.deployment_target = '10.12'
     s.source       = { :git => "https://github.com/briankeane/SwiftSortableTableViews.git", :tag => s.version }
     s.exclude_files = []
     # s.ios.frameworks = 'AudioToolbox','AVFoundation','GLKit', 'Accelerate'
     # s.osx.frameworks = 'AudioToolbox','AudioUnit','CoreAudio','QuartzCore','OpenGL','GLKit', 'Accelerate'
     # s.requires_arc = true;
     # s.default_subspec = 'Full'    
-    s.source_files = 'Sources/**/*.{h,m,swift}'
 
+    s.source_files = 'Sources/**/*.{h,m,swift}'
+    s.ios.exclude_files = 'Sources/osx/**/*.{h,m,swift}'
+    s.osx.exclude_files = 'Sources/ios/**/*.{h,m,swift}'
     # probably will use this later when start subSpecing (PlayolaCore-Player, PlayolaCore-Core, etc)
     # s.subspec 'Core' do |core|
     #     core.source_files  = 'Sources/**/*.{h,m,swift}'

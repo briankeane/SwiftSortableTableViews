@@ -7,9 +7,20 @@
 //
 
 import Foundation
+
+#if os(iOS)
 import UIKit
 
-@objc public protocol SortableTableViewDelegate:UITableViewDelegate {
-    @objc optional func sortableTableView(_ tableView:SortableTableView, draggedItemDidEnterTableViewAtRow row:Int)
-    @objc optional func sortableTableView(_ tableView:SortableTableView, draggedItemDidExitTableViewFromRow row:Int)
-}
+    @objc public protocol SortableTableViewDelegate:UITableViewDelegate {
+        @objc optional func sortableTableView(_ tableView:SortableTableView, draggedItemDidEnterTableViewAtRow row:Int)
+        @objc optional func sortableTableView(_ tableView:SortableTableView, draggedItemDidExitTableViewFromRow row:Int)
+    }
+
+#else
+    import AVKit
+    
+    @objc public protocol SortableTableViewDelegate:NSTableViewDelegate {
+        @objc optional func sortableTableView(_ tableView:SortableTableView, draggedItemDidEnterTableViewAtRow row:Int)
+        @objc optional func sortableTableView(_ tableView:SortableTableView, draggedItemDidExitTableViewFromRow row:Int)
+    }
+#endif

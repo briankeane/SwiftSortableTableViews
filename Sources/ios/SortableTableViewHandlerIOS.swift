@@ -1,5 +1,5 @@
 //
-//  SortableTableViewHandler.swift
+//  SortableTableViewHandlerIOS.swift
 //  SwiftSortableTableviews
 //
 //  Created by Brian D Keane on 9/5/17.

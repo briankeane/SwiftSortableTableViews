@@ -1,5 +1,5 @@
 //
-//  SortableTableView.swift
+//  SortableTableViewIOS.swift
 //  SwiftSortableTableViews
 //
 //  Created by Brian D Keane on 9/4/17.
@@ -14,11 +14,11 @@ open class SortableTableView:UITableView
     var movingSortableItem:SortableTableViewItem?
     var ignoreRow:Int?
     var placeholderRow:Int?
-    
-    var observers:Array<NSObjectProtocol> = Array()
-    
+
     private var _sortableDataSource:SortableTableViewDataSource?
     private var _sortableDelegate:SortableTableViewDelegate?
+    private var _sortableDataSourceAdapter:SortableTableViewDataSourceAdapter?
+    private var _sortableDelegateAdapter:SortableTableViewDelegateAdapter?
     open var sortableDelegate:SortableTableViewDelegate?
     {
         get
@@ -28,9 +28,15 @@ open class SortableTableView:UITableView
         set
         {
             self._sortableDelegate = newValue
+            
             if let newValue = newValue
             {
-                self.delegate = SortableTableViewDelegateAdapter(tableView: self, delegate: newValue)
+                self._sortableDelegateAdapter = SortableTableViewDelegateAdapter(tableView: self, delegate: newValue)
+                self.delegate = self._sortableDelegateAdapter!
+            }
+            else
+            {
+                self._sortableDataSourceAdapter = nil
             }
         }
     }
@@ -45,9 +51,34 @@ open class SortableTableView:UITableView
             self._sortableDataSource = newValue
             if let newValue = newValue
             {
-                self.dataSource = SortableTableViewDataSourceAdapter(tableView: self, dataSource: newValue)
+                self._sortableDataSourceAdapter = SortableTableViewDataSourceAdapter(tableView: self, dataSource: newValue)
+                self.dataSource = self._sortableDataSourceAdapter!
+            }
+            else
+            {
+                self._sortableDataSourceAdapter = nil
             }
         }
+    }
+    
+    
+    var observers:Array<NSObjectProtocol> = Array()
+    
+    //------------------------------------------------------------------------------
+    
+    func removeObservers()
+    {
+        for observer in self.observers
+        {
+            NotificationCenter.default.removeObserver(observer)
+        }
+    }
+    
+    //------------------------------------------------------------------------------
+    
+    deinit
+    {
+        self.removeObservers()
     }
     
     //------------------------------------------------------------------------------
@@ -90,22 +121,6 @@ open class SortableTableView:UITableView
         )
     }
     
-    //------------------------------------------------------------------------------
-    
-    func removeObservers()
-    {
-        for observer in self.observers
-        {
-            NotificationCenter.default.removeObserver(observer)
-        }
-    }
-    
-    //------------------------------------------------------------------------------
-    
-    deinit
-    {
-        self.removeObservers()
-    }
     
     //------------------------------------------------------------------------------
     

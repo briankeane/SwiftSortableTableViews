@@ -1,5 +1,5 @@
 //
-//  SortableTableViewDelegateAdapter.swift
+//  SortableTableViewDelegateAdapterIOS.swift
 //  SwiftSortableTableViews
 //
 //  Created by Brian D Keane on 10/10/17.
