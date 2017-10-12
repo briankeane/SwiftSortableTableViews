@@ -8,6 +8,30 @@
 
 import Cocoa
 
+extension NSView
+{
+    func imageRepresentation() -> NSImage
+    {
+//        let wasHidden = self.isHidden
+//        let wantedLayer = self.wantsLayer
+//        
+//        self.isHidden = false
+//        self.wantsLayer = true
+//        
+//        let image = NSImage(size: self.bounds.size)
+//        image.lockFocus()
+//        
+//        let context = NSGraphicsContext.current()!.cgContext
+//        self.layer?.render(in: context)
+//        image.unlockFocus()
+//        
+//        self.wantsLayer = wantedLayer
+//        self.isHidden = wasHidden
+        return NSImage(data: self.dataWithPDF(inside: self.bounds))!
+//        return image
+    }
+}
+
 public class SortableTableView: NSTableView
 {
     var movingSortableItem:SortableTableViewItem?
@@ -77,9 +101,12 @@ public class SortableTableView: NSTableView
             
             if (row >= 0)
             {
-                if let view = self.view(atColumn: 0, row: 0, makeIfNecessary: false) as? NSTableCellView
+                if let view = self.view(atColumn: 0, row: row, makeIfNecessary: false) as? NSTableCellView
                 {
                     session.enumerateDraggingItems(options: .concurrent, for: self, classes: [NSPasteboardItem.self], searchOptions: [:]) { (item, index, stop) in
+                        
+        
+                        
                         // prepare context
                         let context = NSGraphicsContext.current()
                         context?.saveGraphicsState()
@@ -105,7 +132,7 @@ public class SortableTableView: NSTableView
                         var contentPath = NSBezierPath(rect: contentFrame)
                         
                         // draw content border and shadow
-                        NSColor.lightGray.withAlphaComponent(0.6).set()
+                        NSColor.lightGray.withAlphaComponent(1.0).set()
                         contentPath.stroke()
                         context?.restoreGraphicsState()
                         
@@ -114,16 +141,21 @@ public class SortableTableView: NSTableView
                         contentPath = NSBezierPath(rect: NSInsetRect(contentFrame, 1, 1))
                         contentPath.fill()
                         
+                        view.layer?.render(in: NSGraphicsContext.current()!.cgContext)
+                        
                         image.unlockFocus()
                         
                         // update the dragging item frame to accomodate larger image
                         item.draggingFrame = NSMakeRect(item.draggingFrame.origin.x , item.draggingFrame.origin.y, imageSize.width, imageSize.height)
                         
                         // define additional image component for drag
+                        
+                        
+
                         let backgroundImageComponent = NSDraggingImageComponent(key: "background")
                         backgroundImageComponent.contents = image
-                        backgroundImageComponent.frame = NSMakeRect(0, 0, imageSize.width, imageSize.height)
-                        
+                        backgroundImageComponent.frame = NSMakeRect(0, 0, image.size.width, image.size.height)
+//
                         // override draggingImageCoponents
                         item.imageComponentsProvider = {
                             return [backgroundImageComponent]
@@ -135,6 +167,18 @@ public class SortableTableView: NSTableView
         }
     }
     
+    func createCellSnaphot(_ inputView:NSView) -> NSImage
+    {
+        inputView.canDrawSubviewsIntoLayer = true
+        let image = NSImage(size: inputView.bounds.size)
+        
+        image.lockFocus()
+//        let ctx:CGContext = NSGraphicsContext.current()!.graphicsPort
+        inputView.layer?.render(in: NSGraphicsContext.current()!.cgContext)
+        image.unlockFocus()
+        return image
+    }
+
     //------------------------------------------------------------------------------
     
     /// MARK: Initializers
