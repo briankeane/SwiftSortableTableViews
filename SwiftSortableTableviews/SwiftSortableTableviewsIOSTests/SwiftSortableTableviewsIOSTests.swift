@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import SwiftSortableTableviewsIOS
+@testable import SwiftSortableTableViewsIOS
 
 class SwiftSortableTableviewsIOSTests: XCTestCase {
     

@@ -332,12 +332,13 @@
 					4BD902541F5DCB7B00DC2E73 = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = FSRSPV9N9Q;
-						LastSwiftMigration = 0830;
+						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
 					};
 					4BD9025C1F5DCB7B00DC2E73 = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = FSRSPV9N9Q;
+						LastSwiftMigration = 0920;
 						ProvisioningStyle = Automatic;
 					};
 					4BD902701F5DCB9500DC2E73 = {
@@ -601,7 +602,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -621,7 +623,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = fm.playola.SwiftSortableTableviewsIOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -634,7 +637,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = fm.playola.SwiftSortableTableviewsIOSTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -647,7 +651,8 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = fm.playola.SwiftSortableTableviewsIOSTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
