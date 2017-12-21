@@ -33,7 +33,7 @@ public class SortableTableViewHandler:NSObject
     {
         for sortableTableView in self.sortableTableViews
         {
-            if sortableTableView.frame.contains(pointPressed)
+            if sortableTableView.frame.contains(sortableTableView.convert(pointPressed, from: self.containingView))
             {
                 return sortableTableView
             }
@@ -82,6 +82,7 @@ public class SortableTableViewHandler:NSObject
                     // IF a tableView was exited:
                     if let exitedTableView = self.itemExitedTableView(oldTableView: oldHoveredOverTableView, newTableView: tableViewPressed)
                     {
+                        puts("onItemExited")
                         exitedTableView.onItemExited()
                     }
                     
@@ -90,6 +91,7 @@ public class SortableTableViewHandler:NSObject
                     {
                         if let hoveredOverRow = self.itemInMotion?.hoveredOverRow
                         {
+                            puts("onItemEntered: \(hoveredOverRow)")
                             enteredTableView.onItemEntered(atRow: hoveredOverRow)
                         }
                         
