@@ -96,10 +96,11 @@ class SortableTableViewDelegateAdapter: NSObject, NSTableViewDelegate
         {
             return result
         }
-        return true
+        return false
     }
     
     func tableView(_ tableView: NSTableView, didDrag tableColumn: NSTableColumn) {
+        puts("didDrag")
         self.delegate.tableView?(self.tableView, didDrag: tableColumn)
     }
     
@@ -119,6 +120,7 @@ class SortableTableViewDelegateAdapter: NSObject, NSTableViewDelegate
     }
     
     func tableView(_ tableView: NSTableView, didAdd rowView: NSTableRowView, forRow row: Int) {
+//        puts("didAdd")
         self.delegate.tableView?(self.tableView, didAdd: rowView, forRow: self.tableView.convertToDelegateRow(row))
     }
     
@@ -130,8 +132,12 @@ class SortableTableViewDelegateAdapter: NSObject, NSTableViewDelegate
         return true
     }
     
+    
+    
+    
     func tableView(_ tableView: NSTableView, didRemove rowView: NSTableRowView, forRow row: Int)
     {
+//        puts("didRemove")
         self.delegate.tableView?(self.tableView, didRemove: rowView, forRow: self.tableView.convertToDelegateRow(row))
     }
     
@@ -206,6 +212,7 @@ class SortableTableViewDelegateAdapter: NSObject, NSTableViewDelegate
 //    }
 //    
     
+    
     func tableView(_ tableView: NSTableView, toolTipFor cell: NSCell, rect: NSRectPointer, tableColumn: NSTableColumn?, row: Int, mouseLocation: NSPoint) -> String {
         if let result = self.delegate.tableView?(self.tableView, toolTipFor: cell, rect: rect, tableColumn: tableColumn, row: self.tableView.convertToDelegateRow(row), mouseLocation: mouseLocation)
         {
@@ -213,5 +220,6 @@ class SortableTableViewDelegateAdapter: NSObject, NSTableViewDelegate
         }
         return ""
     }
+
     
 }

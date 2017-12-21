@@ -90,7 +90,8 @@ open class SortableTableView:UITableView
     
     //------------------------------------------------------------------------------
     
-    required public init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder)
+    {
         super.init(coder: aDecoder)
         self.setupListeners()
     }
@@ -100,7 +101,7 @@ open class SortableTableView:UITableView
     func setupListeners()
     {
         self.observers.append(
-            NotificationCenter.default.addObserver(forName: SortableTableViewEvents.cancelMoveWillAnimate , object: nil, queue: .main)
+            NotificationCenter.default.addObserver(forName: SortableTableViewEvents.cancelMoveWillAnimate, object: nil, queue: .main)
             {
                 (notification) -> Void in
                 if let userInfo = notification.userInfo
@@ -110,7 +111,7 @@ open class SortableTableView:UITableView
             }
         )
         self.observers.append(
-            NotificationCenter.default.addObserver(forName: SortableTableViewEvents.cancelMoveDidAnimate , object: nil, queue: .main)
+            NotificationCenter.default.addObserver(forName: SortableTableViewEvents.cancelMoveDidAnimate, object: nil, queue: .main)
             {
                 (notification) -> Void in
                 if let userInfo = notification.userInfo

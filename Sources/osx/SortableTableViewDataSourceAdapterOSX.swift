@@ -41,16 +41,26 @@ class SortableTableViewDataSourceAdapter: NSObject, NSTableViewDataSource
     }
     
     //------------------------------------------------------------------------------
-
+    
+    // this is the shouldPickUp
     func tableView(_ tableView: NSTableView, pasteboardWriterForRow row: Int) -> NSPasteboardWriting?
     {
-        puts("pasteboardWriterForRow")
+        // Check with delegate to see if it can be picked up
         if (self.dataSource.sortableTableView?(self.tableView, canBePickedUp: self.tableView.convertToDelegateRow(row)) == true)
         {
-            puts("canBePickedUp")
-            let item = NSPasteboardItem()
-            item.setString("test", forType: kUTTypeText as String)
-            return item
+            
+            let cell = self.tableView.view(atColumn: 0, row: row, makeIfNecessary: false)!
+            // setup item with Handler
+            
+            let itemToTransfer = self.dataSource.sortableTableView?(self.tableView, item: row)
+            
+            let item = SortableTableViewItem(originalTableView: self.tableView, originalRow: self.tableView.convertToDelegateRow(row), cellSnapshot: NSImageView(image: self.tableView.createCellSnaphot(cell)), transferringItem:itemToTransfer)
+            
+            SortableTableViewHandler.sharedInstance().itemInMotion = item
+            
+            let pbItem = NSPasteboardItem()
+            pbItem.setString("test", forType: kUTTypeText as String)
+            return pbItem
         }
         return nil
     }
@@ -66,28 +76,21 @@ class SortableTableViewDataSourceAdapter: NSObject, NSTableViewDataSource
         return true
     }
     
+    
     func tableView(_ tableView: NSTableView, updateDraggingItemsForDrag draggingInfo: NSDraggingInfo) {
         print("updateDraggingItemsForDrag")
     }
     
-//
-//    func tableView(_ tableView: NSTableView, updateDraggingItemsForDrag draggingInfo: NSDraggingInfo) {
-//        <#code#>
-//    }
-//    
-//    func tableView(_ tableView: NSTableView, sortDescriptorsDidChange oldDescriptors: [NSSortDescriptor]) {
-//        <#code#>
-//    }
+    func tableView(_ tableView: NSTableView, sortDescriptorsDidChange oldDescriptors: [NSSortDescriptor]) {
+        puts("sortDescriptorsDidChange")
+    }
 //
 //    // DO NOT IMPLEMENT -- for cell based only
 ////    func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
 ////
 ////    }
-//    
-//    func tableView(_ tableView: NSTableView, writeRowsWith rowIndexes: IndexSet, to pboard: NSPasteboard) -> Bool {
-//        <#code#>
-//    }
-//    
+
+//
 //    func tableView(_ tableView: NSTableView, setObjectValue object: Any?, for tableColumn: NSTableColumn?, row: Int) {
 //        <#code#>
 //    }
@@ -107,13 +110,35 @@ class SortableTableViewDataSourceAdapter: NSObject, NSTableViewDataSource
 //    func tableView(_ tableView: NSTableView, namesOfPromisedFilesDroppedAtDestination dropDestination: URL, forDraggedRowsWith indexSet: IndexSet) -> [String] {
 //        <#code#>
 //    }
-//    
-    
+//
+    func tableView(_ tableView: NSTableView, acceptDrop info: NSDraggingInfo, row: Int, dropOperation: NSTableViewDropOperation) -> Bool
+    {
+        let row = self.tableView.placeholderRow!
+        if let itemInMotion = SortableTableViewHandler.sharedInstance().itemInMotion
+        {
+            if (itemInMotion.originalTableView.sortableDataSource?.sortableTableView?(itemInMotion.originalTableView, shouldReleaseItem: itemInMotion.originalRow, desiredRow: row, receivingTableView: self.tableView, transferringItem: itemInMotion.transferringItem) == true)
+            {
+                if (self.dataSource.sortableTableView?(itemInMotion.originalTableView, shouldReceiveItem: itemInMotion.originalRow, desiredRow: row, receivingTableView: self.tableView, transferringItem: itemInMotion.transferringItem) == true)
+                {
+                    self.dataSource.sortableTableView?(itemInMotion.originalTableView, willReceiveItem: itemInMotion.originalRow, newRow: row, receivingTableView: self.tableView, transferringItem: itemInMotion.transferringItem)
+                    itemInMotion.originalTableView.sortableDataSource?.sortableTableView?(itemInMotion.originalTableView, willReleaseItem: itemInMotion.originalRow, newRow: row, receivingTableView: self.tableView, transferringItem: itemInMotion.transferringItem)
+                    NotificationCenter.default.post(name: SortableTableViewEvents.dropItemDidAnimate, object: nil, userInfo:  nil)
+                     return true
+                }
+            }
+        }
+        SortableTableViewHandler.sharedInstance().performCancelMove()
+        return false
+    }
 
-    
+    // This is used to move the placeholder.
     func tableView(_ tableView: NSTableView, validateDrop info: NSDraggingInfo, proposedRow row: Int, proposedDropOperation dropOperation: NSTableViewDropOperation) -> NSDragOperation
     {
         (tableView as? SortableTableView)?.onItemMovedWithin(newRow: row)
         return .every
     }
+    
+    
+    
+    
 }

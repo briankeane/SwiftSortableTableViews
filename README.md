@@ -1,4 +1,5 @@
 # SwiftSortableTableViews
+## for OSX and iOS
 
 <p align="center">
 	<img src="https://media.giphy.com/media/l378mOPG0tVskHjDq/giphy.gif" />
@@ -87,15 +88,15 @@ If an object is moved to a new indexPath within the same table, then modify the 
 
 These functions are provided in addition to the usual UITableViewDelegate functions:
 
-`func sortableTableView(_ draggedItemDidEnterTableViewAtIndexPath ) -> Bool`
+`func sortableTableView(_ draggedItemDidEnterTableViewAtRow ) -> Bool`
 
 * called when an item is dragged over the TableView
 
 
-`func sortableTableView(_ draggedItemDidExitTableViewFromIndexPath ) -> Bool`
+`func sortableTableView(_ draggedItemDidExitTableViewFromRow ) -> Bool`
 
 * called when an item is dragged over the TableView
 
 ### Notes:
-1. ***DO NOT USE SPECIFY forIndexPath: when calling dequeueReusableCell(withIdentifier:)*** -- the cells will move around and providing a specified IndexPath will break internal consistency.
+1. ***DO NOT SPECIFY forIndexPath: when calling dequeueReusableCell(withIdentifier:)*** -- the cells will move around and providing a specified IndexPath will break internal consistency.
 2. Only supports one Section per table for now.

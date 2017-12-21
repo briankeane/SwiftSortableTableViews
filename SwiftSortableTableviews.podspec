@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
     s.name         = "SwiftSortableTableViews"
-    s.version      = "0.2.0"
+    s.version      = "0.3.0"
     s.summary      = "Easy to use, Drag and Drop Tableviews"
     s.homepage     = "https://github.com/briankeane/SwiftSortableTableViews.git"
     s.license      = { :type => 'MIT' }

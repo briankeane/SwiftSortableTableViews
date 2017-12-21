@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import AVKit
 
 public class SortableTableView: NSTableView
 {
@@ -60,12 +61,61 @@ public class SortableTableView: NSTableView
         }
     }
     
-    func hi()
-    {
-        
+    public override func draggingUpdated(_ sender: NSDraggingInfo) -> NSDragOperation {
+        puts("draggingUpdated")
+        puts("\(NSEvent.pressedMouseButtons())")
+        return super.draggingUpdated(sender)
+    }
+    
+    public override func performDragOperation(_ sender: NSDraggingInfo) -> Bool {
+        puts("performDragOperation")
+        return super.performDragOperation(sender)
+    }
+    
+    public override func concludeDragOperation(_ sender: NSDraggingInfo?) {
+        super.concludeDragOperation(sender)
+        puts("concludeDrag")
     }
     
     
+    
+    public override func draggingSession(_ session: NSDraggingSession, endedAt screenPoint: NSPoint, operation: NSDragOperation) {
+        puts("draggingSessionEnded")
+        if (!SortableTableViewHandler.sharedInstance().itemDropInProgress)
+        {
+            SortableTableViewHandler.sharedInstance().performCancelMove()
+        }
+//        NotificationCenter.default.post(name: SortableTableViewEvents.cancelMoveWillAnimate, object:nil, userInfo: ["originalTableView": self,
+//                                            "originalRow": originalRow])
+//        NotificationCenter.default.post(name: SortableTableViewEvents.cancelMoveDidAnimate, object: nil, userInfo: ["originalTableView": self,
+//                                                                                                                    "originalRow": originalRow])
+
+    }
+    
+    public override func draggingEnded(_ sender: NSDraggingInfo?) {
+//        sender?.animatesToDestination = true
+//        sender?.slideDraggedImage(to: NSPoint(x:0, y:0))
+        puts("draggingEnded")
+    }
+    
+    public override func mouseUp(with event: NSEvent) {
+        puts("mouseUp")
+        super.mouseUp(with: event)
+        
+    }
+    
+    public override func otherMouseUp(with event: NSEvent) {
+        puts("otherMouseUp")
+    }
+    
+    public override func rightMouseUp(with event: NSEvent) {
+        puts("rightMouseUp")
+    }
+    
+    public override func mouseDragged(with event: NSEvent) {
+        super.mouseDown(with: event)
+        puts("mouseDragged")
+    }
     
     public override func draggingSession(_ session: NSDraggingSession, willBeginAt screenPoint: NSPoint) {
         puts("draggingSession")
@@ -77,12 +127,17 @@ public class SortableTableView: NSTableView
             
             if (row >= 0)
             {
-                if let view = self.view(atColumn: 0, row: row, makeIfNecessary: false) as? NSTableCellView
+                if let view = self.view(atColumn: 0, row: row, makeIfNecessary: false)
                 {
                     session.enumerateDraggingItems(options: .concurrent, for: self, classes: [NSPasteboardItem.self], searchOptions: [:]) { (item, index, stop) in
                         
                         let image = self.createCellSnaphot(view)
                         
+                        // SortableItem is already set in pastboardForRow
+//                        let sortableItem = SortableTableViewItem(originalTableView: self, originalRow: row, originalCenter: screenPoint, cellSnapshot: view, transferringItem: nil)
+//                        
+//                        SortableTableViewHandler.sharedInstance().itemInMotion = sortableItem
+//                        
                         item.draggingFrame = NSMakeRect(item.draggingFrame.origin.x, item.draggingFrame.origin.y, image.size.width, image.size.height)
                         
                         let backgroundImageComponent = NSDraggingImageComponent(key: "background")
@@ -93,11 +148,15 @@ public class SortableTableView: NSTableView
                         item.imageComponentsProvider = {
                             return [backgroundImageComponent]
                         }
-                        
                     }
+                    session.animatesToStartingPositionsOnCancelOrFail = false
                     self.onItemPickedUp(fromRow: row)
                 }
             }
+            
+            
+            
+        
         }
     }
     
@@ -152,7 +211,9 @@ public class SortableTableView: NSTableView
     
     func setupListeners()
     {
+        let _ = SortableTableViewHandler.sharedInstance()
         self.register(forDraggedTypes: [kUTTypeText as String])
+        
         self.observers.append(
             NotificationCenter.default.addObserver(forName: SortableTableViewEvents.cancelMoveWillAnimate , object: nil, queue: .main)
             {
@@ -173,6 +234,19 @@ public class SortableTableView: NSTableView
                 }
             }
         )
+        
+        self.observers.append(
+            NotificationCenter.default.addObserver(forName: SortableTableViewEvents.dropItemDidAnimate, object: nil, queue: .main)
+            {
+                (notification) -> Void in
+                self.handleDropItemDidAnimate()
+            }
+        )
+        
+//        self.eventMonitor = NSEvent.addLocalMonitorForEvents(matching: [.leftMouseUp]) { (event) -> NSEvent? in
+//            puts("mouseUp")
+//            return nil
+//        }
     }
 
     //------------------------------------------------------------------------------
@@ -248,6 +322,13 @@ public class SortableTableView: NSTableView
         return  deAdjustedRow
     }
     
+    func handleDropItemDidAnimate()
+    {
+        self.removePlaceholder()
+        self.ignoreRow = nil
+        self.reloadData()
+    }
+    
     //------------------------------------------------------------------------------
     
     func handleCancelMoveWillAnimate(userInfo:[AnyHashable:Any])
@@ -283,8 +364,9 @@ public class SortableTableView: NSTableView
                 {
                     self.placeholderRow = nil
                     self.ignoreRow = nil
-                    self.removeRows(at: IndexSet(integer: originalRow), withAnimation: NSTableViewAnimationOptions.slideUp)
                     
+//                    self.animator().removeRows(at: IndexSet(integer: originalRow), withAnimation: NSTableViewAnimationOptions.slideUp)
+                    self.reloadData()
                     self._sortableDataSource?.sortableTableView?(self, itemMoveDidCancel: originalRow)
                 }
             }
@@ -298,7 +380,7 @@ public class SortableTableView: NSTableView
         if let placeholderRow = self.placeholderRow
         {
             self.placeholderRow = nil
-            self.removeRows(at: IndexSet(integer: placeholderRow), withAnimation: NSTableViewAnimationOptions.slideUp)
+            self.animator().removeRows(at: IndexSet(integer: placeholderRow), withAnimation: NSTableViewAnimationOptions.slideUp)
         }
     }
     
@@ -306,8 +388,18 @@ public class SortableTableView: NSTableView
     
     func insertPlaceholder(atRow:Int)
     {
-        self.placeholderRow = atRow
-        self.insertRows(at: IndexSet(integer: atRow), withAnimation: .slideDown)
+        var moveTo = atRow
+        
+        // enforce max
+        if let dataSource = self.dataSource
+        {
+            if (moveTo > dataSource.numberOfRows!(in: self))
+            {
+                moveTo = dataSource.numberOfRows!(in: self)
+            }
+        }
+        self.placeholderRow = moveTo
+        self.animator().insertRows(at: IndexSet(integer: moveTo), withAnimation: .slideDown)
     }
     
     func onItemPickedUp(fromRow:Int)
@@ -361,7 +453,7 @@ public class SortableTableView: NSTableView
     
     func canBePickedUp(fromRow:Int) -> Bool
     {
-        // IF the delegate has impleneted canBePickedUp, use that
+        // IF the delegate has implemeted canBePickedUp, use that
         if let sortableDataSource = sortableDataSource
         {
             let result = sortableDataSource.sortableTableView?(self, canBePickedUp: fromRow)
@@ -381,4 +473,6 @@ public class SortableTableView: NSTableView
         cell.isHidden = true
         return cell
     }
+    
+    
 }

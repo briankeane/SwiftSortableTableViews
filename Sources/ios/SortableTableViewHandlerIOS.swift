@@ -172,8 +172,7 @@ public class SortableTableViewHandler:NSObject
                 if (tableViewPressed! == itemInMotion.originalTableView)
                 {
                     // call move delegate
-                    tableViewPressed!.sortableDataSource?.sortableTableView(tableViewPressed!, willDropItem: itemInMotion.originalRow, newRow: pressedRow!)
-                    
+                    tableViewPressed!.sortableDataSource?.sortableTableView?(tableViewPressed!, willReleaseItem: itemInMotion.originalRow, newRow: pressedRow!, receivingTableView: tableViewPressed!, transferringItem: self.itemInMotion?.transferringItem)
                     
                     // animate drop
                     let newCell = tableViewPressed!.cellForRow(at: IndexPath(row: pressedRow!, section: 0))
@@ -198,9 +197,8 @@ public class SortableTableViewHandler:NSObject
                 else
                 {
                     // call delegate functions
-                    tableViewPressed?.sortableDataSource?.sortableTableView?(itemInMotion.originalTableView, willReleaseItem: itemInMotion.originalRow, newRow: pressedRow!, receivingTableView: tableViewPressed!)
-                    itemInMotion.originalTableView.sortableDataSource?.sortableTableView?(itemInMotion.originalTableView, willReceiveItem: itemInMotion.originalRow, newRow: pressedRow!, receivingTableView: tableViewPressed!)
-                    
+                    tableViewPressed?.sortableDataSource?.sortableTableView?(itemInMotion.originalTableView, willReleaseItem: itemInMotion.originalRow, newRow: pressedRow!, receivingTableView: tableViewPressed!, transferringItem: self.itemInMotion?.transferringItem)
+                    tableViewPressed?.sortableDataSource?.sortableTableView?(itemInMotion.originalTableView, willReleaseItem: itemInMotion.originalRow, newRow: pressedRow!, receivingTableView: tableViewPressed!, transferringItem: self.itemInMotion?.transferringItem)
                     
                     let newCell = tableViewPressed!.cellForRow(at: IndexPath(row: pressedRow!, section: 0))
                     let newCenter = newCell!.center
@@ -226,14 +224,14 @@ public class SortableTableViewHandler:NSObject
     
     func canBeReleased(_ releasingTableView: SortableTableView, originalRow: Int, desiredRow:Int, receivingTableView:SortableTableView) -> Bool
     {
-        if let canBeReleased = releasingTableView.sortableDataSource?.sortableTableView?(releasingTableView, shouldReleaseItem: originalRow, desiredRow: desiredRow, receivingTableView: receivingTableView)
+        if let canBeReleased = releasingTableView.sortableDataSource?.sortableTableView?(releasingTableView, shouldReleaseItem: originalRow, desiredRow: desiredRow, receivingTableView: receivingTableView, transferringItem: self.itemInMotion?.transferringItem)
         {
             if (canBeReleased == false)
             {
                 return false
             }
         }
-        if let canBeReceived = receivingTableView.sortableDataSource?.sortableTableView?(releasingTableView, shouldReceiveItem: originalRow, desiredRow: desiredRow, receivingTableView: receivingTableView)
+        if let canBeReceived = receivingTableView.sortableDataSource?.sortableTableView?(releasingTableView, shouldReceiveItem: originalRow, desiredRow: desiredRow, receivingTableView: receivingTableView, transferringItem: self.itemInMotion?.transferringItem)
         {
             if (canBeReceived == false)
             {

@@ -20,8 +20,10 @@ import Foundation
         var hoveredOverRow:Int?
         var hoveredOverTableView:SortableTableView?
         
+        var transferringItem:Any?
         
-        init(originalTableView:SortableTableView!, originalRow:Int!, originalCenter:CGPoint = CGPoint(x: 0, y: 0), cellSnapshot:UIView!)
+        
+        init(originalTableView:SortableTableView!, originalRow:Int!, originalCenter:CGPoint = CGPoint(x: 0, y: 0), cellSnapshot:UIView!, transferringItem:Any?=nil)
         {
             self.originalTableView = originalTableView
             self.originalRow = originalRow
@@ -29,6 +31,7 @@ import Foundation
             self.hoveredOverTableView = originalTableView
             self.originalCenter = originalCenter
             self.cellSnapshot = cellSnapshot
+            self.transferringItem = transferringItem
         }
     }
 
@@ -44,9 +47,10 @@ import Foundation
         
         var hoveredOverRow:Int?
         var hoveredOverTableView:SortableTableView?
+        var transferringItem:Any?
         
         
-        init(originalTableView:SortableTableView!, originalRow:Int!, originalCenter:CGPoint = CGPoint(x: 0, y: 0), cellSnapshot:NSView!)
+        init(originalTableView:SortableTableView!, originalRow:Int!, originalCenter:CGPoint = CGPoint(x: 0, y: 0), cellSnapshot:NSView!, transferringItem:Any?=nil)
         {
             self.originalTableView = originalTableView
             self.originalRow = originalRow
@@ -54,6 +58,7 @@ import Foundation
             self.hoveredOverTableView = originalTableView
             self.originalCenter = originalCenter
             self.cellSnapshot = cellSnapshot
+            self.transferringItem = transferringItem
         }
     }
 
