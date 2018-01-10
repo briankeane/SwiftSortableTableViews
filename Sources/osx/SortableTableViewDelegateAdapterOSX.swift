@@ -177,7 +177,7 @@ class SortableTableViewDelegateAdapter: NSObject, NSTableViewDelegate
         return true
     }
     
-    func tableView(_ tableView: NSTableView, rowActionsForRow row: Int, edge: NSTableRowActionEdge) -> [NSTableViewRowAction] {
+    internal func tableView(_ tableView: NSTableView, rowActionsForRow row: Int, edge: NSTableView.RowActionEdge) -> [NSTableViewRowAction] {
         if let result = self.delegate.tableView?(self.tableView, rowActionsForRow: self.tableView.convertToDelegateRow(row), edge: edge)
         {
             return result

@@ -63,7 +63,7 @@ public class SortableTableView: NSTableView
     
     public override func draggingUpdated(_ sender: NSDraggingInfo) -> NSDragOperation {
         puts("draggingUpdated")
-        puts("\(NSEvent.pressedMouseButtons())")
+        puts("\(NSEvent.pressedMouseButtons)")
         return super.draggingUpdated(sender)
     }
     
@@ -140,7 +140,7 @@ public class SortableTableView: NSTableView
 //                        
                         item.draggingFrame = NSMakeRect(item.draggingFrame.origin.x, item.draggingFrame.origin.y, image.size.width, image.size.height)
                         
-                        let backgroundImageComponent = NSDraggingImageComponent(key: "background")
+                        let backgroundImageComponent = NSDraggingImageComponent(key: NSDraggingItem.ImageComponentKey(rawValue: "background"))
                         backgroundImageComponent.contents = image
                         backgroundImageComponent.frame = NSMakeRect(0, 0, image.size.width, image.size.height)
 //
@@ -167,7 +167,7 @@ public class SortableTableView: NSTableView
         
         image.lockFocus()
 
-        inputView.layer?.render(in: NSGraphicsContext.current()!.cgContext)
+        inputView.layer?.render(in: NSGraphicsContext.current!.cgContext)
         image.unlockFocus()
         
         // create a new view for shadows
@@ -183,7 +183,7 @@ public class SortableTableView: NSTableView
         
         let newImage = NSImage(size: snapshotView.layer!.preferredFrameSize())
         newImage.lockFocus()
-        snapshotView.layer?.render(in: NSGraphicsContext.current()!.cgContext)
+        snapshotView.layer?.render(in: NSGraphicsContext.current!.cgContext)
         newImage.unlockFocus()
         
         return newImage
@@ -212,7 +212,7 @@ public class SortableTableView: NSTableView
     func setupListeners()
     {
         let _ = SortableTableViewHandler.sharedInstance()
-        self.register(forDraggedTypes: [kUTTypeText as String])
+        self.registerForDraggedTypes([NSPasteboard.PasteboardType.string])
         
         self.observers.append(
             NotificationCenter.default.addObserver(forName: SortableTableViewEvents.cancelMoveWillAnimate , object: nil, queue: .main)
@@ -380,7 +380,7 @@ public class SortableTableView: NSTableView
         if let placeholderRow = self.placeholderRow
         {
             self.placeholderRow = nil
-            self.animator().removeRows(at: IndexSet(integer: placeholderRow), withAnimation: NSTableViewAnimationOptions.slideUp)
+            self.animator().removeRows(at: IndexSet(integer: placeholderRow), withAnimation: NSTableView.AnimationOptions.slideUp)
         }
     }
     

@@ -59,7 +59,7 @@ class SortableTableViewDataSourceAdapter: NSObject, NSTableViewDataSource
             SortableTableViewHandler.sharedInstance().itemInMotion = item
             
             let pbItem = NSPasteboardItem()
-            pbItem.setString("test", forType: kUTTypeText as String)
+            pbItem.setString("test", forType: NSPasteboard.PasteboardType(rawValue: kUTTypeText as String))
             return pbItem
         }
         return nil
@@ -69,8 +69,8 @@ class SortableTableViewDataSourceAdapter: NSObject, NSTableViewDataSource
     {
         puts("writeRowsWith")
         let data = NSKeyedArchiver.archivedData(withRootObject: rowIndexes)
-        pboard.declareTypes([NSStringPboardType], owner: self)
-        pboard.setData(data, forType: NSStringPboardType)
+        pboard.declareTypes([NSPasteboard.PasteboardType.string], owner: self)
+        pboard.setData(data, forType: NSPasteboard.PasteboardType.string)
 
         
         return true
@@ -111,7 +111,7 @@ class SortableTableViewDataSourceAdapter: NSObject, NSTableViewDataSource
 //        <#code#>
 //    }
 //
-    func tableView(_ tableView: NSTableView, acceptDrop info: NSDraggingInfo, row: Int, dropOperation: NSTableViewDropOperation) -> Bool
+    internal func tableView(_ tableView: NSTableView, acceptDrop info: NSDraggingInfo, row: Int, dropOperation: NSTableView.DropOperation) -> Bool
     {
         let row = self.tableView.placeholderRow!
         if let itemInMotion = SortableTableViewHandler.sharedInstance().itemInMotion
@@ -132,7 +132,7 @@ class SortableTableViewDataSourceAdapter: NSObject, NSTableViewDataSource
     }
 
     // This is used to move the placeholder.
-    func tableView(_ tableView: NSTableView, validateDrop info: NSDraggingInfo, proposedRow row: Int, proposedDropOperation dropOperation: NSTableViewDropOperation) -> NSDragOperation
+    internal func tableView(_ tableView: NSTableView, validateDrop info: NSDraggingInfo, proposedRow row: Int, proposedDropOperation dropOperation: NSTableView.DropOperation) -> NSDragOperation
     {
         (tableView as? SortableTableView)?.onItemMovedWithin(newRow: row)
         return .every
