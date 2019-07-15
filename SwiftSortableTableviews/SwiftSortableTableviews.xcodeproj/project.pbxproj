@@ -70,7 +70,7 @@
 		4B77699F1F8E9047008DAEF6 /* SortableTableViewDataSourceAdapterOSX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableViewDataSourceAdapterOSX.swift; path = ../Sources/osx/SortableTableViewDataSourceAdapterOSX.swift; sourceTree = "<group>"; };
 		4B8171831F8D72E3003C51EE /* SortableTableViewDelegateAdapterIOS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableViewDelegateAdapterIOS.swift; path = ../Sources/ios/SortableTableViewDelegateAdapterIOS.swift; sourceTree = "<group>"; };
 		4B8171861F8E5F28003C51EE /* SortableTableViewDataSourceAdapterIOS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableViewDataSourceAdapterIOS.swift; path = ../Sources/ios/SortableTableViewDataSourceAdapterIOS.swift; sourceTree = "<group>"; };
-		4B82C64C1F642FFD00BD074F /* SwiftSortableTableViews.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = SwiftSortableTableViews.podspec; path = ../SwiftSortableTableViews.podspec; sourceTree = "<group>"; };
+		4B82C64C1F642FFD00BD074F /* SwiftSortableTableViews.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = SwiftSortableTableViews.podspec; path = ../SwiftSortableTableViews.podspec; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		4BC020341F8E7C21005C3094 /* SortableTableViewHandlerOSX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableViewHandlerOSX.swift; path = ../Sources/osx/SortableTableViewHandlerOSX.swift; sourceTree = "<group>"; };
 		4BC020371F8E7C7A005C3094 /* SortableTableViewOSX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableViewOSX.swift; path = ../Sources/osx/SortableTableViewOSX.swift; sourceTree = "<group>"; };
 		4BC869B61F6041B7006AA57C /* SortableTableViewEvents.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SortableTableViewEvents.swift; path = ../Sources/SortableTableViewEvents.swift; sourceTree = "<group>"; };
@@ -332,7 +332,7 @@
 					4BD902541F5DCB7B00DC2E73 = {
 						CreatedOnToolsVersion = 8.3.3;
 						DevelopmentTeam = FSRSPV9N9Q;
-						LastSwiftMigration = 0920;
+						LastSwiftMigration = 1020;
 						ProvisioningStyle = Automatic;
 					};
 					4BD9025C1F5DCB7B00DC2E73 = {
@@ -359,6 +359,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = 4BD9022C1F5DCAE700DC2E73;
@@ -614,8 +615,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -635,8 +635,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = fm.playola.SwiftSortableTableviewsIOS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SKIP_INSTALL = YES;
-				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -650,7 +649,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = fm.playola.SwiftSortableTableviewsIOSTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -664,7 +663,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = fm.playola.SwiftSortableTableviewsIOSTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_SWIFT3_OBJC_INFERENCE = On;
-				SWIFT_VERSION = 4.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -689,7 +688,7 @@
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -713,7 +712,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};
@@ -730,7 +729,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = fm.playola.SwiftSortableTableviewsOSXTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Debug;
 		};
@@ -747,7 +746,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = fm.playola.SwiftSortableTableviewsOSXTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 5.0;
 			};
 			name = Release;
 		};

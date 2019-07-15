@@ -127,7 +127,7 @@ class SortableTableViewDelegateAdapter: NSObject, UITableViewDelegate
         {
             return result
         }
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
     
     //------------------------------------------------------------------------------
@@ -138,7 +138,7 @@ class SortableTableViewDelegateAdapter: NSObject, UITableViewDelegate
         {
             return result
         }
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
     
     //------------------------------------------------------------------------------
@@ -211,7 +211,7 @@ class SortableTableViewDelegateAdapter: NSObject, UITableViewDelegate
         {
             return result
         }
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
     
     //------------------------------------------------------------------------------
@@ -222,7 +222,7 @@ class SortableTableViewDelegateAdapter: NSObject, UITableViewDelegate
         {
             return result
         }
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
     
     //------------------------------------------------------------------------------
@@ -233,7 +233,7 @@ class SortableTableViewDelegateAdapter: NSObject, UITableViewDelegate
         {
             return result
         }
-        return UITableViewAutomaticDimension
+        return UITableView.automaticDimension
     }
     
     //------------------------------------------------------------------------------
@@ -309,7 +309,7 @@ class SortableTableViewDelegateAdapter: NSObject, UITableViewDelegate
     
     //------------------------------------------------------------------------------
     
-    public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCellEditingStyle
+    public func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle
     {
         if let result = self.delegate.tableView?(self.tableView, editingStyleForRowAt: self.convertToDelegateIndexPath(indexPath))
         {

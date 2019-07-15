@@ -19,43 +19,30 @@ public class SortableTableView: NSTableView
     private var _sortableDelegate:SortableTableViewDelegate?
     private var _sortableDataSourceAdapter:SortableTableViewDataSourceAdapter?
     private var _sortableDelegateAdapter:SortableTableViewDelegateAdapter?
-    open var sortableDelegate:SortableTableViewDelegate?
-    {
-        get
-        {
+    open var sortableDelegate:SortableTableViewDelegate? {
+        get {
             return self._sortableDelegate
-        }
-        set
-        {
+        } set {
             self._sortableDelegate = newValue
             
-            if let newValue = newValue
-            {
+            if let newValue = newValue {
                 self._sortableDelegateAdapter = SortableTableViewDelegateAdapter(tableView: self, delegate: newValue)
                 self.delegate = self._sortableDelegateAdapter!
-            }
-            else
-            {
+            } else {
                 self._sortableDataSourceAdapter = nil
             }
         }
     }
-    open var sortableDataSource:SortableTableViewDataSource?
-    {
-        get
-        {
+    open var sortableDataSource:SortableTableViewDataSource? {
+        get {
             return self._sortableDataSource
-        }
-        set
-        {
+        } set {
             self._sortableDataSource = newValue
             if let newValue = newValue
             {
                 self._sortableDataSourceAdapter = SortableTableViewDataSourceAdapter(tableView: self, dataSource: newValue)
                 self.dataSource = self._sortableDataSourceAdapter!
-            }
-            else
-            {
+            } else {
                 self._sortableDataSourceAdapter = nil
             }
         }
@@ -81,8 +68,7 @@ public class SortableTableView: NSTableView
     
     public override func draggingSession(_ session: NSDraggingSession, endedAt screenPoint: NSPoint, operation: NSDragOperation) {
         puts("draggingSessionEnded")
-        if (!SortableTableViewHandler.sharedInstance().itemDropInProgress)
-        {
+        if (!SortableTableViewHandler.sharedInstance().itemDropInProgress) {
             SortableTableViewHandler.sharedInstance().performCancelMove()
         }
 //        NotificationCenter.default.post(name: SortableTableViewEvents.cancelMoveWillAnimate, object:nil, userInfo: ["originalTableView": self,
