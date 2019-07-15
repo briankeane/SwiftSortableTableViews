@@ -83,7 +83,7 @@ open class SortableTableView:UITableView
     
     //------------------------------------------------------------------------------
     
-    override public init(frame: CGRect, style: UITableViewStyle) {
+    override public init(frame: CGRect, style: UITableView.Style) {
         super.init(frame: frame, style: style)
         self.setupListeners()
     }
@@ -158,7 +158,7 @@ open class SortableTableView:UITableView
                 {
                     self.placeholderRow = nil
                     self.ignoreRow = nil
-                    self.reloadRows(at: [IndexPath(row: originalRow, section: 0)], with: UITableViewRowAnimation.automatic)
+                    self.reloadRows(at: [IndexPath(row: originalRow, section: 0)], with: UITableView.RowAnimation.automatic)
                     self._sortableDataSource?.sortableTableView?(self, itemMoveDidCancel: originalRow)
                 }
             }

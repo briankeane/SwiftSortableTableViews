@@ -97,8 +97,8 @@ public class SortableTableViewHandler: NSObject
             itemInMotion.originalTableView.removePlaceholder()
             itemInMotion.originalTableView.reloadData()
             self.itemInMotion = nil
-            NotificationCenter.default.post(name: SortableTableViewEvents.cancelMoveDidAnimate, object: nil, userInfo: ["originalTableView": itemInMotion.originalTableView,
-                                                                                                                        "originalRow": itemInMotion.originalRow])
+            NotificationCenter.default.post(name: SortableTableViewEvents.cancelMoveDidAnimate, object: nil, userInfo: ["originalTableView": itemInMotion.originalTableView as Any,
+                                                                                                                        "originalRow": itemInMotion.originalRow as Any])
         }
     }
     

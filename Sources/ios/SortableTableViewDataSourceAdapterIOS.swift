@@ -119,7 +119,7 @@ class SortableTableViewDataSourceAdapter: NSObject, UITableViewDataSource
     
     //------------------------------------------------------------------------------
     
-    public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath)
+    public func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath)
     {
         self.dataSource.tableView?(self.tableView, commit: editingStyle, forRowAt: self.convertToDelegateIndexPath(indexPath))
     }
